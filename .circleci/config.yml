@@ -21,7 +21,7 @@ jobs:
       - run:
           name: run linter
           command: npm run lint
-workflow:
+workflows:
   example-workflow:
     jobs:
       - cicd-job
