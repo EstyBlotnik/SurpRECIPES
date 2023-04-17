@@ -6,6 +6,7 @@
   "type": "module",
   "scripts": {
     "dev": "nodemon src/index.js",
+    "start": "node src/index.js",
     "lint": "eslint src/* --color",
     "test": "mocha tests/*.spec.js --color"
   },
