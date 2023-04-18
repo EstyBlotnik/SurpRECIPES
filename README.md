@@ -1,73 +1,70 @@
-#Project Management
-This is the project skeleton for the <Project Name> web application. This project uses JavaScript and Express.js to build a web application with a variety of features, including a home page with a navigation bar and a login page with validation.
 
-Requirements
-JavaScript
-Express.js
-NPM
-GitHub
-CI/CD Pipeline (GitHub Actions)
-Linter
-Installation and Setup
-To set up the project, follow these steps:
+# Project Management
 
-Clone the repository to your local machine using Git.
+This is a web application project that includes various features built using JavaScript and Express.js library.
 
-bash
-Copy code
-git clone https://github.com/<username>/<project-name>.git
-Install the project dependencies using NPM.
+## Requirements
 
-Copy code
-npm install
-Run the project locally.
+- Create a new repository in GitHub and set up your team so they can collaborate.
+- Arrange your repository folders (src, test etc.).
+- Setup the CI/CD pipeline.
+- Create a home page with a navigation bar and a login page.
+- Every page should have a different Http path (different route).
+- Login page must include validations.
+- Use JavaScript language and Express.js library for server-side development.
+- Use any JavaScript framework/library (Vanilla JS, React, Angular, etc.) for client-side development.
+- CI/CD pipeline must include the following steps: Install dependencies, Run tests, Lint code, Deployment (only in CD).
+- Use NPM as package manager.
+- Include documentation in the form of a README.md file.
+- Include a linter to enforce a coding style agreed upon by the team.
 
-sql
-Copy code
-npm start
-Open your browser and navigate to http://localhost:3000 to view the application.
+## Technologies
 
-Folder Structure
-The repository has the following folder structure:
+- JavaScript
+- Express.js
+- Vanilla JavaScript
+- NPM
 
-java
-Copy code
-<project-name>/
-├── src/
-│   ├── public/
-│   │   ├── css/
-│   │   ├── js/
-│   │   ├── img/
-│   ├── views/
-│   ├── app.js
-├── test/
-│   ├── test.js
-├── README.md
-├── package.json
-├── package-lock.json
-├── .github/
-│   ├── workflows/
-│   │   ├── ci-cd.yaml
-├── .eslintrc.json
-The src folder contains the server-side code for the web application. The public folder contains static files such as CSS, JavaScript, and images. The views folder contains the HTML templates for the web pages. The app.js file is the entry point for the application.
+## Getting Started
 
-The test folder contains the test code for the application. The test.js file contains the test cases for the application.
+### Prerequisites
 
-The .github folder contains the GitHub Actions workflow configuration file for the CI/CD pipeline.
+- Node.js
+- NPM
 
-The .eslintrc.json file contains the configuration for the linter.
+### Installation
 
-CI/CD Pipeline
-The CI/CD pipeline is set up using GitHub Actions. The pipeline consists of the following steps:
+1. Clone the repository: `git clone https://github.com/<your-username>/<project-name>.git`
+2. Install dependencies: `npm install`
+3. Run the application: `npm start`
 
-Install dependencies: Installs the project dependencies using NPM.
-Run tests: Runs the test cases for the application.
-Lint code: Runs the linter to enforce the coding style.
-Deployment (only in CD): Deploys the application to a production environment.
-Coding Style
-The project uses the Airbnb JavaScript style guide as the coding style. The linter is configured to enforce this style guide.
+### Usage
 
-Contributors
-Contributor 1
-Contributor 2
-Contributor 3
+Once you have the application running, you can access the home page by navigating to `http://localhost:3000/` in your web browser. From there, you can access the login page and other pages by clicking on the links in the navigation bar.
+
+### Testing
+
+To run the tests, you can use the following command: `npm test`
+
+### Linting
+
+To run the linter, you can use the following command: `npm run lint`
+
+## CI/CD Pipeline
+
+The project includes a continuous integration and deployment pipeline that is set up using GitHub Actions. The pipeline consists of the following steps:
+
+1. Install dependencies
+2. Run tests
+3. Lint code
+4. Deployment (only in CD)
+
+## Contributors
+
+- John Doe (@johndoe)
+- Jane Smith (@janesmith)
+- Bob Johnson (@bobjohnson)
+
+## License
+
+This project is licensed under the [MIT License](https://opensource.org/licenses/MIT).
