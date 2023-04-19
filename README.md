@@ -20,9 +20,8 @@ This is a web application project that includes various features built using Jav
 
 ## Technologies
 
-- JavaScript
-- Express.js
 - Vanilla JavaScript
+- Express.js
 - NPM
 
 ## Getting Started
@@ -34,13 +33,14 @@ This is a web application project that includes various features built using Jav
 
 ### Installation
 
-1. Clone the repository: `git clone https://github.com/<your-username>/<project-name>.git`
+1. Clone the repository: `https://github.com/EstyBlotnik/Project_management.git`
 2. Install dependencies: `npm install`
 3. Run the application: `npm start`
 
 ### Usage
 
-Once you have the application running, you can access the home page by navigating to `http://localhost:3000/` in your web browser. From there, you can access the login page and other pages by clicking on the links in the navigation bar.
+Once you have the application running, you can access the home page by navigating to `http://localhost:3000/` in your web browser. 
+From there, you can access the login page and other pages by clicking on the links in the navigation bar.
 
 ### Testing
 
@@ -52,7 +52,8 @@ To run the linter, you can use the following command: `npm run lint`
 
 ## CI/CD Pipeline
 
-The project includes a continuous integration and deployment pipeline that is set up using GitHub Actions. The pipeline consists of the following steps:
+The project includes a continuous integration and deployment pipeline that is set up using GitHub Actions. 
+The pipeline consists of the following steps:
 
 1. Install dependencies
 2. Run tests
@@ -61,10 +62,11 @@ The project includes a continuous integration and deployment pipeline that is se
 
 ## Contributors
 
-- John Doe (@johndoe)
-- Jane Smith (@janesmith)
-- Bob Johnson (@bobjohnson)
+Esty Blotnik						209531482
+Malky Rotshild 					308464262
+Shirel Abargil 					206645103
+Adi Buchris 						206147647
+Noa Asulin 							213250749
+Demi Netzer 						323134577
 
-## License
 
-This project is licensed under the [MIT License](https://opensource.org/licenses/MIT).
