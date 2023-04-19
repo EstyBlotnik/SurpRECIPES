@@ -5,7 +5,15 @@ const app = express();
 
 app.get('/', (req, res) => {
     console.log('A new request has arrived to index.js');
+    // res.sendFile(__dirname + '/index.html');
     res.send('Hello from the server main page');
+});
+
+app.get('/hello', (req, res) => {
+    console.log('A new request has arrived to /hello');
+    res.send({
+        message: 'Hello from the server!'
+    });
 });
 
 app.listen(port, () => {
