@@ -5,7 +5,7 @@ const app = express();
 
 app.get('/', (req, res) => {
     console.log('A new request has arrived to index.js');
-    res.sendFile(__dirname + '/home_page.html');
+    //res.sendFile(__dirname + '/home_page.html');
     res.send('Hello from the server main page');
 });
 
