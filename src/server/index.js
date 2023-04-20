@@ -12,7 +12,7 @@ app.get('/', (req, res) => {
 app.get('/hello', (req, res) => {
     console.log('A new request has arrived to /hello');
     res.send({
-        message: 'Hello from the server!'
+        message: 'Hello from the server!',
     });
 });
 
