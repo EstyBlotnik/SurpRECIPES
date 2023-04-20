@@ -18,9 +18,9 @@ jobs:
       - run:
           name: run tests
           command: npm run test
-      # - run:
-      #     name: run linter
-      #     command: npm run lint
+      - run:
+          name: run linter
+          command: npm run lint
       - run:
           name: CD - Deploy the service
           command: curl https://api.render.com/deploy/srv-cguobf0dh87vhrm28btg?key=HjloRqacIZE
