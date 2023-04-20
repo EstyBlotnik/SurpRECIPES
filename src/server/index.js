@@ -2,8 +2,8 @@ import express from 'express';
 
 const port = process.env.PORT || 3000;
 const app = express();
-const path = require('path');
-const filePath = path.join(__dirname, 'public', 'home_page.html');
+// const path = require('path');
+// const filePath = path.join(__dirname, 'public', 'home_page.html');
 
 
 app.get('/', (req, res) => {
