@@ -9,7 +9,7 @@ const port = process.env.PORT || 3000;
 const app = express();
 
 app.get('/', (req, res) => {
-    res.sendFile(`${__dirname}/home_page.html`);
+    res.sendFile('./public/home_page.html', { root: __dirname });
     console.log(__dirname);
 });
 app.listen(port, () => {
