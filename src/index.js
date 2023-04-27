@@ -1,17 +1,24 @@
-import express from 'express';
-import { fileURLToPath } from 'url';
-import { dirname } from 'path';
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = dirname(__filename);
+const express = require('express');
+const app = express();
+const path = require("path");
+
+
+
+app.set("views", path.join(__dirname, "views"));
+app.set("view engine", "ejs");
 
 const port = process.env.PORT || 3000;
-const app = express();
 
 app.get('/', (req, res) => {
-    res.sendFile('./public/home_page.html', { root: __dirname });
-    console.log(__dirname);
+ 
+    res.render('index');
 });
+app.get('/log_in.ejs', (req, res) => {
+ 
+    res.render('log_in');
+});
+
 app.listen(port, () => {
     console.log(`Server is up and running at port: ${port}`);
 });
