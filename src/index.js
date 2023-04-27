@@ -14,6 +14,9 @@ app.get('/', (req, res) => {
 app.get('/log_in.ejs', (req, res) => {
     res.render('log_in');
 });
+app.get('/about', (req, res) => {
+    res.render('about');
+});
 
 app.listen(port, () => {
     console.log(`Server is up and running at port: ${port}`);
