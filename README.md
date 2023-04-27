@@ -62,17 +62,17 @@ The pipeline consists of the following steps:
 
 ## Contributors
 
-Esty Blotnik						209531482
+Esty Blotnik					
 
-Malky Rotshild 					308464262
+Malky Rotshild 					
 
-Shirel Abargil 					206645103
+Shirel Abargil 				
 
-Adi Buchris 						206147647
+Adi Buchris 						
 
-Noa Asulin 							213250749
+Noa Asulin 		
 
-Demi Netzer 						323134577
+Demi Netzer 						
 
 
 
