@@ -11,7 +11,6 @@ const port = process.env.PORT || 3000;
 const dbURI = 'mongodb+srv://pm:1234567890@projectmanagement.srxmxoq.mongodb.net/project_management?retryWrites=true&w=majority';
 mongoose.connect(dbURI).then((result) => app.listen(port, () => {
     console.log(`Server is up and running at port: ${port}`);
-    console.log(result);
 })).catch((err) => console.log(err));
 
 app.set('views', path.join(__dirname, 'views'));
