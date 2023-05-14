@@ -1,31 +1,69 @@
-
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" >
 <head>
-    <title>Login Page</title>
-    <link rel="stylesheet" type="text/css" href="log_in.css">
+  <meta charset="UTF-8">
+  <title>CodePen - Login/Registration Form Transition</title>
+  <link rel='stylesheet' href='https://fonts.googleapis.com/css?family=Open+Sans'><link rel="stylesheet" href="log_in.css">
+
 </head>
 <body>
-    <div class="home-icon">
-        <a href="/"><img src="homeicon.png" alt="Home Icon"></a>
-    </div>
-    <div class="container">
-        <h1>Login</h1>
-        <form>
-            <label for="username">Username</label>
-            
-            <input type="text" id="username" placeholder="Enter Username">
-            <br><br>
-            <label for="password">Password</label>
-            <input type="password" id="password" placeholder="Enter Password">
-            <br><br>
-            <button type="button" id="login-btn">Login</button>
-        </form>
-        <p id="error-msg"></p>
-    </div>
-
+<!-- partial:index.partial.html -->
+<div class="cont">
+  <div class="form sign-in">
+    <h2>Welcome back,</h2>
+    <label>
+      <span>Email</span>
+      <input type="email" />
+    </label>
+    <label>
+      <span>Password</span>
+      <input type="password" />
+    </label>
+    <p class="forgot-pass">Forgot password?</p>
+    <button type="button" class="submit">Sign In</button>
     
+  </div>
+  <div class="sub-cont">
+    <div class="img">
+      <div class="img__text m--up">
+        <h2>New here?</h2>
+        <p>Sign up and discover a large amount of new recipes and friends!</p>
+      </div>
+      <div class="img__text m--in">
+        <h2>One of us?</h2>
+        <p>If you already has an account, just sign in. We've missed you!</p>
+      </div>
+      <div class="img__btn">
+        <span class="m--up">Sign Up</span>
+        <span class="m--in">Sign In</span>
+      </div>
+    </div>
+    <div class="form sign-up">
+      <h2>Time to enjoy surprising recipes,</h2>
+      <label>
+        <span>UserName</span>
+        <input type="text" />
+      </label>
+      <label>
+        <span>Email</span>
+        <input type="email" />
+      </label>
+      <label>
+        <span>Password</span>
+        <input type="password" />
+      </label>
+      <label>
+        <span>Confirm Password</span>
+        <input type="password" />
+      </label>
+      <button type="button" class="submit">Sign Up</button>
+    
+    </div>
+  </div>
+</div>
 
-    <script src="log_in.js"></script>
+<!-- partial -->
+  <script  src="log_in.js"></script>
+
 </body>
 </html>
