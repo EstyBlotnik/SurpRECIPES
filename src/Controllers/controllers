@@ -13,3 +13,12 @@ exports.renderLogIn = (req, res) => {
 exports.renderAbout = (req, res) => {
   res.render('about');
 };
+
+exports.renderUserProfile = (req, res) => {
+  res.render('user_profile.ejs');
+};
+
+
+
+
+
