@@ -1,9 +1,11 @@
 const express = require('express');
+
 const app = express();
 const path = require('path');
 const connectToDatabase = require('./db/db');
 const routes = require('./Routes/routes');
 const authRouter = require('./Routes/authRoutes');
+const recipeRouter = require('./Routes/recipe');
 
 const port = process.env.PORT || 3000;
 
@@ -25,9 +27,11 @@ app.use(express.static('public'));
 // Register routes
 app.use('/', routes);
 app.use('/auth', authRouter);
+app.use('/recipe', recipeRouter);
+
 app.get('/recipe', (req, res) => {
     // Handle GET request for '/users' route
     // Retrieve data, perform operations, etc.
     // Send a response back to the client
     res.render('recipeUpload');
-  });
+});
