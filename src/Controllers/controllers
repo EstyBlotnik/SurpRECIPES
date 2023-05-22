@@ -1,5 +1,6 @@
 const User = require('../models/users');
-
+const express = require('express');
+const router = express.Router();
 
 
 exports.renderIndex = (req, res) => {
@@ -23,10 +24,6 @@ exports.renderContact = (req, res) => {
 };
 
 exports.renderUserProfile = (req, res) => {
-  res.render('user_profile.ejs');
+  const user = 'Shirel Abargil';
+  res.render('user_profile', { user });
 };
-
-
-
-
-
