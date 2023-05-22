@@ -15,18 +15,36 @@ body {
   margin: 0 100px;
 }
 
-.profile-header {
 
+
+.profile-header {
   width: 100%;
   display: flex;
   height: 190px;
   position: relative;
   box-shadow: 0px 3px 4px rgba(0, 0, 0, 0.2);
-  background: url('background.jpg');
+  background-image: url("https://images.pexels.com/photos/1099680/pexels-photo-1099680.jpeg?auto=compress&cs=tinysrgb&w=1600");
   background-size: cover;
-  background-position: bottom 20px;
+  transition: transform 1.2s ease-in-out;
+  color:#ffffff
 
 }
+
+.profile-header:after {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.6);
+}
+  
+  
+  
+ 
+
+
 
 .profile-img {
   float: left;
@@ -62,6 +80,9 @@ body {
   font-size: 2rem;
   font-family: "Open Sans", Helvetica, Arial, sans-serif;
   font-weight: bold;
+  /* background-color: #ffffff; */
+  
+  
 }
 
 .profile-option {
@@ -78,16 +99,16 @@ body {
   cursor: pointer;
   transition: all 0.5s ease-in-out;
   outline: none;
-  background: #e40046;
+  background: #d4af7a;
 }
 
 .profile-option:hover {
   background: #fff;
-  border: 1px solid #e40046;
+  border: 1px solid #d4af7a;
 }
 
 .profile-option:hover span {
-  background: #e40046;
+  background: #d4af7a;
 }
 
 
@@ -115,13 +136,13 @@ body {
 }
 
 .profile-side p i {
-  color: #e40046;
+  color: #d4af7a;
   margin-right: 10px;
 }
 
 .mobile-no i {
   transform: rotateY(180deg);
-  color: #e40046;
+  color: #d4af7a;
 }
 
 .profile-btn {
@@ -156,10 +177,13 @@ button {
   font-size: 15px;
   cursor: pointer;
 }
-button.my_acount-btn:hover,
-button.follow-btn:hover {
-  background: rgba(288, 0, 70, 0.9);
+
+button.my-acount-btn:hover,
+button.follow-btn:hover,
+button.my-acount-btn:focus {
+  background: rgba(246, 203, 142, 0.9);
 }
+
 
 button.my_acount-btn i,
 button.follow-btn i {
@@ -173,25 +197,54 @@ button.follow-btn i {
 
 .nav ul {
   display: flex;
-  justify-content: space-around;
+  justify-content: center;
   list-style-type: none;
-  height: 40px;
+  height: 60px;
   background: #fff;
+  align-items: center;
   box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.3);
 }
 
 .nav ul li {
-  padding: 10px;
-  width: 100%;
+  display: flex;
+  flex-direction: column;
+  bottom : 16px;
+  align-items: normal;
+  justify-content: center;
+  position: relative;
+  padding: 20px;
+  width: 100px;
   cursor: pointer;
   text-align: center;
   transition: all 0.2s ease-in-out;
 }
 
+.nav ul li span.numof-followings,
+.nav ul li span.numof-followers {
+  display: block;
+  padding: 5px 0; /* Adjust the padding as desired */
+  font-size: 12px; /* Adjust the font size as desired */
+  font-family:"Open Sans", Helvetica, Arial, sans-serif; /* Specify the desired font family */
+}
+
+.nav ul li span.button-text {
+  position: absolute;
+  bottom: 3px; /* Adjust the positioning as desired */
+  left: 0;
+  right: 0;
+  font-size: 16px; /* Adjust the font size as desired */
+  font-family:"Open Sans", Helvetica, Arial, sans-serif; /* Specify the desired font family */
+  text-align: center;
+}
+
+
+
 .nav ul li:hover,
 .nav ul li.active {
-  box-shadow: 0px -3px 0px rgba(288, 0, 70, 0.9) inset;
+  box-shadow: 0px -3px 0px rgba(212, 175, 122, 0.9) inset;
 }
+
+
 
 .profile-body {
   width: 100%;
@@ -233,7 +286,10 @@ button.follow-btn i {
     flex-direction: column;
     text-align: center;
     padding-bottom:20px;
+    
   }
+
+
 
   /* Profile image */
 .profile-img img {

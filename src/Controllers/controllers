@@ -16,6 +16,13 @@ exports.renderAbout = (req, res) => {
 };
 
 exports.renderUserProfile = (req, res) => {
-  const user = 'Shirel Abargil';
+  const user = { username : 'Shirel Abargil',
+                 userlevel : 'Chef',
+                 numof_followings : 148 ,
+                 numof_followers : 760
+
+};
   res.render('user_profile', { user });
 };
+
+//module.exports = router;

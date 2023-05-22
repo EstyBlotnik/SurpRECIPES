@@ -2,8 +2,9 @@
 <html lang="en" >
 <head>
   <meta charset="UTF-8">
-  <title>User Profile | <%= user %></title>
+  <title>User Profile | <%= user.username %></title>
   <link rel="stylesheet" type="text/css" href="user_profile.css">
+  <link rel='stylesheet' href='https://fonts.googleapis.com/css?family=Open+Sans'>
 
 </head>
 <body>
@@ -13,7 +14,7 @@
 		<img src="./bg.jpg" width="200" >
 	  </div>
 	  <div class="profile-nav-info">
-		<h3 class="user-name">noa</h3>
+		<h3 class="user-name"><%= user.username %></h3>
 		</div>
 	  </div>
 	  </div>
@@ -23,10 +24,8 @@
 	  <div class="left-side">
 		<div class="profile-side">
 		  <div class="my-level">
-			<h3>My Level</h3>
-			<p class="level">
-			 chef
-			</p>
+			<h3>My Level :<br> </br> </h3>
+				<p class="level"><%= user.userlevel %><br></br></p>
 		  </div>
 		  <div class="profile-btn">
 			<button class="my-acount-btn" id="my-acount-btn"><i class="my-acount"></i> My Acount</button>
@@ -38,11 +37,18 @@
 	  </div>
 	  <div class="right-side">
 		<div class="nav">
-		  <ul>
-			<li onclick="tabs(0)" class="Followings-num">Followings</li>
-			<li onclick="tabs(1)" class="Followers-num">Followers</li>
-		  </ul>
-		</div>
+			<ul>
+			  <li onclick="tabs(0)" class="Followings-num">
+				<span class="numof-followings"><br><%= user.numof_followings %></br></span>
+				<span class="button-text">Followings</span>
+			  </li>
+			  <li onclick="tabs(1)" class="Followers-num">
+				<span class="numof-followers"><br><%= user.numof_followers %></br></span>
+				<span class="button-text">Followers</span>
+			  </li>
+			</ul>
+		  </div>
+		  
 	  </div>
 	</div>
   </div>
