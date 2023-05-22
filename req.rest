@@ -1,12 +1,16 @@
 ###
 
-POST http://localhost:3000/auth/signup
+POST http://localhost:3000/recipe/upload
 Content-Type: application/json
 
 {
-  "email": "esty@example.com",
-  "password": "mypassword",
-  "username": "myusername"
+  "category": "soup",
+    "name": "recipeName",
+    "instructions": "hdhhdwdbwe fwefwe fweufwe fwefvwef w e",
+    "preparationTime": 10,
+    "dishes": 10,
+    "ingredients": [ "milk", "eggs" ]
+
 }
 
 

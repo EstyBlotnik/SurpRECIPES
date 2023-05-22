@@ -121,8 +121,12 @@ function signUp(event) {
   const confirmPassword = signUpForm.querySelector('input[type="password"][name="confirm-password"]').value;
   
   // Retrieve the value of the username input field
-  const username = userNameInput.value;
+  const username = userNameInput.value.trim();;
   console.log(username);
+  if (username === ''){
+    errorMsgUp.textContent = 'Enter a username';
+    return;
+  }
   if (!validateEmail(email)) {
     errorMsgUp.textContent = 'Invalid email, try again. ';
     return;
@@ -165,7 +169,7 @@ function signUp(event) {
     
       // Display the error message to the user
       const errorMsgUp = document.getElementById('error-msg-up');
-      errorMsgUp.textContent = 'Registration failed. Please check your data and try again.';
+      errorMsgUp.textContent = 'The user already exists.';
     });
     
 }
