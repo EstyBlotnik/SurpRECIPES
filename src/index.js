@@ -29,9 +29,9 @@ app.use('/', routes);
 app.use('/auth', authRouter);
 app.use('/recipe', recipeRouter);
 
-app.get('/recipe', (req, res) => {
+app.get('/try', (req, res) => {
     // Handle GET request for '/users' route
     // Retrieve data, perform operations, etc.
     // Send a response back to the client
-    res.render('recipeUpload');
+    res.render('user_home_page');
 });

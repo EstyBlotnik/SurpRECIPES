@@ -7,12 +7,20 @@ exports.renderIndex = (req, res) => {
   res.render('index');
 };
 
+exports.renderUserHomePage = (req, res) => {
+  res.render('user_home_page');
+};
+
 exports.renderLogIn = (req, res) => {
   res.render('log_in');
 };
 
 exports.renderAbout = (req, res) => {
   res.render('about');
+};
+
+exports.renderContact = (req, res) => {
+  res.render('contact');
 };
 
 exports.renderUserProfile = (req, res) => {
