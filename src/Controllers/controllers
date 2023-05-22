@@ -1,9 +1,14 @@
 const User = require('../models/users');
-
+const express = require('express');
+const router = express.Router();
 
 
 exports.renderIndex = (req, res) => {
   res.render('index');
+};
+
+exports.renderUserHomePage = (req, res) => {
+  res.render('user_home_page');
 };
 
 exports.renderLogIn = (req, res) => {
@@ -13,3 +18,19 @@ exports.renderLogIn = (req, res) => {
 exports.renderAbout = (req, res) => {
   res.render('about');
 };
+
+exports.renderContact = (req, res) => {
+  res.render('contact');
+};
+
+exports.renderUserProfile = (req, res) => {
+  const user = { username : 'Shirel Abargil',
+                 userlevel : 'Chef',
+                 numof_followings : 148 ,
+                 numof_followers : 760
+
+};
+  res.render('user_profile', { user });
+};
+
+//module.exports = router;

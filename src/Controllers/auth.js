@@ -8,6 +8,8 @@ exports.signin = (req, res) => {
   User.findOne({ email, password })
     .then(user => {
       if (user) {
+        // Store user details in the session
+        //req.session.user = user;
         res.status(200).json({ message: 'Sign in successful' });
 
       } else {

@@ -1,11 +1,13 @@
 const express = require('express');
+
 const app = express();
 const path = require('path');
 const connectToDatabase = require('./db/db');
 const routes = require('./Routes/routes');
 const authRouter = require('./Routes/authRoutes');
+const recipeRouter = require('./Routes/recipe');
 
-const port = process.env.PORT || 3000;
+const port = process.env.PORT || 5000;
 
 // Connect to MongoDB and start the server
 connectToDatabase()
@@ -25,9 +27,11 @@ app.use(express.static('public'));
 // Register routes
 app.use('/', routes);
 app.use('/auth', authRouter);
-app.get('/recipe', (req, res) => {
+app.use('/recipe', recipeRouter);
+
+app.get('/try', (req, res) => {
     // Handle GET request for '/users' route
     // Retrieve data, perform operations, etc.
     // Send a response back to the client
-    res.render('recipeUpload');
-  });
+    res.render('user_home_page');
+});
