@@ -11,10 +11,9 @@
 <div class="container">
 	<div class="profile-header">
 	  <div class="profile-img">
-		<img src="./bg.jpg" width="200" >
+		<img src="./defaltuserprofile.png" width="200" >
 	  </div>
 	  <div class="profile-nav-info">
-		<h3 class="user-name"><%= user.username %></h3>
 		</div>
 	  </div>
 	  </div>
@@ -23,9 +22,10 @@
 	<div class="main-bd">
 	  <div class="left-side">
 		<div class="profile-side">
+		  <h1 class="user-name"><%= user.username %><br></br></h1>
 		  <div class="my-level">
-			<h3>My Level :<br> </br> </h3>
-				<p class="level"><%= user.userlevel %><br></br></p>
+			<h3>My Level : <p class="level"><%= user.userlevel %><br></br></p></h3>
+				
 		  </div>
 		  <div class="profile-btn">
 			<button class="my-acount-btn" id="my-acount-btn"><i class="my-acount"></i> My Acount</button>
@@ -37,19 +37,62 @@
 	  </div>
 	  <div class="right-side">
 		<div class="nav">
-			<ul>
-			  <li onclick="tabs(0)" class="Followings-num">
-				<span class="numof-followings"><br><%= user.numof_followings %></br></span>
-				<span class="button-text">Followings</span>
-			  </li>
-			  <li onclick="tabs(1)" class="Followers-num">
-				<span class="numof-followers"><br><%= user.numof_followers %></br></span>
-				<span class="button-text">Followers</span>
-			  </li>
-			</ul>
-		  </div>
-		  
+		  <ul>
+			<li onclick="tabs(0)" class="Followings-num">
+			  <span class="numof-followings"><br><%= user.numof_followings %></br></span>
+			  <span class="button-text">Followings</span>
+			  <div class="scrolling-list">
+				<!-- Add your scrolling list items here -->
+				<p>Item 1</p>
+				<p>Item 2</p>
+				<p>Item 3</p>
+				<!-- Add more items as needed -->
+			  </div>
+			</li>
+			<li onclick="tabs(1)" class="Followers-num">
+			  <span class="numof-followers"><br><%= user.numof_followers %></br></span>
+			  <span class="button-text">Followers</span>
+			  <div class="scrolling-list">
+				<!-- Add your scrolling list items here -->
+				<p>Item A</p>
+				<p>Item B</p>
+				<p>Item C</p>
+				<!-- Add more items as needed -->
+			  </div>
+			</li>
+		  </ul>
+		</div>
 	  </div>
+	  </div>
+	  
+	  
+	  
+	  
+	  
+	  <script>
+		function tabs(index) {
+			var li = document.querySelectorAll('.nav ul li');
+			var scrollingLists = document.querySelectorAll('.scrolling-list');
+
+			// Toggle the display of the scrolling list for the clicked button
+			var list = scrollingLists[index];
+			list.style.display = list.style.display === 'block' ? 'none' : 'block';
+
+			// Update the active state of the buttons
+			li.forEach(function(item, i) {
+				if (i === index) {
+				item.classList.toggle('active');
+				} else {
+				item.classList.remove('active');
+				}
+			});
+		}	
+
+	  </script>
+	  
+	  
+	  
+	  
 	</div>
   </div>
 </body>
