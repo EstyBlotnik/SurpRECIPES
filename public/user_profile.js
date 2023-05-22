@@ -3,6 +3,9 @@ const followingBtn = document.querySelector("#following-btn");
 const followBtn = document.querySelector("#follow-btn");
 const unfollowBtn = document.querySelector("#unfollow-btn");
 const myAccountBtn = document.querySelector("#my-account-btn");
+const express = require('express');
+const router = express.Router();
+
 
 // Set initial counts
 let followersCount = 0;
@@ -26,3 +29,11 @@ unfollowBtn.addEventListener("click", function() {
 myAccountBtn.addEventListener("click", function() {
 	// TODO: Navigate to user's account page
 });
+
+
+// router.get('/user_profile', (req, res) => {
+//   const user = 'Shirel Abargil'; // Replace this with req.user
+//   res.render('user_profile', { user: user });
+// });
+
+module.exports = router;
