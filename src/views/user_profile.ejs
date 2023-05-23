@@ -3,18 +3,19 @@
 <head>
   <meta charset="UTF-8">
   <title>User Profile | <%= user.username %></title>
+  <%- include('./partials/head.ejs') %>
   <link rel="stylesheet" type="text/css" href="user_profile.css">
   <link rel='stylesheet' href='https://fonts.googleapis.com/css?family=Open+Sans'>
+ 
 
 </head>
 <body>
+	<%- include('./partials/header.ejs') %>
 <div class="container">
 	<div class="profile-header">
 	  <div class="profile-img">
 		<img src="./defaltuserprofile.png" width="200" >
 	  </div>
-	  <div class="profile-nav-info">
-		</div>
 	  </div>
 	  </div>
 	</div>
@@ -22,9 +23,9 @@
 	<div class="main-bd">
 	  <div class="left-side">
 		<div class="profile-side">
-		  <h1 class="user-name"><%= user.username %><br></br></h1>
+		  <h1 class="user-name"><%= mongo_user.username %><br></br></h1>
 		  <div class="my-level">
-			<h3>My Level : <p class="level"><%= user.userlevel %><br></br></p></h3>
+			<h3>My Level : <p class="level"><%= mongo_user.level %><br></br></p></h3>
 				
 		  </div>
 		  <div class="profile-btn">
@@ -39,18 +40,23 @@
 		<div class="nav">
 		  <ul>
 			<li onclick="tabs(0)" class="Followings-num">
-			  <span class="numof-followings"><br><%= user.numof_followings %></br></span>
+			  <span class="numof-followings"><br></br></span>
 			  <span class="button-text">Followings</span>
-			  <div class="scrolling-list">
-				<!-- Add your scrolling list items here -->
-				<p>Item 1</p>
-				<p>Item 2</p>
-				<p>Item 3</p>
-				<!-- Add more items as needed -->
+			  <div class="scrolling-list" id="dynamic-list">
+				<% if (mongo_user.followedUserss && mongo_user.followedUsers.length > 0) { %>
+				  <% mongo_user.followedUsers.forEach(function(item) { %>
+					<p><%= item %></p>
+				  <% }) %>
+				<% } else { %>
+				  <p>No followers found.</p>
+				<% } %>
 			  </div>
+			  
+			  
+						
 			</li>
 			<li onclick="tabs(1)" class="Followers-num">
-			  <span class="numof-followers"><br><%= user.numof_followers %></br></span>
+			  <span class="numof-followers"><br></br></span>
 			  <span class="button-text">Followers</span>
 			  <div class="scrolling-list">
 				<!-- Add your scrolling list items here -->
