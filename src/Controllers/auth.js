@@ -12,7 +12,7 @@ exports.signin = (req, res) => {
         //req.session.user = user;
         //res.status(200).json({ message: 'Sign in successful' });
         console.log(user)
-        res.render('user_home_page')
+        res.render('user_home_page',{user: user});
        
 
       } else {
