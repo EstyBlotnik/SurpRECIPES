@@ -1,4 +1,4 @@
-document.querySelector('.img__btn').addEventListener('click', function() {
+document.querySelector('.img__btn').addEventListener('click', function () {
   document.querySelector('.cont').classList.toggle('s--signup');
 });
 // Get DOM elements
@@ -60,6 +60,8 @@ function hideError(element) {
 }
 
 // Function to handle sign in form submission
+// Function to handle sign in form submission
+
 function signIn(event) {
   event.preventDefault();
   console.log('Sign in');
@@ -90,17 +92,70 @@ function signIn(event) {
       password: password,
     }),
   })
-  .then(response => response.json())
-  .then(data => window.location.href = data.redirect)
-  .catch(error => {
+    .then(response => response.json())
+    .then(data => {
+      // Check if the response contains a redirect URL
+      if (data.redirect) {
+        // Redirect to the specified URL
+        window.location.href = data.redirect;
+      } else {
+        // Handle other types of responses if needed
+        console.log(data);
+      }
+    })
+    .catch(error => {
       console.error('Sign in error:', error);
       console.error(error.stack);
-    
+
       // Display the error message to the user
       const errorMsgUp = document.getElementById('error-msg-in');
       errorMsgUp.textContent = 'Login failed, verify your details again..';
     });
 }
+
+
+
+// function signIn(event) {
+//   event.preventDefault();
+//   console.log('Sign in');
+//   const errorMsgIn = document.getElementById('error-msg-in');
+//   errorMsgIn.textContent = '';
+//   // Validate email and password
+//   const email = signInForm.querySelector('input[type="email"]').value;
+//   const password = signInForm.querySelector('input[type="password"]').value;
+
+//   if (!validateEmail(email)) {
+//     errorMsgIn.textContent = 'Invalid email, try again. ';
+//     return;
+//   }
+
+//   if (!validatePassword(password)) {
+//     errorMsgIn.textContent = 'Password must be between 6 and 20 characters';
+//     return;
+//   }
+
+//   // Perform sign in logic here
+//   fetch('/auth/signin', {
+//     method: 'POST',
+//     headers: {
+//       'Content-Type': 'application/json',
+//     },
+//     body: JSON.stringify({
+//       email: email,
+//       password: password,
+//     }),
+//   })
+//   .then(response => response.json())
+//   .then(data => window.location.href = data.redirect)
+//   .catch(error => {
+//       console.error('Sign in error:', error);
+//       console.error(error.stack);
+
+//       // Display the error message to the user
+//       const errorMsgUp = document.getElementById('error-msg-in');
+//       errorMsgUp.textContent = 'Login failed, verify your details again..';
+//     });
+// }
 // Function to handle sign up form submission
 function signUp(event) {
   event.preventDefault();
@@ -110,14 +165,14 @@ function signUp(event) {
   // Validate email, password, and username
   const email = signUpForm.querySelector('input[type="email"]').value;
   const password = signUpForm.querySelector('input[type="password"]').value;
-  
+
   // Retrieve the value of the "confirm-password" field
   const confirmPassword = signUpForm.querySelector('input[type="password"][name="confirm-password"]').value;
-  
+
   // Retrieve the value of the username input field
   const username = userNameInput.value.trim();;
   console.log(username);
-  if (username === ''){
+  if (username === '') {
     errorMsgUp.textContent = 'Enter a username';
     return;
   }
@@ -133,7 +188,7 @@ function signUp(event) {
 
   if (password !== confirmPassword) {
     errorMsgUp.textContent = 'Passwords do not match';
-    
+
     return;
   }
 
@@ -149,17 +204,17 @@ function signUp(event) {
       username: username,
     }),
   })
-  .then(response => response.json())
-  .then(data => window.location.href = data.redirect)
+    .then(response => response.json())
+    .then(data => window.location.href = data.redirect)
     .catch(error => {
       console.error('Registration error:', error);
       console.error(error.stack);
-    
+
       // Display the error message to the user
       const errorMsgUp = document.getElementById('error-msg-up');
       errorMsgUp.textContent = 'The user already exists.';
     });
-    
+
 }
 
 function showError(element, message) {
