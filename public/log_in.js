@@ -90,15 +90,9 @@ function signIn(event) {
       password: password,
     }),
   })
-    .then(response => {
-      if (response.ok) {
-        console.log('Sign in successful');
-        errorMsgIn.textContent = '';
-      } else {
-        throw new Error('Sign in failed');
-      }
-    })
-    .catch(error => {
+  .then(response => response.json())
+  .then(data => window.location.href = data.redirect)
+  .catch(error => {
       console.error('Sign in error:', error);
       console.error(error.stack);
     
@@ -155,14 +149,8 @@ function signUp(event) {
       username: username,
     }),
   })
-    .then(response => {
-      if (response.ok) {
-        console.log('Sign up successful');
-        errorMsgUp.textContent = '';
-      } else {
-        throw new Error('Sign up failed');
-      }
-    })
+  .then(response => response.json())
+  .then(data => window.location.href = data.redirect)
     .catch(error => {
       console.error('Registration error:', error);
       console.error(error.stack);

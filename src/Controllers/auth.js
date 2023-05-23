@@ -10,7 +10,10 @@ exports.signin = (req, res) => {
       if (user) {
         // Store user details in the session
         //req.session.user = user;
-        res.status(200).json({ message: 'Sign in successful' });
+        //res.status(200).json({ message: 'Sign in successful' });
+        console.log(user)
+        res.json({ redirect: '/user_home_page', user: user});
+       
 
       } else {
         res.status(401).json({ error: 'Invalid credentials' });
@@ -40,7 +43,7 @@ exports.signup = (req, res) => {
         // Save the user to the database
         newUser.save()
           .then(() => {
-            res.status(200).json({ message: 'Sign up successful' });
+            res.render('user_home_page');
           })
           .catch(error => {
             console.error('Sign up error:', error);

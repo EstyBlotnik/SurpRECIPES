@@ -7,7 +7,8 @@ const routes = require('./Routes/routes');
 const authRouter = require('./Routes/authRoutes');
 const recipeRouter = require('./Routes/recipe');
 const viewRecipeRoute = require('./Routes/viewRecipeRout');
-const port = process.env.PORT || 5000;
+
+const port = process.env.PORT || 3000;
 // Connect to MongoDB and start the server
 connectToDatabase()
     .then(() => {
@@ -22,7 +23,6 @@ app.use(express.json());
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 app.use(express.static('public'));
-
 
 // Register routes
 app.use('/viewRecipe', viewRecipeRoute);
