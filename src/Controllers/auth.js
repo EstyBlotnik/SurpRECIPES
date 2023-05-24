@@ -3,7 +3,7 @@ const User = require('../models/users');
 // Handle sign-in request
 exports.signin = (req, res) => {
   const { email, password } = req.body;
-
+  console.log(email);
   // Find user by email and password
   User.findOne({ email, password })
     .then(user => {
@@ -43,7 +43,7 @@ exports.signup = (req, res) => {
         // Save the user to the database
         newUser.save()
           .then(() => {
-            res.render('user_home_page');
+            res.render('user_home_page',{user:newUser});
           })
           .catch(error => {
             console.error('Sign up error:', error);

@@ -7,9 +7,6 @@ exports.renderLogIn = (req, res) => {
   res.render('log_in');
 };
 
-exports.renderUserHomePage = (req, res) => {
-  res.render('user_home_page');
-};
 
 exports.renderCcntact = (req, res) => {
   res.render('contact');

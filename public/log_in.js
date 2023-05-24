@@ -92,18 +92,9 @@ function signIn(event) {
       password: password,
     }),
   })
-    .then(response => response.json())
-    .then(data => {
-      // Check if the response contains a redirect URL
-      if (data.redirect) {
-        // Redirect to the specified URL
-        window.location.href = data.redirect;
-      } else {
-        // Handle other types of responses if needed
-        console.log(data);
-      }
-    })
-    .catch(error => {
+  .then(response => response.json())
+  .then(data => window.location.href = data.redirect)
+  .catch(error => {
       console.error('Sign in error:', error);
       console.error(error.stack);
 
