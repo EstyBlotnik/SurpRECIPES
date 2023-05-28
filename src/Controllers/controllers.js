@@ -4,7 +4,8 @@ exports.renderIndex = (req, res) => {
 };
 
 exports.renderLogIn = (req, res) => {
-  res.render('log_in');
+  const message = req.flash('message')[0];
+  res.render('login', { error: '' });
 };
 
 
@@ -13,5 +14,7 @@ exports.renderCcntact = (req, res) => {
 };
 
 exports.renderAbout = (req, res) => {
-  res.render('about');
+  console.log("user---------------------",req.user);
+  console.log(req.isAuthenticated());
+  res.render('about',{user: req.user});
 };
