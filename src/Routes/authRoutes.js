@@ -2,16 +2,15 @@ const express = require('express');
 const router = express.Router();
 const passport = require('passport');
 const bcrypt = require('bcrypt');
+const User = require('../models/users');
+
 const validateEmail = (email) => {
     // Regular expression to validate email format
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     return emailRegex.test(email);
   };
-  
-const validatePassword = (password) => {
-    return password.length >= 6 && password.length <= 20;
-  };
-const User = require('../models/users');
+
+
 
 router.post('/login', passport.authenticate('local', {
   successRedirect: '/home',

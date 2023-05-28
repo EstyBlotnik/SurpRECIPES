@@ -99,6 +99,9 @@ p {
 a {
   color: #fff;
 }
+.error-message{
+  color: #fff;
+}
 
 /* Media Queries for Responsive Adjustments */
 
