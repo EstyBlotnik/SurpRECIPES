@@ -1,16 +1,18 @@
 const express = require('express');
+
 const app = express();
 const path = require('path');
+const session = require('express-session');
+const bcrypt = require('bcrypt');
+const bodyParser = require('body-parser');
+const flash = require('connect-flash');
 const connectToDatabase = require('./db/db');
 const routes = require('./Routes/routes');
 const recipeRouter = require('./Routes/recipe');
 const viewRecipeRoute = require('./Routes/viewRecipeRout');
-const session = require('express-session');
 const passport = require('./config/passport'); // Import the Passport configuration
-const bcrypt = require('bcrypt');
-const bodyParser = require("body-parser");
-const flash = require('connect-flash');
 const authRoutes = require('./Routes/authRoutes');
+
 const port = process.env.PORT || 3000;
 // Connect to MongoDB and start the server
 connectToDatabase()
@@ -30,15 +32,14 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(flash());
 
 app.use(session({
-    secret: "secret",
-    resave: false ,
-    saveUninitialized: true ,
-}))
-  
+    secret: 'secret',
+    resave: false,
+    saveUninitialized: true,
+}));
 
 app.use(passport.initialize());
 app.use(passport.session());
-    
+
 // Register routes
 app.use('/viewRecipe', viewRecipeRoute);
 app.use('/', routes);
@@ -46,7 +47,7 @@ app.use('/auth', authRoutes);
 app.use('/recipe', recipeRouter);
 // Handle sign-in request
 // app.post('/auth/signin', passport.authenticate('local', {
-    
+
 //     successRedirect: "/about",
 //     failureRedirect: "/log_in"
 // })
@@ -64,7 +65,7 @@ app.use('/recipe', recipeRouter);
 //       if (existingUser) {
 //         if (existingUser.email === email) {
 //           res.status(400).json({ error: 'Email already exists' });
-        
+
 //         }
 //       } else {
 //         // Create a new user
