@@ -179,6 +179,28 @@ router.post('/follow', (req, res) => {
         });
 });
 
+router.post('/unfollow', (req, res) => {
+    const { currentUserId, uploaderId } = req.body;
+    const redirectUrl = req.headers.referer || '/';
+    User.findById(currentUserId)
+        .then(user => {
+            user.followedUsers.pop(uploaderId);
+            return user.save();
+        })
+        .catch(err => {
+            console.log(err);
+        });
+    User.findById(uploaderId)
+        .then(user => {
+            user.followers.pop(currentUserId);
+            res.json({ redirect: redirectUrl });
+            return user.save();
+        })
+        .catch(err => {
+            console.log(err);
+        });
+});
+
 
 router.delete('/:id', (req, res) => {
     const id = req.params.id;
