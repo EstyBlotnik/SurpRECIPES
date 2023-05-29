@@ -27,10 +27,9 @@ unfollowBtn.addEventListener("click", function() {
 	// TODO: Update button to "Follow"
 });
 
-// function redirectToUserAccount() {
-// 	// Redirect to the user_account page
-// 	window.location.href = '/user_account';
-//   }
+function redirectToUserAccount() {
+	window.location.href = "/user_account";
+	}
   
 
 module.exports = router;
