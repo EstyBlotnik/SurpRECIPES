@@ -77,7 +77,7 @@ router.post('/viewOtherProfile', async (req, res) => {
   console.log(email);
   const user = await User.findOne({ email });
   console.log(req.user.username)
-  res.render('user_profile', { mongo_user: user, corent_user: req.user});
+  res.render('user_profile', { mongo_user: user, current_user: req.user});
 });
 
 router.get('/user_profile', (req, res) => {

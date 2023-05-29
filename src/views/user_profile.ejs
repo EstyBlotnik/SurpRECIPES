@@ -1,106 +1,139 @@
 <!DOCTYPE html>
-<html lang="en" >
+<html lang="en">
+
 <head>
-  <meta charset="UTF-8">
-  
-  <%- include('./partials/head.ejs') %>
-  <link rel="stylesheet" type="text/css" href="user_profile.css">
-  <link rel='stylesheet' href='https://fonts.googleapis.com/css?family=Open+Sans'>
- 
+	<meta charset="UTF-8">
+
+	<%- include('./partials/head.ejs') %>
+		<link rel="stylesheet" type="text/css" href="user_profile.css">
+		<link rel='stylesheet' href='https://fonts.googleapis.com/css?family=Open+Sans'>
+
 
 </head>
+
 <body>
 	<%- include('./partials/header.ejs') %>
-<div class="container">
-	<div class="profile-header">
-	  <div class="profile-img">
-		<img src="./defaltuserprofile.png" width="200" >
-	  </div>
-	  </div>
-	  </div>
-	</div>
-  
-	<div class="main-bd">
-	  <div class="left-side">
-		<div class="profile-side">
-		  <h1 class="user-name"><%= mongo_user.username %><br></br></h1>
-		  <div class="my-level">
-			<h3>My Level : <p class="level"><%= mongo_user.level %><br></br></p></h3>
-				
-		  </div>
-		  <div class="profile-btn">
-			<%if (mongo_user.email === corent_user.email){ %>
-			<button class="my-acount-btn" id="my-acount-btn"><i class="my-acount"></i> My Acount</button>
-			<% }else {%>
-			<button class="follow-btn" id="follow-btn"><i class="follow"></i>Follow</button>
-			<% } %>
-		  </div>
-		  <div class="follow-nav">
-		  </div>
+		<div class="container">
+			<div class="profile-header">
+				<div class="profile-img">
+					<img src="./defaltuserprofile.png" width="200">
+				</div>
+			</div>
 		</div>
-	  </div>
-	  <div class="right-side">
-		<div class="nav">
-		  <ul>
-			<li onclick="tabs(0)" class="Followings-num">
-			  <span class="numof-followings"><br></br></span>
-			  <span class="button-text">Followings</span>
-			  <div class="scrolling-list" id="dynamic-list">
-				<% if (mongo_user.followedUserss && mongo_user.followedUsers.length > 0) { %>
-				  <% mongo_user.followedUsers.forEach(function(item) { %>
-					<p><%= item %></p>
-				  <% }) %>
-				<% } else { %>
-				  <p>No followers found.</p>
-				<% } %>
-			  </div>
-			  
-			  
-						
-			</li>
-			<li onclick="tabs(1)" class="Followers-num">
-			  <span class="numof-followers"><br></br></span>
-			  <span class="button-text">Followers</span>
-			  <div class="scrolling-list">
-				<!-- Add your scrolling list items here -->
-				<p>Item A</p>
-				<p>Item B</p>
-				<p>Item C</p>
-				<!-- Add more items as needed -->
-			  </div>
-			</li>
-		  </ul>
 		</div>
-	  </div>
-	  </div>
-	  
-	  
-	  
-	  
-	  
-	  <script>
-		function tabs(index) {
-			var li = document.querySelectorAll('.nav ul li');
-			var scrollingLists = document.querySelectorAll('.scrolling-list');
 
-			// Toggle the display of the scrolling list for the clicked button
-			var list = scrollingLists[index];
-			list.style.display = list.style.display === 'block' ? 'none' : 'block';
+		<div class="main-bd">
+			<div class="left-side">
+				<div class="profile-side">
+					<h1 class="user-name">
+						<%= mongo_user.username %><br></br>
+					</h1>
+					<div class="my-level">
+						<h3>My Level : <p class="level">
+								<%= mongo_user.level %><br></br>
+							</p>
+						</h3>
 
-			// Update the active state of the buttons
-			li.forEach(function(item, i) {
-				if (i === index) {
-				item.classList.toggle('active');
-				} else {
-				item.classList.remove('active');
-				}
+					</div>
+					<div class="profile-btn">
+						<%if (mongo_user.email===current_user.email){ %>
+							<button class="my-acount-btn" id="my-acount-btn" data-doc="<%= mongo_user._id %>" data-user="<%= current_user._id %>"></button>><i class="my-acount"></i> My
+							Acount</button>
+
+							<% }else {%>
+								<button class="follow-btn" id="follow-btn" data-uploader="<%= mongo_user._id %>" data-user="<%= current_user._id %>"><i class="follow"></i>Follow</button>
+								<% } %>
+					</div>
+					<div class="follow-nav">
+					</div>
+				</div>
+			</div>
+			<div class="right-side">
+				<div class="nav">
+					<ul>
+						<li onclick="tabs(0)" class="Followings-num">
+							<span class="numof-followings"><br></br></span>
+							<span class="button-text">Followings</span>
+							<div class="scrolling-list" id="dynamic-list">
+								<% if (mongo_user.followedUserss && mongo_user.followedUsers.length> 0) { %>
+									<% mongo_user.followedUsers.forEach(function(item) { %>
+										<p>
+											<%= item %>
+										</p>
+										<% }) %>
+											<% } else { %>
+												<p>No followers found.</p>
+												<% } %>
+							</div>
+
+
+
+						</li>
+						<li onclick="tabs(1)" class="Followers-num">
+							<span class="numof-followers"><br></br></span>
+							<span class="button-text">Followers</span>
+							<div class="scrolling-list">
+								<!-- Add your scrolling list items here -->
+								<p>Item A</p>
+								<p>Item B</p>
+								<p>Item C</p>
+								<!-- Add more items as needed -->
+							</div>
+						</li>
+					</ul>
+				</div>
+			</div>
+		</div>
+
+
+
+
+
+		<script>
+			const followboxes = document.querySelectorAll('button.follow-btn');
+			followboxes.forEach(followbox => {
+				followbox.addEventListener('click', (e) => {
+					const endpoint = `/viewRecipe/follow`;
+					const data = {
+						currentUserId: followbox.dataset.user,
+						uploaderId: followbox.dataset.uploader,
+					};
+					fetch(endpoint, {
+						method: 'POST',
+						headers: {
+							'Content-Type': 'application/json',
+						},
+						body: JSON.stringify(data),
+					})
+						.then(response => response.json())
+						.then(data => window.location.href = data.redirect)
+						.catch(err => console.log(err));
+				});
 			});
-		}	
+			
+			function tabs(index) {
+				var li = document.querySelectorAll('.nav ul li');
+				var scrollingLists = document.querySelectorAll('.scrolling-list');
 
-	  </script>
-	  
-	  
-	</div>
-  </div>
+				// Toggle the display of the scrolling list for the clicked button
+				var list = scrollingLists[index];
+				list.style.display = list.style.display === 'block' ? 'none' : 'block';
+
+				// Update the active state of the buttons
+				li.forEach(function (item, i) {
+					if (i === index) {
+						item.classList.toggle('active');
+					} else {
+						item.classList.remove('active');
+					}
+				});
+			}
+
+		</script>
+
+
+		</div>
+		</div>
 </body>
+
 </html>
