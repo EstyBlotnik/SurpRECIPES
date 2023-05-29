@@ -36,6 +36,7 @@ router.get('/', (req, res) => {
 // });
 
 router.post('/like', (req, res) => {
+    const redirectUrl = req.headers.referer || '/';
     const { userId, postId } = req.body;
     // console.log(userId);
     // console.log(postId);
@@ -56,7 +57,7 @@ router.post('/like', (req, res) => {
     //     });
     Recipe.findByIdAndUpdate(postId, { $inc: { likes: 1 } })
         .then(result => {
-            res.json({ redirect: '/viewRecipe' });
+            res.json({ redirect: redirectUrl});
         })
         .catch(err => {
             console.log(err);
@@ -79,7 +80,7 @@ router.post('/unlike', (req, res) => {
         });
     Recipe.findByIdAndUpdate(postId, { $inc: { likes: -1 } })
         .then(result => {
-            res.json({ redirect: '/viewRecipe' });
+            // res.json({ redirect: '/viewRecipe' });
         })
         .catch(err => {
             console.log(err);
