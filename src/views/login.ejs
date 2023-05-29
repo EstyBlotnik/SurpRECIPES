@@ -10,6 +10,11 @@
   <div class="full-screen-container">
   <div class="login-container">
     <h3 class="login-title">Welcome</h3>
+    <% if (error) { %>
+      <div class="error-message">
+        <%= error %>
+      </div>
+    <% } %>
   <form action="/login" method="POST">
     <div class="input-group">
       <label for="email">Email:</label>

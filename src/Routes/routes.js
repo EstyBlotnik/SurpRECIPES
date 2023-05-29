@@ -14,10 +14,17 @@ const validateEmail = (email) => {
 
 
 
-router.post('/login', passport.authenticate('local', {
-  successRedirect: '/home',
-  failureRedirect: '/login',
-}));
+  router.get('/login', (req, res) => {
+    const message = req.flash('error')[0]; // Retrieve the error message from the flash session
+    res.render('login', { error: message }); // Pass the error message to the login view
+ });
+ 
+ router.post('/login', passport.authenticate('local', {
+    successRedirect: '/home',
+    failureRedirect: '/login',
+    failureFlash: true // Enable flash messages for failure cases
+ }));
+ 
 
 
 
@@ -61,7 +68,8 @@ router.get('/logout', (req, res) => {
 });
 
 router.get('/', userController.renderIndex);
-router.get('/login', userController.renderLogIn);
+
+
 router.get('/about', userController.renderAbout);
 
 router.get('/user_profile', (req, res) => {

@@ -27,6 +27,10 @@ const userSchema = new mongoose.Schema({
     type: String,
     required: true
   },
+  numberOfLikes: {
+    type: Number,
+    default: 0,
+  },
   link: {
     type: String,
     
