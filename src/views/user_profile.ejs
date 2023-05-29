@@ -37,21 +37,24 @@
         </div>
         <div class="profile-btn">
           <%if (mongo_user.email===current_user.email){ %>
-          <button class="my-acount-btn" id="my-acount-btn" data-doc="<%= mongo_user._id %>" data-user="<%= current_user._id %>"></button>><i class="my-acount"></i> My
+          <button onclick="redirectToUserAccount()" class="my-acount-btn" id="my-acount-btn" data-doc="<%= mongo_user._id %>" data-user="<%= current_user._id %>"><i class="my-acount"></i> My
           Acount</button>
 
           <% }else {%>
           <% if(current_user.followedUsers.includes(mongo_user._id)){ %>
-          <button class="follow-btn" id="follow-btn" data-uploader="<%= mongo_user._id %>" data-user="<%= current_user._id %>"><i class="follow"></i>Follow</button>
+          <button class="unfollow-btn" id="unfollow-btn" data-uploader="<%= mongo_user._id %>" data-user="<%= current_user._id %>"><i class="follow"></i>Unfollow</button>
           <% }else{ %>
-          <button class="unfollow-btn" id="follow-btn" data-uploader="<%= mongo_user._id %>" data-user="<%= current_user._id %>"><i class="unfollow"></i>Follow</button>
+          <div class="follow-nav">
+            <button class="follow-btn" id="follow-btn" data-uploader="<%= mongo_user._id %>" data-user="<%= current_user._id %>"><i class="follow"></i>Follow</button>
+          </div>
           <% } %>
           <%}%>
-					</div>
-					<div class="follow-nav">
-					</div>
-				</div>
-			</div>
+		</div>
+		
+						
+	
+	</div> 
+		</div>
 			<div class="right-side">
 				<div class="nav">
 					<ul>
@@ -89,73 +92,7 @@
     </div>
   </div>
 
-
-
-
-
-  <script>
-    const followboxes = document.querySelectorAll('button.follow-btn');
-    followboxes.forEach(followbox => {
-      followbox.addEventListener('click', (e) => {
-        const endpoint = `/viewRecipe/follow`;
-        const data = {
-          currentUserId: followbox.dataset.user,
-          uploaderId: followbox.dataset.uploader,
-        };
-        fetch(endpoint, {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(data),
-          })
-          .then(response => response.json())
-          .then(data => window.location.href = data.redirect)
-          .catch(err => console.log(err));
-      });
-    });
-
-	const unfollowboxes = document.querySelectorAll('button.unfollow-btn');
-    unfollowboxes.forEach(unfollowbox => {
-      unfollowbox.addEventListener('click', (e) => {
-        const endpoint = `/viewRecipe/unfollow`;
-        const data = {
-          currentUserId: unfollowbox.dataset.user,
-          uploaderId: unfollowbox.dataset.uploader,
-        };
-        fetch(endpoint, {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(data),
-          })
-          .then(response => response.json())
-          .then(data => window.location.href = data.redirect)
-          .catch(err => console.log(err));
-      });
-    });
-
-    function tabs(index) {
-      var li = document.querySelectorAll('.nav ul li');
-      var scrollingLists = document.querySelectorAll('.scrolling-list');
-
-      // Toggle the display of the scrolling list for the clicked button
-      var list = scrollingLists[index];
-      list.style.display = list.style.display === 'block' ? 'none' : 'block';
-
-      // Update the active state of the buttons
-      li.forEach(function(item, i) {
-        if (i === index) {
-          item.classList.toggle('active');
-        } else {
-          item.classList.remove('active');
-        }
-      });
-    }
-  </script>
-
-
+  <script src="user_profile.js"></script>
   </div>
   </div>
 </body>
