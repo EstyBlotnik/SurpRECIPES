@@ -86,55 +86,6 @@
 				</div>
 			</div>
 		</div>
-
-
-
-
-
-		<script>
-			const followboxes = document.querySelectorAll('button.follow-btn');
-			followboxes.forEach(followbox => {
-				followbox.addEventListener('click', (e) => {
-					const endpoint = `/viewRecipe/follow`;
-					const data = {
-						currentUserId: followbox.dataset.user,
-						uploaderId: followbox.dataset.uploader,
-					};
-					fetch(endpoint, {
-						method: 'POST',
-						headers: {
-							'Content-Type': 'application/json',
-						},
-						body: JSON.stringify(data),
-					})
-						.then(response => response.json())
-						.then(data => window.location.href = data.redirect)
-						.catch(err => console.log(err));
-				});
-			});
-
-			function tabs(index) {
-				var li = document.querySelectorAll('.nav ul li');
-				var scrollingLists = document.querySelectorAll('.scrolling-list');
-
-				// Toggle the display of the scrolling list for the clicked button
-				var list = scrollingLists[index];
-				list.style.display = list.style.display === 'block' ? 'none' : 'block';
-
-				// Update the active state of the buttons
-				li.forEach(function (item, i) {
-					if (i === index) {
-						item.classList.toggle('active');
-					} else {
-						item.classList.remove('active');
-					}
-				});
-			}
-
-		</script>
-
-
-		</div>
 		</div>
 </body>
 
