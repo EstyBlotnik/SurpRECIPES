@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Login</title>
+  <link rel="stylesheet" type="text/css" href="log_in.css">
+</head>
+<body>
+  <!-- <h1>Login</h1> -->
+  <div class="full-screen-container">
+  <div class="login-container">
+    <h3 class="login-title">Welcome</h3>
+    <% if (error) { %>
+      <div class="error-message">
+        <%= error %>
+      </div>
+    <% } %>
+  <form action="/login" method="POST">
+    <div class="input-group">
+      <label for="email">Email:</label>
+      <input type="email" id="email" name="email" required>
+    </div>
+    <div class="input-group">
+      <label for="password">Password:</label>
+      <input type="password" id="password" name="password" required>
+    </div>
+    <div>
+      <button type="submit" class="login-button">Login</button>
+    </div>
+  </form>
+  <p >Don't have an account? <a href="/register">Register</a></p>
+</div>
+ </div>
+</body>
+</html>
