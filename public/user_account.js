@@ -1,3 +1,6 @@
+
+
+
 document.addEventListener('DOMContentLoaded', function() {
     const editButton = document.querySelector('.edit');
     const fields = document.querySelectorAll('.form-control[readonly]');
@@ -14,7 +17,29 @@ document.addEventListener('DOMContentLoaded', function() {
       }
     });
     });
-  
+    
+    const deleteAccountBtn = document.querySelector('.delete');
+    deleteAccountBtn.addEventListener('click', function(){
+      // Send a request to the server to delete the user account
+      fetch('/deleteAccount', {
+        method: 'DELETE'
+      
+      })
+      .then(response => {
+        if (response.ok) {
+          // Deletion successful, redirect to login page
+          window.location.href = '/home';
+        } else {
+          // Handle deletion error
+          console.error('Error deleting account');
+        }
+      })
+      .catch(error => {
+        // Handle any network or server error
+        console.error('Error:', error);
+      });
+    });
+
     const submitButton = document.querySelector('.editsubmit');
      submitButton.addEventListener('click', function() {
       const updatedFields = ['#user-name', '#firstname','#lastname', '#Status'];
@@ -59,71 +84,72 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 
-    const submitPasswordButton = document.querySelector('.changePasswordBtn');
-    submitButton.addEventListener('click', function() {
-
-        // Function to handle password change
-  function changePassword() {
-    // Retrieve values from input fields
-    const oldPassword = document.getElementById('oldPassword').value;
-    const newPassword = document.getElementById('newPassword').value;
-    const confirmPassword = document.getElementById('confirmPassword').value;
+    const submitPasswordButton = document.querySelector('.submit');
+    submitPasswordButton.addEventListener('click', function() {
+      const oldPassword = document.getElementById('oldPassword').value;
+      const newPassword = document.getElementById('newPassword').value;
+      const confirmPassword = document.getElementById('confirmPassword').value;
     
-    // Perform validation if needed
+      // Call the changePassword function
+      changePassword(oldPassword, newPassword, confirmPassword);
+    });
     
-    // Check if the new password matches the confirm password
-    if (newPassword !== confirmPassword) {
-      alert("New password and confirm password do not match.");
-      return;
+    // Function to handle password change
+    function changePassword(oldPassword, newPassword, confirmPassword) {
+      // Check if the new password matches the confirm password
+      console.log(newPassword);
+      if (newPassword !== confirmPassword) {
+      
+        alert("New password and confirm password do not match.");
+        return;
+      }
+      // Send an HTTP request to check if the old password is correct
+      fetch('/checkOldPassword', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ oldPassword })
+      })
+      .then(response => response.json())
+      .then(data => {
+        if (data.isCorrect) {
+          console.log("r");
+          // Send an HTTP request to update the password
+          fetch('/updatePassword', {
+            method: 'PUT',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ oldPassword, newPassword })
+          })
+          .then(response => response.json())
+          .then(data => {
+            // Handle the response from the server
+            console.log(data); // Replace with appropriate handling logic
+          })
+          .catch(error => {
+            console.error(error);
+            // Handle any errors that occur during the request
+          });
+        } else {
+          alert("Old password is incorrect.");
+        }
+      })
+      .catch(error => {
+        console.error(error);
+        // Handle any errors that occur during the request
+      });
     }
     
-    // Send an HTTP request to check if the old password is correct
-    fetch('/checkOldPassword', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({ oldPassword })
-    })
-    .then(response => response.json())
-    .then(data => {
-      if (data.isCorrect) {
-        // Send an HTTP request to update the password
-        fetch('/updatePassword', {
-          method: 'PUT',
-          headers: {
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify({ oldPassword, newPassword })
-        })
-        .then(response => response.json())
-        .then(data => {
-          // Handle the response from the server
-          console.log(data); // Replace with appropriate handling logic
-        })
-        .catch(error => {
-          console.error(error);
-          // Handle any errors that occur during the request
-        });
-      } else {
-        alert("Old password is incorrect.");
-      }
-    })
-    .catch(error => {
-      console.error(error);
-      // Handle any errors that occur during the request
-    });
-  }
 
-  // Add event listener to the submit button
-  const changePasswordBtn = document.getElementById('changePasswordBtn');
-  changePasswordBtn.addEventListener('click', changePassword);
+ 
 
 
 
     });
 
 
-  });
+  
 
     

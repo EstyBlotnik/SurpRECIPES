@@ -118,15 +118,85 @@ router.get('/explore', (req, res) => {
 router.get('/contact',userController.renderContact);
 router.get('/user_profile',userController.renderUserProfile);
 router.get('/user_account',userController.renderUserAccount);
+//Define the route to handle the delete request
+router.delete('/deleteAccount', function(req, res) {
+  const userId = req.user._id;
+console.log(userId);
+  User.findByIdAndRemove(userId)
+    .then(() => {
+      // Deletion successful
+      res.sendStatus(200);
+    })
+    .catch(error => {
+      // Handle deletion error
+      console.error(error);
+      res.sendStatus(500);
+    });
+});
+
+
+router.post('/checkOldPassword', async (req, res) => {
+  const {oldPassword } = req.body;
+
+  try {
+    // Retrieve the current user's password from the database
+    const user = await User.findById(req.user._id); // Assuming you have the authenticated user's ID available in req.user.id
+
+    if (!user) {console.log("errorrr!!!!");
+
+      return res.status(404).json({ message: 'User not found' });
+    }
+
+    // Compare the old password with the hashed password in the database
+    const isCorrect = await bcrypt.compare(oldPassword, user.password);
+
+    return res.status(200).json({ isCorrect });
+  } catch (error) {
+    return res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
+
+router.put('/updatePassword', async (req, res) => {
+  const { oldPassword, newPassword } = req.body;
+
+  try {
+    // Retrieve the current user's password from the database
+    const user = await User.findById(req.user._id); // Assuming you have the authenticated user's ID available in req.user.id
+
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+
+    // Compare the old password with the hashed password in the database
+    const isCorrect = await bcrypt.compare(oldPassword, user.password);
+
+    if (!isCorrect) {
+      return res.status(401).json({ message: 'Old password is incorrect' });
+    }
+
+    // Hash the new password
+    const hashedPassword = await bcrypt.hash(newPassword, 10);
+
+    // Update the user's password in the database
+    user.password = hashedPassword;
+    await user.save();
+
+    return res.status(200).json({ message: 'Password updated successfully' });
+  } catch (error) {
+    return res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
+
 
 router.put('/updateFirstName', function(req, res) {
     // Get the updated first name from the request body
-    const userId = req.user._id;
     const updatedFirstName = req.body.firstName;
     const updatedLastName = req.body.lastName;
     const updatedStatus = req.body.status;
     const updatedUserName = req.body.username;
-
+    const userId = req.user._id;
     if(updatedFirstName==null){
       console.log("undefind!");
     }

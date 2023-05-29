@@ -3,7 +3,7 @@
 /* Global styles */
 body {
     font-family: "Open Sans", Helvetica, Arial, sans-serif;
-    background: #f5f5f5;
+    background: url("https://images.pexels.com/photos/1346345/pexels-photo-1346345.jpeg?auto=compress&cs=tinysrgb&w=1600") center center/cover;
   }
   
   .container {
@@ -29,6 +29,7 @@ body {
     width: 100%;
     padding: 12px;
     border: 1px solid #f3bfbf;
+    transform: none;
     border-radius: 4px;
     transition: border-color 0.3s;
   }
@@ -57,7 +58,7 @@ body {
   }
   
   .bg-secondary-soft {
-    background-color: #d7aaaa;
+    background-color: #efcccc;
     border: 1px solid #ddd;
     border-radius: 4px;
     padding: 20px;
@@ -77,7 +78,7 @@ body {
     justify-content: center;
     align-items: center;
     font-size: 60px;
-    color: #f4c9c9;
+    color: #f6aaaa;
   }
   
   .btn {
@@ -199,12 +200,12 @@ body {
   /* Additional styles for classic, modern, and professional style */
   
   .container {
-    background-color: #f6dada;
+    background-color: transparent;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   }
   
   h3 {
-    color: #333;
+    color: #ffff;
   }
   
   .form-label {
@@ -219,7 +220,7 @@ body {
   }
   
   .btn-success-soft:hover {
-    background-color: #9d4478;
+    background-color: #eccc9f;
   }
   
   .btn-danger-soft {
@@ -229,5 +230,5 @@ body {
   }
   
   .btn-danger-soft:hover {
-    background-color: #c9302c;
+    background-color: #eccc9f;
   }
