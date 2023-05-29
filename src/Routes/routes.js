@@ -61,8 +61,12 @@ router.get('/logout', (req, res) => {
 router.get('/', userController.renderIndex);
 router.get('/login', userController.renderLogIn);
 router.get('/about', userController.renderAbout);
-router.get('/contact',userController.renderContact);
-router.get('/user_profile',userController.renderUserProfile);
+
+router.get('/user_profile',(req, res) => {
+  if (req.user) {
+  res.render('user_profile',{ user: req.user });
+  }
+});
 router.get('/uploadrecipe',(req, res) => {
   if (req.user) {
   res.render('recipeUpload',{ user: req.user });

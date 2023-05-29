@@ -8,13 +8,7 @@ exports.renderLogIn = (req, res) => {
   res.render('login', { error: '' });
 };
 
-
-exports.renderCcntact = (req, res) => {
-  res.render('contact');
-};
-
 exports.renderAbout = (req, res) => {
-  console.log("user---------------------",req.user);
-  console.log(req.isAuthenticated());
-  res.render('about',{user: req.user});
+
+  res.render('about');
 };

@@ -1,5 +1,6 @@
 const multer = require('multer');
 const Recipe = require('../models/recipe');
+const User = require('../models/users');
 
 // Create the multer upload middleware
 const upload = multer({ dest: 'uploads/' });
@@ -11,37 +12,37 @@ exports.uploadRecipe = [
     try {
       const { category, name, instructions, preparationTime, dishes, ingredients } = req.body;
       const ingredientsArray = Array.isArray(ingredients) ? ingredients.map(String) : [];
+      console.log(req.user.email);
+
+      let recipeData = {
+        category,
+        name,
+        instructions,
+        preparationTime,
+        dishes,
+        ingredients: ingredientsArray,
+        uploader: req.user.email
+      };
 
       // Check if an image was uploaded
       if (req.file) {
-        // Image uploaded, save it
-        const recipe = new Recipe({
-          category,
-          name,
-          instructions,
-          preparationTime,
-          dishes,
-          image: {
-            data: req.file.buffer,
-            contentType: req.file.mimetype
-          },
-          ingredients: ingredientsArray,
-        });
-        await recipe.save();
-      } else {
-        // No image uploaded, save the recipe without the image field
-        const recipe = new Recipe({
-          category,
-          name,
-          instructions,
-          preparationTime,
-          dishes,
-          ingredients: ingredientsArray,
-        });
-        await recipe.save();
+        // Image uploaded, include it in the recipe data
+        recipeData.image = {
+          data: req.file.buffer,
+          contentType: req.file.mimetype
+        };
       }
 
-      // Send a success response back to the client
+      // Create the recipe
+      const recipe = new Recipe(recipeData);
+      await recipe.save();
+
+      // Update the user's uploadedRecipes field
+      const user = await User.findById(req.user._id);
+      user.uploadedRecipes.push(recipe);
+      await user.save();
+
+      // Send a successful response back to the client
       res.sendStatus(200);
     } catch (error) {
       console.error('Error creating recipe:', error);
