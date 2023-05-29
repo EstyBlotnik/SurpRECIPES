@@ -4,7 +4,7 @@ document.addEventListener('DOMContentLoaded', function() {
     editButton.addEventListener('click', function() {
     // Specify the IDs or classes of the fields you want to make editable
     const editableFields = ['#user-name', '#firstname','#lastname', '#Status'];
-    console.log("noa");
+  
     fields.forEach(function(field) {
       const fieldId = '#' + field.getAttribute('id');
       if (editableFields.includes(fieldId)) {
@@ -27,16 +27,26 @@ document.addEventListener('DOMContentLoaded', function() {
         }
       });
       const firstNameInput = document.getElementById('firstname');
+      const lastNameInput = document.getElementById('lastname');
+      const statusInput = document.getElementById('Status');
+      const userNameInput = document.getElementById('user-name');
   
       // Get the updated value from the input field
       const updatedFirstName = firstNameInput.value;
+      const updateLastName = lastNameInput.value;
+      const updatedStatus = statusInput.value;
+      const updatedUserName = userNameInput.value;
       // Send an HTTP request to update the value in the database
       fetch('/updateFirstName', {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json'
         },
-        body: JSON.stringify({ firstName: updatedFirstName })
+        body: JSON.stringify({ firstName: updatedFirstName ,
+                               lastName: updateLastName ,
+                               status : updatedStatus ,
+                               username : updatedUserName
+        })
       })
         .then(response => response.json())
         .then(data => {

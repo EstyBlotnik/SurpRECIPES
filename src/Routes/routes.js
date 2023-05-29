@@ -115,8 +115,12 @@ router.put('/updateFirstName', function(req, res) {
     // Get the updated first name from the request body
     const userId = req.user._id;
     const updatedFirstName = req.body.firstName;
+    const updatedLastName = req.body.lastName;
+    const updatedStatus = req.body.status;
+    const updatedUserName = req.body.username;
+
     if(updatedFirstName==null){
-      console.log("undefind!!!!!!!!");
+      console.log("undefind!");
     }
     else{
     console.log(updatedFirstName);
@@ -125,7 +129,13 @@ router.put('/updateFirstName', function(req, res) {
     // Update the record in the database using a database query or an ORM
     User.findOneAndUpdate(
   { _id: userId }, // Query condition to find the user
-  { $set: { firstName : updatedFirstName } }, // Update operation
+  { $set: { firstName : updatedFirstName ,
+            lastName : updatedLastName ,
+            status : updatedStatus ,
+            username : updatedUserName
+  
+  } }, // Update operation
+  
   { new: true } // Options (e.g., to return the updated document)
 )
       .then(updatedUser => {
