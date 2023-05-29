@@ -11,10 +11,10 @@ passport.use(new LocalStrategy({ usernameField: 'email' }, async (email, passwor
     if (!user) {
       return done(null, false, { message: 'Incorrect email or password.' });
     }
-    // const isMatch = await bcrypt.compare(password, user.password);
-    // if (!isMatch) {
-    //   return done(null, false, { message: 'Incorrect email or password.' });
-    // }
+    const isMatch = await bcrypt.compare(password, user.password);
+    if (!isMatch) {
+      return done(null, false, { message: 'Incorrect email or password.' });
+    }
     console.log('match');
     return done(null, user);
   } catch (err) {
