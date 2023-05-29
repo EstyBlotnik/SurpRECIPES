@@ -10,30 +10,11 @@ router.get('/', (req, res) => {
                     res.render('viewRecipe', { posts: result, currentUser: user });
                 })
 
-            // const currentUser = {
-            //     email: 'user123',
-            //     name: 'John Doe'
-            // }
-
         })
         .catch(err => {
             console.log(err);
         });
 });
-
-// router.post('/like/:id', (req, res) => {
-//     const { user, post } = req.body;
-//     console.log(user);
-//     console.log(post);
-//     const id = req.params.id;
-//     Recipe.findByIdAndUpdate(id, { $inc: { likes: 1 } })
-//         .then(result => {
-//             res.json({ redirect: '/viewRecipe' });
-//         })
-//         .catch(err => {
-//             console.log(err);
-//         });
-// });
 
 router.post('/like', (req, res) => {
     const redirectUrl = req.headers.referer || '/';
@@ -48,16 +29,31 @@ router.post('/like', (req, res) => {
         .catch(err => {
             console.log(err);
         });
-    // Recipe.findById(postId)
-    //     .then(result => {
-    //         User.findOne({ email: result.uploader })
-    //             .then(user => {
-    //                 user.likes += 1;
-    //             })
-    //     });
+    Recipe.findById(postId)
+        .then(result => {
+            User.findOne({ email: result.uploader })
+                .then(user => {
+                    console.log(user.numberOfLikes);
+                    user.numberOfLikes += 1;
+                    return user.save(); // Save the updated user document
+                })
+                .then(updatedUser => {
+                    console.log('Number of likes updated:', updatedUser.numberOfLikes);
+                    // Perform further actions if needed
+                })
+                .catch(err => {
+                    // Handle any errors that occur during the process
+                    console.error(err);
+                });
+        })
+        .catch(err => {
+            // Handle any errors related to finding the recipe
+            console.error(err);
+        });
+
     Recipe.findByIdAndUpdate(postId, { $inc: { likes: 1 } })
         .then(result => {
-            res.json({ redirect: redirectUrl});
+            res.json({ redirect: redirectUrl });
         })
         .catch(err => {
             console.log(err);
@@ -68,6 +64,7 @@ router.post('/like', (req, res) => {
 
 router.post('/unlike', (req, res) => {
     const { userId, postId } = req.body;
+    const redirectUrl = req.headers.referer || '/';
     // console.log(userId);
     // console.log(postId);
     User.findById(userId)
@@ -78,9 +75,32 @@ router.post('/unlike', (req, res) => {
         .catch(err => {
             console.log(err);
         });
+
+    Recipe.findById(postId)
+        .then(result => {
+            User.findOne({ email: result.uploader })
+                .then(user => {
+                    console.log(user.numberOfLikes);
+                    user.numberOfLikes-= 1;
+                    return user.save(); // Save the updated user document
+                })
+                .then(updatedUser => {
+                    console.log('Number of likes updated:', updatedUser.numberOfLikes);
+                    // Perform further actions if needed
+                })
+                .catch(err => {
+                    // Handle any errors that occur during the process
+                    console.error(err);
+                });
+        })
+        .catch(err => {
+            // Handle any errors related to finding the recipe
+            console.error(err);
+        });
+
     Recipe.findByIdAndUpdate(postId, { $inc: { likes: -1 } })
         .then(result => {
-            // res.json({ redirect: '/viewRecipe' });
+            res.json({ redirect: redirectUrl });
         })
         .catch(err => {
             console.log(err);
@@ -89,12 +109,13 @@ router.post('/unlike', (req, res) => {
 
 router.post('/share', (req, res) => {
     const { userId, postId } = req.body;
+    const redirectUrl = req.headers.referer || '/';
     // console.log(userId);
     // console.log(postId);
     User.findById(userId)
         .then(user => {
             user.sharedRecipes.push(postId);
-            res.json({ redirect: '/viewRecipe' });
+            res.json({ redirect: redirectUrl });
             return user.save();
         })
         .catch(err => {
@@ -104,12 +125,13 @@ router.post('/share', (req, res) => {
 
 router.post('/save', (req, res) => {
     const { userId, postId } = req.body;
+    const redirectUrl = req.headers.referer || '/';
     // console.log(userId);
     // console.log(postId);
     User.findById(userId)
         .then(user => {
             user.savedRecipes.push(postId);
-            res.json({ redirect: '/viewRecipe' });
+            res.json({ redirect: redirectUrl });
             return user.save();
         })
         .catch(err => {
@@ -120,12 +142,13 @@ router.post('/save', (req, res) => {
 
 router.post('/unsave', (req, res) => {
     const { userId, postId } = req.body;
+    const redirectUrl = req.headers.referer || '/';
     // console.log(userId);
     // console.log(postId);
     User.findById(userId)
         .then(user => {
             user.savedRecipes.pop(postId);
-            res.json({ redirect: '/viewRecipe' });
+            res.json({ redirect: redirectUrl });
             return user.save();
         })
         .catch(err => {
@@ -134,12 +157,57 @@ router.post('/unsave', (req, res) => {
 
 });
 
+router.post('/follow', (req, res) => {
+    const { currentUserId, uploaderId } = req.body;
+    const redirectUrl = req.headers.referer || '/';
+    User.findById(currentUserId)
+        .then(user => {
+            user.followedUsers.push(uploaderId);
+            return user.save();
+        })
+        .catch(err => {
+            console.log(err);
+        });
+    User.findById(uploaderId)
+        .then(user => {
+            user.followers.push(currentUserId);
+            res.json({ redirect: redirectUrl });
+            return user.save();
+        })
+        .catch(err => {
+            console.log(err);
+        });
+});
+
+router.post('/unfollow', (req, res) => {
+    const { currentUserId, uploaderId } = req.body;
+    const redirectUrl = req.headers.referer || '/';
+    User.findById(currentUserId)
+        .then(user => {
+            user.followedUsers.pop(uploaderId);
+            return user.save();
+        })
+        .catch(err => {
+            console.log(err);
+        });
+    User.findById(uploaderId)
+        .then(user => {
+            user.followers.pop(currentUserId);
+            res.json({ redirect: redirectUrl });
+            return user.save();
+        })
+        .catch(err => {
+            console.log(err);
+        });
+});
+
 
 router.delete('/:id', (req, res) => {
     const id = req.params.id;
+    const redirectUrl = req.headers.referer || '/';
     Recipe.findByIdAndDelete(id)
         .then(result => {
-            res.json({ redirect: '/viewRecipe' });
+            res.json({ redirect: redirectUrl });
         })
         .catch(err => {
             console.log(err);

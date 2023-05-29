@@ -14,17 +14,17 @@ const validateEmail = (email) => {
 
 
 
-  router.get('/login', (req, res) => {
-    const message = req.flash('error')[0]; // Retrieve the error message from the flash session
-    res.render('login', { error: message }); // Pass the error message to the login view
- });
- 
- router.post('/login', passport.authenticate('local', {
-    successRedirect: '/home',
-    failureRedirect: '/login',
-    failureFlash: true // Enable flash messages for failure cases
- }));
- 
+router.get('/login', (req, res) => {
+  const message = req.flash('error')[0]; // Retrieve the error message from the flash session
+  res.render('login', { error: message }); // Pass the error message to the login view
+});
+
+router.post('/login', passport.authenticate('local', {
+  successRedirect: '/home',
+  failureRedirect: '/login',
+  failureFlash: true // Enable flash messages for failure cases
+}));
+
 
 
 
@@ -72,17 +72,17 @@ router.get('/', userController.renderIndex);
 
 router.get('/about', userController.renderAbout);
 
-router.post('/viewOtherProfile',  (req, res) => {
-  const { userId, email } = req.body;
-  console.log(userId);
+router.post('/viewOtherProfile', async (req, res) => {
+  const { email } = req.body;
   console.log(email);
-  const user =  User.findOne({ email});
-  res.render('user_profile', { mongo_user: user, currentUser: req.user });
+  const user = await User.findOne({ email });
+  console.log(req.user.username)
+  res.render('user_profile', { mongo_user: user, current_user: req.user});
 });
 
 router.get('/user_profile', (req, res) => {
   if (req.user) {
-    res.render('user_profile', { mongo_user: req.user });
+    res.render('user_profile', { mongo_user: req.user, current_user: req.user});
   }
 });
 router.get('/uploadrecipe', (req, res) => {
@@ -98,7 +98,7 @@ router.get('/home', (req, res) => {
   if (req.user) {
     Recipe.find()
       .then(result => {
-        res.render('home', { currentUser: req.user ,posts:result});
+        res.render('home', { currentUser: req.user, posts: result });
       });
   } else {
     res.redirect('/login');
@@ -108,7 +108,7 @@ router.get('/explore', (req, res) => {
   if (req.user) {
     Recipe.find()
       .then(result => {
-        res.render('explore', { currentUser: req.user ,posts:result});
+        res.render('explore', { currentUser: req.user, posts: result });
       });
   } else {
     res.redirect('/login');
@@ -204,28 +204,31 @@ router.put('/updateFirstName', function(req, res) {
     console.log(updatedFirstName);
     console.log(userId);
   }
-    // Update the record in the database using a database query or an ORM
-    User.findOneAndUpdate(
-  { _id: userId }, // Query condition to find the user
-  { $set: { firstName : updatedFirstName ,
-            lastName : updatedLastName ,
-            status : updatedStatus ,
-            username : updatedUserName
-  
-  } }, // Update operation
-  
-  { new: true } // Options (e.g., to return the updated document)
-)
-      .then(updatedUser => {
-        // Handle the updated user if needed
-        console.log(updatedUser);
-        res.json(updatedUser);
-      })
-      .catch(error => {
-        // Handle any errors that occur during the update
-        console.error(error);
-        res.status(500).json({ error: 'An error occurred' });
-      });
+  // Update the record in the database using a database query or an ORM
+  User.findOneAndUpdate(
+    { _id: userId }, // Query condition to find the user
+    {
+      $set: {
+        firstName: updatedFirstName,
+        lastName: updatedLastName,
+        status: updatedStatus,
+        username: updatedUserName
+
+      }
+    }, // Update operation
+
+    { new: true } // Options (e.g., to return the updated document)
+  )
+    .then(updatedUser => {
+      // Handle the updated user if needed
+      console.log(updatedUser);
+      res.json(updatedUser);
+    })
+    .catch(error => {
+      // Handle any errors that occur during the update
+      console.error(error);
+      res.status(500).json({ error: 'An error occurred' });
+    });
 
 });
 

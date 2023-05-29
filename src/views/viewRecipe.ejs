@@ -88,9 +88,15 @@
             <header class="p-3 flex items-center">
               <img src="nomima.jpg" alt="<%=post.uploader%>" class="rounded-full mr-2" width="80" style="border-radius: 50%;" />
               <div>
-                <button class="w-full text-gray-800 inline-block list-none text-sm text-white font-semibold uploader"  data-doc="<%= post.uploader %>" data-user="<%= currentUser._id %>">
-                  <span class="hidden md:inline"><%=post.uploader%></span>
-                </button>
+                <form action="/viewOtherProfile" method="post" >
+                  <button class="w-full text-gray-800 inline-block list-none text-sm text-white font-semibold uploader" data-doc="<%= post.uploader %>" data-user="<%= currentUser._id %>">
+                    <span class="hidden md:inline"><%=post.uploader%></span>
+                  </button>
+                  <input type="hidden" name="email1" value="<%= post.uploader %>">
+                  <input type="hidden" name="email2" value="<%= currentUser.email %>">
+
+                </form>
+                
                 <small class="text-light text-gray-600"><%=post.createdAt%></small>
               </div>
             </header>
@@ -229,26 +235,34 @@
       });
     });
 
-    const viewProfiles = document.querySelectorAll('button.uploader');
-    viewProfiles.forEach(viewProfile => {
-      viewProfile.addEventListener('click', (e) => {
-        const endpoint = '/viewOtherProfile';
-        const data = {
-          userId: viewProfile.dataset.user,
-          email: viewProfile.dataset.doc,
-        };
-        fetch(endpoint, {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(data),
-          })
-          .then(response => response.json())
-          .then(data => window.location.href = data.redirect)
-          .catch(err => console.log(err));
-      });
-    });
+    // const viewProfiles = document.querySelectorAll('button.uploader');
+    // viewProfiles.forEach(viewProfile => {
+    //   viewProfile.addEventListener('click', (e) => {
+    //     const endpoint = '/viewOtherProfile';
+    //     const data = {
+    //       userId: viewProfile.dataset.user,
+    //       email: viewProfile.dataset.doc,
+    //     };
+    //     fetch(endpoint, {
+    //         method: 'POST',
+    //         headers: {
+    //           'Content-Type': 'application/json',
+    //         },
+    //         body: JSON.stringify(data),
+    //       })
+    //       // .then(response => response.json())
+    //       // .then(data => window.location.href = data.redirect)
+    //       // .catch(err => console.log(err));
+    //       .then(response => response.json())
+    //       .then(data => {
+    //         // Handle the response data according to your requirements
+    //         console.log(data);
+    //         // Perform further actions with the response data
+    //         // For example, update the DOM or display a message
+    //       })
+    //       .catch(err => console.log(err));
+    //   });
+    // });
 
 
 
