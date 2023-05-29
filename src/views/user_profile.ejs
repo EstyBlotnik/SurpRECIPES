@@ -14,31 +14,28 @@
 </head>
 
 <body>
-  <%- include('./partials/header.ejs') %>
-  <div class="container">
-    <div class="profile-header">
-      <div class="profile-img">
-        <img src="./defaltuserprofile.png" width="200">
-      </div>
-    </div>
-  </div>
-  </div>
-
-  <div class="main-bd">
-    <div class="left-side">
-      <div class="profile-side">
-        <h1 class="user-name"><%= mongo_user.username %><br></br></h1>
-        <div class="my-level">
-          <h3>My Level : <p class="level"><%= corent_user.level %><br></br></p>
-          </h3>
-        </div>
-        <div class="profile-btn">
-          <%if(corent_user.email==mongo_user.email){%>
-          <button class="my-account-btn" id="my-account-btn"><i class="my-account"></i> My Account</button>
-          <%}else{%>
-          <button class="follow-btn" id="follow-btn">Follow</button>
-          <%}%>
-		</div>
+	<%- include('./partials/header.ejs') %>
+<div class="container">
+	<div class="profile-header">
+	  <div class="profile-img">
+		<img src="./defaltuserprofile.png" width="200" >
+	  </div>
+	  </div>
+	  </div>
+	</div>
+  
+	<div class="main-bd">
+	  <div class="left-side">
+		<div class="profile-side">
+		  <h1 class="user-name"><%= mongo_user.username %><br></br></h1>
+		  <div class="my-level">
+			<h3>My Level : <p class="level"><%= mongo_user.level %><br></br></p></h3>
+				
+		  </div>
+		  <div class="profile-btn">
+			<button href="/user_account" class="my-account-btn" id="my-account-btn"><i class="my-account"></i> My Account</button>
+			<button class="follow-btn" id="follow-btn"><i class="follow"></i>Follow</button>
+		  </div>
 		  <div class="follow-nav">
 		  </div>
 		</div>
