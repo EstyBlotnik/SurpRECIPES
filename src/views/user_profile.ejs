@@ -37,8 +37,7 @@
         </div>
         <div class="profile-btn">
           <%if (mongo_user.email===current_user.email){ %>
-          <button class="my-acount-btn" id="my-acount-btn" data-doc="<%= mongo_user._id %>" data-user="<%= current_user._id %>"></button>><i class="my-acount"></i> My
-          Acount</button>
+          <button class="my-acount-btn" id="my-acount-btn" data-doc="<%= mongo_user._id %>" data-user="<%= current_user._id %>"><i class="my-acount"></i> My Acount</button>
 
           <% }else {%>
           <% if(current_user.followedUsers.includes(mongo_user._id)){ %>
