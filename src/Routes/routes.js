@@ -82,7 +82,7 @@ router.post('/viewOtherProfile', async (req, res) => {
 
 router.get('/user_profile', (req, res) => {
   if (req.user) {
-    res.render('user_profile', { mongo_user: req.user });
+    res.render('user_profile', { mongo_user: req.user, current_user: req.user});
   }
 });
 router.get('/uploadrecipe', (req, res) => {
