@@ -58,4 +58,72 @@ document.addEventListener('DOMContentLoaded', function() {
           console.error(error);
         });
     });
+
+    const submitPasswordButton = document.querySelector('.changePasswordBtn');
+    submitButton.addEventListener('click', function() {
+
+        // Function to handle password change
+  function changePassword() {
+    // Retrieve values from input fields
+    const oldPassword = document.getElementById('oldPassword').value;
+    const newPassword = document.getElementById('newPassword').value;
+    const confirmPassword = document.getElementById('confirmPassword').value;
+    
+    // Perform validation if needed
+    
+    // Check if the new password matches the confirm password
+    if (newPassword !== confirmPassword) {
+      alert("New password and confirm password do not match.");
+      return;
+    }
+    
+    // Send an HTTP request to check if the old password is correct
+    fetch('/checkOldPassword', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ oldPassword })
+    })
+    .then(response => response.json())
+    .then(data => {
+      if (data.isCorrect) {
+        // Send an HTTP request to update the password
+        fetch('/updatePassword', {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ oldPassword, newPassword })
+        })
+        .then(response => response.json())
+        .then(data => {
+          // Handle the response from the server
+          console.log(data); // Replace with appropriate handling logic
+        })
+        .catch(error => {
+          console.error(error);
+          // Handle any errors that occur during the request
+        });
+      } else {
+        alert("Old password is incorrect.");
+      }
+    })
+    .catch(error => {
+      console.error(error);
+      // Handle any errors that occur during the request
+    });
+  }
+
+  // Add event listener to the submit button
+  const changePasswordBtn = document.getElementById('changePasswordBtn');
+  changePasswordBtn.addEventListener('click', changePassword);
+
+
+
+    });
+
+
   });
+
+    
