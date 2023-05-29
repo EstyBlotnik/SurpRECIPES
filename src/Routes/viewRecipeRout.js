@@ -68,6 +68,7 @@ router.post('/like', (req, res) => {
 
 router.post('/unlike', (req, res) => {
     const { userId, postId } = req.body;
+    const redirectUrl = req.headers.referer || '/';
     // console.log(userId);
     // console.log(postId);
     User.findById(userId)
@@ -80,7 +81,7 @@ router.post('/unlike', (req, res) => {
         });
     Recipe.findByIdAndUpdate(postId, { $inc: { likes: -1 } })
         .then(result => {
-            // res.json({ redirect: '/viewRecipe' });
+            res.json({ redirect: redirectUrl});
         })
         .catch(err => {
             console.log(err);
@@ -89,12 +90,13 @@ router.post('/unlike', (req, res) => {
 
 router.post('/share', (req, res) => {
     const { userId, postId } = req.body;
+    const redirectUrl = req.headers.referer || '/';
     // console.log(userId);
     // console.log(postId);
     User.findById(userId)
         .then(user => {
             user.sharedRecipes.push(postId);
-            res.json({ redirect: '/viewRecipe' });
+            res.json({ redirect: redirectUrl});
             return user.save();
         })
         .catch(err => {
@@ -104,12 +106,13 @@ router.post('/share', (req, res) => {
 
 router.post('/save', (req, res) => {
     const { userId, postId } = req.body;
+    const redirectUrl = req.headers.referer || '/';
     // console.log(userId);
     // console.log(postId);
     User.findById(userId)
         .then(user => {
             user.savedRecipes.push(postId);
-            res.json({ redirect: '/viewRecipe' });
+            res.json({ redirect: redirectUrl});
             return user.save();
         })
         .catch(err => {
@@ -120,12 +123,13 @@ router.post('/save', (req, res) => {
 
 router.post('/unsave', (req, res) => {
     const { userId, postId } = req.body;
+    const redirectUrl = req.headers.referer || '/';
     // console.log(userId);
     // console.log(postId);
     User.findById(userId)
         .then(user => {
             user.savedRecipes.pop(postId);
-            res.json({ redirect: '/viewRecipe' });
+            res.json({ redirect: redirectUrl});
             return user.save();
         })
         .catch(err => {
@@ -137,9 +141,10 @@ router.post('/unsave', (req, res) => {
 
 router.delete('/:id', (req, res) => {
     const id = req.params.id;
+    const redirectUrl = req.headers.referer || '/';
     Recipe.findByIdAndDelete(id)
         .then(result => {
-            res.json({ redirect: '/viewRecipe' });
+            res.json({ redirect: redirectUrl});
         })
         .catch(err => {
             console.log(err);
