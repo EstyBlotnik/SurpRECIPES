@@ -38,7 +38,7 @@
 					<div class="profile-btn">
 						<%if (mongo_user.email===current_user.email){ %>
 							<button onclick="redirectToUserAccount()" class="my-acount-btn" id="my-acount-btn" data-doc="<%= mongo_user._id %>"
-								data-user="<%= current_user._id %>"></button>><i class="my-acount"></i> My
+								data-user="<%= current_user._id %>"><i class="my-acount"></i> My
 							Acount</button>
 
 							<% }else {%>
