@@ -22,12 +22,7 @@ body {
   font-family: "Open Sans", Helvetica, Arial, sans-serif; ;
 } */
 
-.container{
-  width: 100%;
-  padding: 2% 2%;
-  --bs-gutter-x: 0rem;
 
-}
 
 
 .profile-header {
@@ -157,7 +152,7 @@ body {
   display: contents;
 }
 
-button.my-acount-btn,
+button.my-account-btn,
 button.follow-btn {
   border: 0;
   padding: 10px;
@@ -186,14 +181,14 @@ button {
   cursor: pointer;
 }
 
-button.my-acount-btn:hover,
+button.my-account-btn:hover,
 button.follow-btn:hover,
-button.my-acount-btn:focus {
+button.my-account-btn:focus {
   background: rgba(246, 203, 142, 0.9);
 }
 
 
-button.my_acount-btn i,
+button.my_account-btn i,
 button.follow-btn i {
   margin-right: 5px;
 }

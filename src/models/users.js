@@ -27,6 +27,9 @@ const userSchema = new mongoose.Schema({
     type: String,
     required: true
   },
+  status: {
+    type: String,
+  },
   link: {
     type: String,
     

@@ -2,8 +2,10 @@
 <html lang="en" >
 <head>
   <meta charset="UTF-8">
-  <title>User Profile | <%= user.username %></title>
+  <title>User Profile | <%= mongo_user.username %></title>
+
   <%- include('./partials/head.ejs') %>
+  <script src="public/user_profile.js"></script>
   <link rel="stylesheet" type="text/css" href="user_profile.css">
   <link rel='stylesheet' href='https://fonts.googleapis.com/css?family=Open+Sans'>
  
@@ -29,7 +31,7 @@
 				
 		  </div>
 		  <div class="profile-btn">
-			<button class="my-acount-btn" id="my-acount-btn"><i class="my-acount"></i> My Acount</button>
+			<button class="my-account-btn" id="my-account-btn" onclick="redirectToUserAccount()"><i class="my-account"></i> My Account</button>
 			<button class="follow-btn" id="follow-btn"><i class="follow"></i>Follow</button>
 		  </div>
 		  <div class="follow-nav">
@@ -71,11 +73,7 @@
 	  </div>
 	  </div>
 	  
-	  
-	  
-	  
-	  
-	  <script>
+	  <!-- <script>
 		function tabs(index) {
 			var li = document.querySelectorAll('.nav ul li');
 			var scrollingLists = document.querySelectorAll('.scrolling-list');
@@ -94,8 +92,9 @@
 			});
 		}	
 
-	  </script>
+	  </script> -->
 	  
+	  <!-- <script src="public\user_profile.js"></script> -->
 	  
 	  
 	  

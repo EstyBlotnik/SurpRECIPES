@@ -26,14 +26,11 @@ unfollowBtn.addEventListener("click", function() {
 	// TODO: Send unfollow request to user 2
 	// TODO: Update button to "Follow"
 });
-myAccountBtn.addEventListener("click", function() {
-	// TODO: Navigate to user's account page
-});
 
-
-// router.get('/user_profile', (req, res) => {
-//   const user = 'Shirel Abargil'; // Replace this with req.user
-//   res.render('user_profile', { user: user });
-// });
+function redirectToUserAccount() {
+	// Redirect to the user_account page
+	window.location.href = '/user_account';
+  }
+  
 
 module.exports = router;
