@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html lang="en" >
+<html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <title>User Profile | <%= mongo_user.username %></title>
@@ -8,33 +9,36 @@
   <script src="public/user_profile.js"></script>
   <link rel="stylesheet" type="text/css" href="user_profile.css">
   <link rel='stylesheet' href='https://fonts.googleapis.com/css?family=Open+Sans'>
- 
+
 
 </head>
+
 <body>
-	<%- include('./partials/header.ejs') %>
-<div class="container">
-	<div class="profile-header">
-	  <div class="profile-img">
-		<img src="./defaltuserprofile.png" width="200" >
-	  </div>
-	  </div>
-	  </div>
-	</div>
-  
-	<div class="main-bd">
-	  <div class="left-side">
-		<div class="profile-side">
-		  <h1 class="user-name"><%= mongo_user.username %><br></br></h1>
-		  <div class="my-level">
-			<h3>My Level : <p class="level"><%= mongo_user.level %><br></br></p></h3>
-				
-		  </div>
-		  <div class="profile-btn">
-			
-			<button href="/user_account" class="my-account-btn" id="my-account-btn"><i class="my-account"></i> My Account</button>
-			<button class="follow-btn" id="follow-btn"><i class="follow"></i>Follow</button>
-		  </div>
+  <%- include('./partials/header.ejs') %>
+  <div class="container">
+    <div class="profile-header">
+      <div class="profile-img">
+        <img src="./defaltuserprofile.png" width="200">
+      </div>
+    </div>
+  </div>
+  </div>
+
+  <div class="main-bd">
+    <div class="left-side">
+      <div class="profile-side">
+        <h1 class="user-name"><%= mongo_user.username %><br></br></h1>
+        <div class="my-level">
+          <h3>My Level : <p class="level"><%= corent_user.level %><br></br></p>
+          </h3>
+        </div>
+        <div class="profile-btn">
+          <%if(corent_user.email==mongo_user.email){%>
+          <button class="my-account-btn" id="my-account-btn"><i class="my-account"></i> My Account</button>
+          <%}else{%>
+          <button class="follow-btn" id="follow-btn">Follow</button>
+          <%}%>
+		</div>
 		  <div class="follow-nav">
 		  </div>
 		</div>
@@ -47,34 +51,34 @@
 			  <span class="button-text">Followings</span>
 			  <div class="scrolling-list" id="dynamic-list">
 				<% if (mongo_user.followedUserss && mongo_user.followedUsers.length > 0) { %>
-				  <% mongo_user.followedUsers.forEach(function(item) { %>
-					<p><%= item %></p>
-				  <% }) %>
-				<% } else { %>
-				  <p>No followers found.</p>
-				<% } %>
-			  </div>
-			  
-			  
-						
-			</li>
-			<li onclick="tabs(1)" class="Followers-num">
-			  <span class="numof-followers"><br></br></span>
-			  <span class="button-text">Followers</span>
-			  <div class="scrolling-list">
-				<!-- Add your scrolling list items here -->
-				<p>Item A</p>
-				<p>Item B</p>
-				<p>Item C</p>
-				<!-- Add more items as needed -->
-			  </div>
-			</li>
-		  </ul>
-		</div>
-	  </div>
-	  </div>
-	  
-	  <!-- <script>
+          <% mongo_user.followedUsers.forEach(function(item) { %>
+          <p><%= item %></p>
+          <% }) %>
+          <% } else { %>
+          <p>No followers found.</p>
+          <% } %>
+        </div>
+
+
+
+        </li>
+        <li onclick="tabs(1)" class="Followers-num">
+          <span class="numof-followers"><br></br></span>
+          <span class="button-text">Followers</span>
+          <div class="scrolling-list">
+            <!-- Add your scrolling list items here -->
+            <p>Item A</p>
+            <p>Item B</p>
+            <p>Item C</p>
+            <!-- Add more items as needed -->
+          </div>
+        </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- <script>
 		function tabs(index) {
 			var li = document.querySelectorAll('.nav ul li');
 			var scrollingLists = document.querySelectorAll('.scrolling-list');
@@ -94,12 +98,13 @@
 		}	
 
 	  </script> -->
-	  
-	  <!-- <script src="public\user_profile.js"></script> -->
-	  
-	  
-	  
-	</div>
+
+  <!-- <script src="public\user_profile.js"></script> -->
+
+
+
+  </div>
   </div>
 </body>
+
 </html>

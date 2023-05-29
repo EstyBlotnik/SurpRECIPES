@@ -95,7 +95,12 @@
             <header class="p-3 flex items-center">
               <img src="nomima.jpg" alt="<%=post.uploader%>" class="rounded-full mr-2" width="80" style="border-radius: 50%;" />
               <div>
-                <a class="w-full text-gray-800" href="#"><strong><%=post.uploader%></strong></a><br>
+                <form action="/viewOtherProfile" method="post" >
+                    <button class="inline-block list-none text-sm font-semibold uploader" data-doc="<%= post.uploader %>" data-user="<%= currentUser._id %>">
+                      <span class="hidden md:inline"><%=post.uploader%></span>
+                    </button>
+                    <input type="hidden" name="email" value="<%= post.uploader %>">
+                  </form>
                 <small class="text-light text-gray-600"><%=post.createdAt%></small>
               </div>
             </header>
