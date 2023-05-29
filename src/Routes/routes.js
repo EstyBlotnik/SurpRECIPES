@@ -72,6 +72,14 @@ router.get('/', userController.renderIndex);
 
 router.get('/about', userController.renderAbout);
 
+router.post('/viewOtherProfile',  (req, res) => {
+  const { userId, email } = req.body;
+  console.log(userId);
+  console.log(email);
+  const user =  User.findOne({ email});
+  res.render('user_profile', { mongo_user: user, currentUser: req.user });
+});
+
 router.get('/user_profile', (req, res) => {
   if (req.user) {
     res.render('user_profile', { mongo_user: req.user });

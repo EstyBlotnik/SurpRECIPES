@@ -88,7 +88,9 @@
             <header class="p-3 flex items-center">
               <img src="nomima.jpg" alt="<%=post.uploader%>" class="rounded-full mr-2" width="80" style="border-radius: 50%;" />
               <div>
-                <a class="w-full text-gray-800" href="viewProfile"><strong><%=post.uploader%></strong></a><br>
+                <button class="w-full text-gray-800 inline-block list-none text-sm text-white font-semibold uploader"  data-doc="<%= post.uploader %>" data-user="<%= currentUser._id %>">
+                  <span class="hidden md:inline"><%=post.uploader%></span>
+                </button>
                 <small class="text-light text-gray-600"><%=post.createdAt%></small>
               </div>
             </header>
@@ -226,6 +228,29 @@
           .catch(err => console.log(err));
       });
     });
+
+    const viewProfiles = document.querySelectorAll('button.uploader');
+    viewProfiles.forEach(viewProfile => {
+      viewProfile.addEventListener('click', (e) => {
+        const endpoint = '/viewOtherProfile';
+        const data = {
+          userId: viewProfile.dataset.user,
+          email: viewProfile.dataset.doc,
+        };
+        fetch(endpoint, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(data),
+          })
+          .then(response => response.json())
+          .then(data => window.location.href = data.redirect)
+          .catch(err => console.log(err));
+      });
+    });
+
+
 
     const unlikeboxes = document.querySelectorAll('button.unlike');
     unlikeboxes.forEach(unlikebox => {
