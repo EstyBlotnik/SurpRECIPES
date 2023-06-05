@@ -15,7 +15,7 @@
 		<div class="col-12">
 			<!-- Page title -->
 			<div class="my-5">
-				<h3>My Profile</h3>
+				<h3>My Account</h3>
 				<hr>
 			</div>
 			<!-- Form START -->
@@ -28,13 +28,13 @@
 								<h4 class="mb-4 mt-0">Contact detail</h4>
 								<!-- First Name -->
 								<div class="col-md-6">
-									<label for="firstnameinput"  class="form-label">First Name *</label>
+									<label for="firstnameinput"  class="form-label">First Name </label>
 									<input type="text" class="form-control" id="firstname" name="firstname" placeholder="" aria-label="First name" value="<%= mongo_user.firstName %>" readonly>
 								</div>
 								<!-- Last name -->
 								<!-- Last name -->
                                <div class="col-md-6">
-	                                    <label class="form-label">Last Name *</label>
+	                                    <label class="form-label">Last Name </label>
 	                                    <input type="text" class="form-control" id="lastname" placeholder="" aria-label="Last name" value="<%= mongo_user.lastName %>" readonly>
                                         </div>
   
@@ -58,15 +58,16 @@
 								</div>
                                  <!-- status -->
 								<div class="status">
-									<label for="inputustatus" class="form-label">Status *</label>
+									<label for="inputustatus" class="form-label">Status </label>
 									<input type="status" class="form-control" id="Status" value="<%= mongo_user.status %>"readonly>
 								</div>
                                   <!-- Join Date -->
 								<div class="Join Date">
 									<label for="inputJoinDate" class="form-label">Join Date*</label>
 									<input type="Join Date" class="form-control" id="Join Date" value="24.4.23"readonly>
-									<button type="button" class="edit">edit details</button>
-                                    <button type="button" class="editsubmit">submit</button>
+									<button type="button" class="edit">Edit Details</button>
+                                    <button type="button" class="editsubmit">Submit</button>
+									<div id="message"></div>
 								</div>
 
 							</div> <!-- Row END -->
@@ -115,17 +116,16 @@
 							<div class="col-md-12">
 							<label for="confirmPassword" class="form-label">Confirm Password *</label>
 							<input type="password" class="form-control" id="confirmPassword">
-							<button type="button" class="submit">Submit</button>
+							<div><button type="button" class="submit">Submit</button></div>
+							<div><button type="button" class="delete" id="'delete">Delete profile</button></div>
+							<div><button type="button" class="btn btn-danger btn-lg">Statistical data</button></div>
 							</div>
+
 						</div>
 						</div>
 					</div>
 				</div> <!-- Row END -->
 				<!-- button -->
-				<div class="gap-3 d-md-flex justify-content-md-end text-center">
-					<button type="button" class="delete" id="'delete">Delete profile</button>
-					<button type="button" class="btn btn-danger btn-lg">Statistical data</button>
-				</div>
 			</form> <!-- Form END -->
 		</div>
 	</div>
