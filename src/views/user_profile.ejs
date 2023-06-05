@@ -55,6 +55,7 @@
 					<ul>
 						<li onclick="tabs(0)" class="Followings-num">
 							<span class="numof-followings"><br></br></span>
+							<span class="button"><%=mongo_user.followedUsers.length%></span>
 							<span class="button-text">Followings</span>
 							<div class="scrolling-list" id="dynamic-list">
 								<% if (mongo_user.followedUserss && mongo_user.followedUsers.length> 0) { %>
@@ -73,6 +74,7 @@
 						</li>
 						<li onclick="tabs(1)" class="Followers-num">
 							<span class="numof-followers"><br></br></span>
+							<span class="button"><%=mongo_user.followers.length%></span>
 							<span class="button-text">Followers</span>
 							<div class="scrolling-list">
 								<!-- Add your scrolling list items here -->
