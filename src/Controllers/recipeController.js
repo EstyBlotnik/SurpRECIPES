@@ -11,8 +11,10 @@ exports.uploadRecipe = [
   async (req, res) => {
     try {
       const { category, name, instructions, preparationTime, dishes, ingredients } = req.body;
-      const ingredientsArray = Array.isArray(ingredients) ? ingredients.map(String) : [];
+      const ingredientsArray = JSON.parse(ingredients);
+      //Array.isArray(ingredients) ? ingredients.map(String) : [];
       console.log(req.user.email);
+      console.log(ingredientsArray);
 
       let recipeData = {
         category,

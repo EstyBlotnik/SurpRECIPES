@@ -47,7 +47,7 @@ function submitForm(event) {
   var dishes = document.getElementById('dishes').value.trim();
   var image = document.getElementById('image').files[0]; // Get the selected image file
   var ingredients = getIngredients();
-  console.log(image)
+  console.log(ingredients)
   // Validate form fields
   if (category === '') {
     showError('Please select a category.');
@@ -94,9 +94,8 @@ if (!isPositiveInteger(dishes)) {
   formData.append('instructions', instructions);
   formData.append('preparationTime', prepTime);
   formData.append('dishes', dishes);
-  formData.append('image', image); // Append the image file to the FormData object
   formData.append('ingredients', JSON.stringify(ingredients));
-
+  formData.append('image', image); // Append the image file to the FormData object
   // Send form data to the server using fetch
   fetch('/recipe/upload', {
     method: 'POST',
@@ -106,6 +105,9 @@ if (!isPositiveInteger(dishes)) {
       if (response.ok) {
         // Form submission successful
         console.log('Recipe uploaded successfully!');
+        var groceryList = document.getElementById("groceryList");
+        groceryList.innerHTML = ""; // This will remove all the child elements inside the groceryList
+        showMessage() 
         // Reset form
         document.getElementById('recipeForm').reset();
       } else {
@@ -130,7 +132,9 @@ document.getElementById('recipeForm').addEventListener('submit', submitForm);
 
 
 
-
+function showMessage() {
+  alert("Your recipe are saved.");
+}
 
 
 

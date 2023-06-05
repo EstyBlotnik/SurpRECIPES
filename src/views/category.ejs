@@ -10,7 +10,7 @@
   <link rel="mask-icon" type="image/x-icon"
     href="https://cpwebassets.codepen.io/assets/favicon/logo-pin-b4b4269c16397ad2f0f7a01bcdf513a1994f4c94b8af2f191c09eb0d601762b1.svg"
     color="#111" />
-  <title>recipe</title>
+  <title>Search</title>
   <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/1.0.1/tailwind.min.css'>
   <link rel='stylesheet' href='https://cdn.lineicons.com/1.0.1/LineIcons.min.css'>
 
@@ -82,14 +82,22 @@
 
 <body translate="no">
   <%- include('./partials/header.ejs') %>
+  
     <div class="w-full min-h-screen bg-gray-200 p-3 sm:p-6 md:p-12 casing">
 
       <!-- <main class="w-full lg:w-3/4 mx-auto flex flex-wrap content-start"> -->
       <main class="w-full lg:w-3/4 mx-auto flex flex-wrap content-start" style="margin-right: 0;">
         <!-- Inner grid -->
 
-        <% posts.forEach(function(post) { %>
-
+        <% if (!posts.some(post => post.category === category)) { %>
+          <div class="text-center py-8">
+            <p class="text-gray-800 text-3xl font-bold">No posts available in this category.</p>
+            <img src="assets/img/no-posts-image.jpg" alt="No posts" class="mt-4 mx-auto" style="max-width: 200px;">
+            <p class="text-gray-800 mt-4 text-xl">But hey! We have a lot of other great <a href="/search_recipe" class="text-blue-500">food categories!</a></p>
+          </div>
+        <% } else { %>
+          <% posts.forEach(function(post) { %>
+            <% if (post.category === category) { %>
           <div class="w-full p-1">
 
             <!-- Social-media-post-like card -->
@@ -244,7 +252,9 @@
               </div>
             </div>
           </div>
+          <% } %>
           <% }) %>
+        <% } %>
       </main>
     </div>
     <script>

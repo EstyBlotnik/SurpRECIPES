@@ -114,6 +114,33 @@ router.get('/explore', (req, res) => {
     res.redirect('/login');
   }
 });
+router.get('/search_recipe', (req, res) => {
+  if (req.user) {
+    Recipe.find()
+      .then(result => {
+        res.render('search_recipe', { currentUser: req.user, posts: result });
+      });
+  } else {
+    res.redirect('/login');
+  }
+});
+
+router.get('/category', (req, res) => {
+  const category = req.query.category; // Get the category from the URL parameter
+
+  if (req.user) {
+    Recipe.find({ category }) // Filter the recipes by category
+      .then(result => {
+        res.render('category', { currentUser: req.user, posts: result, category });
+      })
+      .catch(error => {
+        console.error(error);
+        // Handle the error appropriately
+      });
+  } else {
+    res.redirect('/login');
+  }
+});
 
 router.get('/contact',userController.renderContact);
 router.get('/user_profile',userController.renderUserProfile);
