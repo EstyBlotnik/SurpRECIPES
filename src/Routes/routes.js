@@ -114,6 +114,17 @@ router.get('/explore', (req, res) => {
     res.redirect('/login');
   }
 });
+router.get('/search_recipe', (req, res) => {
+  if (req.user) {
+    Recipe.find()
+      .then(result => {
+        res.render('search_recipe', { currentUser: req.user, posts: result });
+      });
+  } else {
+    res.redirect('/login');
+  }
+});
+
 
 router.get('/contact',userController.renderContact);
 router.get('/user_profile',userController.renderUserProfile);
