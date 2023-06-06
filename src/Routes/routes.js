@@ -25,8 +25,26 @@ router.post('/login', passport.authenticate('local', {
   failureFlash: true // Enable flash messages for failure cases
 }));
 
+router.post('/editRecipe', async (req, res) => {
+  const { postId } = req.body;
+  console.log(postId);
+  const post=await Recipe.findById(postId);
+  res.render('edit_recipe',{post});
+});
 
+router.put('/edit_recipe', (req, res) => {
+  console.log("name");
+  const{category, name, instructions, preparationTime, dishes}=req.body;
+  console.log("name");
+  console.log("category");
+  return res.status(200).json({ message: 'Password updated successfully' });
+});
 
+router.get('/editRecipe', (req, res) => {
+  if (req.user) {
+    res.render('user_profile', { mongo_user: req.user, current_user: req.user});
+  }
+});
 
 router.post('/register', async (req, res) => {
   const { email, username, password, confirmpassword } = req.body;

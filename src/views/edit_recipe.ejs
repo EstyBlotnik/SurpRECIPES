@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <title>Edit Recipe</title>
+  <link rel='stylesheet' href='https://fonts.googleapis.com/css?family=Open+Sans'>
+  <link rel="stylesheet" href="uploadRecipe.css">
+  <link rel="stylesheet" href="edit_recipe.css">
+  <link rel='stylesheet' href='https://cdn.lineicons.com/1.0.1/LineIcons.min.css'>
+</head>
+
+<body>
+  <h1>Edit your recipe</h1>
+
+  <form id="recipeForm" class="cont" enctype="multipart/form-data">
+
+    <select id="category" name="category" placeholder="<%=post.name  %>" required>
+      <option value="<%= post.category  %>"><%= post.category %></option>
+      <% if (post.category!=='soups'){ %>
+      <option value="soups">soup</option>
+      <% } %>
+      <% if (post.category!=='stew'){ %>
+      <option value="stew">stew</option>
+      <% } %>
+      <% if (post.category!=='fish'){ %>
+      <option value="fish">fish</option>
+      <% } %>
+      <% if (post.category!=='pies and quiches'){ %>
+      <option value="pies and quiches">pies and quiches</option>
+      <% } %>
+      <% if (post.category!=='cakes and cookies'){ %>
+      <option value="cakes and cookies">cakes and cookies</option>
+      <% } %>
+      <% if (post.category!=='dessert'){ %>
+      <option value="dessert">dessert</option>
+      <% } %>
+      <% if (post.category!=='salad'){ %>
+      <option value="salad">salad</option>
+      <% } %>
+      <% if (post.category!=='sandwich'){ %>
+      <option value="sandwich">sandwich</option>
+      <% } %>
+      <% if (post.category!=='pizza'){ %>
+      <option value="pizza">pizza</option>
+      <% } %>
+      <% if (post.category!=='bread'){ %>
+      <option value="bread">bread</option>
+      <% } %>
+    </select><br><br>
+
+    <label for="recipeName">Recipe Name:</label>
+    <input type="text" id="recipeName" name="recipeName" data-doc="<%= post.name %>" placeholder="<%=post.name  %>" required><br><br>
+
+    <label for="groceryList">Ingredients :</label>
+    <ul id="groceryList" data-doc="<%= post.ingredients %>">
+      <% post.ingredients.forEach(function(ingredient) { %>
+      <!-- <li< contenteditable="true"><%= ingredient %>></li> -->
+      <li contenteditable="true"><%= ingredient %> <i class="lni-trash delete-icon"></i></li>
+      <% }) %>
+    </ul>
+    <input type="text" id="ingredientInput" placeholder="Enter an ingredient">
+    <button type="button" onclick="addIngredient()">Add Ingredient</button><br><br>
+
+    <label for="instructions">Instructions:</label>
+    <textarea id="instructions" name="instructions" data-doc="<%= post.instructions %>" placeholder="<%=post.instructions %>" required></textarea><br><br>
+
+    <label for="prepTime">Preparation Time:</label>
+    <input type="text" id="prepTime" name="prepTime" data-doc="<%= post.preparationTime %>" required><br><br>
+
+    <label for="dishes">The number of dishes:</label>
+    <input type="text" id="dishes" name="dishes" data-doc="<%= post.dishes %>" required><br><br>
+
+    <!-- <label for="image">Image:</label>
+    <input type="file" id="image" name="image" accept="image/*" data-doc="<%= post.image %>"><br><br> -->
+
+
+    <button class="save" value="Save changes">Save changes</button>
+    <p id="error-msg"></p>
+  </form>
+  <script src="edit_recipe.js"></script>
+
+</body>
+
+</html>

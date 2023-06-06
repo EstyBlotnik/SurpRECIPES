@@ -159,6 +159,19 @@ document.addEventListener('DOMContentLoaded', function() {
         // Handle any errors that occur during the request
       });
     }
+    // const statisticallButton = document.querySelector('.btn btn-danger btn-lg');
+    // statisticallButton.addEventListener('click', function() {
+  
+    // const calculateAverageLikesPerRecipe = async (userId) => {
+    //   try {
+    //     const user = await User.findById(userId);
+    //     const recipeCount = user.uploadedRecipes.length;
+    //     let totalLikes = 0;
+    
+    //     for (const recipeId of user.uploadedRecipes) {
+    //       const recipe = await Recipe.findById(recipeId);
+    //       totalLikes += recipe.likes;
+    //     }
     
     const statisticalButton = document.querySelector('.statisticl-button');
     statisticalButton.addEventListener('click', function() {
