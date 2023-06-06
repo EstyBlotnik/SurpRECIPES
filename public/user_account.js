@@ -2,21 +2,25 @@
 
 
 document.addEventListener('DOMContentLoaded', function() {
-    const editButton = document.querySelector('.edit');
-    const fields = document.querySelectorAll('.form-control[readonly]');
-    editButton.addEventListener('click', function() {
+  const editButton = document.querySelector('.edit');
+  const fields = document.querySelectorAll('.form-control[readonly]');
+  editButton.addEventListener('click', function() {
     // Specify the IDs or classes of the fields you want to make editable
-    const editableFields = ['#user-name', '#firstname','#lastname', '#Status'];
-  
+    const editableFields = ['#user-name', '#firstname', '#lastname', '#Status'];
+
     fields.forEach(function(field) {
       const fieldId = '#' + field.getAttribute('id');
       if (editableFields.includes(fieldId)) {
-      field.removeAttribute('readonly');
+        field.removeAttribute('readonly');
+        field.classList.add('editable'); // Add the 'editable' class to change the color
       } else {
-      field.setAttribute('readonly', 'readonly');
+        field.setAttribute('readonly', 'readonly');
+        field.classList.remove('editable'); // Remove the 'editable' class to revert the color
       }
     });
-    });
+  });
+
+
     
     const deleteAccountBtn = document.querySelector('.delete');
     deleteAccountBtn.addEventListener('click', function(){
@@ -77,6 +81,19 @@ document.addEventListener('DOMContentLoaded', function() {
         .then(data => {
           // Handle the response from the server if needed
           console.log(data);
+
+           // Reset the background color of the fields to white
+          updatedFields.forEach(function(fieldId) {
+          const field = document.querySelector(fieldId);
+          field.classList.remove('editable');
+      
+          })
+
+          // Display success message
+          const contentDiv = document.getElementById("message");
+          contentDiv.style.color = "white";
+          const successMessage = "The details have been updated successfully!";
+          contentDiv.innerHTML = successMessage;
         })
         .catch(error => {
           // Handle any errors that occur during the request
