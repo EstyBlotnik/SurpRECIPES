@@ -2,11 +2,128 @@
 <html>
 <head>
    <title>Recipe Upload</title>
-   <link rel='stylesheet' href='https://fonts.googleapis.com/css?family=Open+Sans'>
-   <link rel="stylesheet" href="uploadRecipe.css">
+   
+   
+   
+   <!-- Google Fonts -->
+   <link rel="preconnect" href="https://fonts.googleapis.com">
+   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+   <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:wght@400;500&family=Inter:wght@400;500&family=Playfair+Display:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet">
+  
+   <!-- Vendor CSS Files -->
+   <link href="assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+   <link href="assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+   <link href="assets/vendor/swiper/swiper-bundle.min.css" rel="stylesheet">
+   <link href="assets/vendor/glightbox/css/glightbox.min.css" rel="stylesheet">
+   <link href="assets/vendor/aos/aos.css" rel="stylesheet">
+   
+   <!-- Template Main CSS Files -->
+   <link href="assets/css/variables.css" rel="stylesheet">
+   <link href="assets/css/main.css" rel="stylesheet">
+   <style>
+    *,
+*:before,
+*:after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: "Open Sans", Helvetica, Arial, sans-serif;
+  background: url("https://images.pexels.com/photos/1346345/pexels-photo-1346345.jpeg?auto=compress&cs=tinysrgb&w=1600") center center/cover;
+}
+
+input,
+button,
+select,
+textarea {
+  border: none;
+  outline: none;
+  background: none;
+  font-family: "Open Sans", Helvetica, Arial, sans-serif;
+}
+
+h2{
+  margin-top: 100px;
+  
+}
+  
+.title{
+  margin-top: 100px;
+  text-align: center;
+  margin-top: 50px;
+  font-size: 32px;
+  color: #fff; 
+}
+
+.cont {
+  overflow: hidden;
+  position: relative;
+  width: 600px;
+  height: auto;
+  margin: 50px auto 100px;
+  background: #fff;
+  padding: 50px 30px 0;
+  border-radius: 20px;
+}
+
+label {
+  display: block;
+  width: 260px;
+  margin: 25px auto 0;
+  text-align: center;
+}
+label span {
+  font-size: 12px;
+  color: #cfcfcf;
+  text-transform: uppercase;
+}
+
+select,
+input[type="text"],
+textarea {
+  display: block;
+  width: 100%;
+  margin-top: 5px;
+  padding-bottom: 5px;
+  font-size: 16px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.4);
+  text-align: center;
+}
+
+textarea {
+  height: 100px;
+}
+
+.submit {
+  margin-top: 40px;
+  margin-bottom: 40px;
+  background: #d4af7a;
+  text-transform: uppercase;
+  display: block;
+  margin: 0 auto;
+  width: 260px;
+  height: 36px;
+  border-radius: 30px;
+  color: #fff;
+  font-size: 15px;
+  cursor: pointer;
+}
+
+#error-msg {
+  color: red;
+  text-align: center;
+  margin-top: 20px;
+}
+
+   </style>
 </head>
 <body>
-   <h1>Upload a Recipe</h1>
+  <%- include('./partials/header.ejs') %>
+  <div class="title">
+   <h2 style="font-size: 40px;";>New Recipe</h2>
+  </div>
   
    <form id="recipeForm" class="cont" enctype="multipart/form-data">
   
@@ -24,25 +141,25 @@
        <option value="bread">Bread</option>
      </select><br><br>
     
-     <label for="recipeName">Recipe Name:</label>
-     <input type="text" id="recipeName" name="recipeName" required><br><br>
+     
+     <input type="text" id="recipeName" name="recipeName"  placeholder="Name recipe" required><br><br>
     
-     <label for="groceryList">Ingredients :</label>
+     
      <ul id="groceryList"></ul>
      <input type="text" id="ingredientInput" placeholder="Enter an ingredient">
      <button type="button" onclick="addIngredient()">Add Ingredient</button><br><br>
     
-     <label for="instructions">Instructions:</label>
-     <textarea id="instructions" name="instructions" required></textarea><br><br>
+     
+     <textarea id="instructions" name="instructions"  placeholder="Instructions:" required></textarea><br><br>
     
-     <label for="prepTime">Preparation Time:</label>
-     <input type="text" id="prepTime" name="prepTime" required><br><br>
+   
+     <input type="text" id="prepTime" name="prepTime" placeholder="Preparation Time:"  required><br><br>
 
-     <label for="dishes">The number of dishes:</label>
-     <input type="text" id="dishes" name="dishes" required><br><br>
-    
+     
+     <input type="text" id="dishes" name="dishes" placeholder="The number of dishes:"  required><br><br>
+     
      <label for="image">Image:</label>
-     <input type="file" id="image" name="image" accept="image/*"><br><br>
+     <input type="file" id="image" name="image" placeholder="Image:"  accept="image/*"><br><br>
     
 
      <input class="submit" type="submit" value="Upload Recipe">
