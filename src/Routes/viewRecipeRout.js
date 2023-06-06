@@ -159,9 +159,33 @@ router.post('/unsave', (req, res) => {
 
 
 
-router.delete('/:id', (req, res) => {
+router.delete('/:id', async (req, res) => {
     const id = req.params.id;
     const redirectUrl = req.headers.referer || '/';
+    try {
+        const recipeId = id;
+
+        const result = await User.updateMany(
+            { likedRecipes: recipeId },
+            { $pull: { likedRecipes: recipeId } }
+        );
+        const result2 = await User.updateMany(
+            { uploadedRecipes: recipeId },
+            { $pull: { uploadedRecipes: recipeId } }
+        )
+        const result3 = await User.updateMany(
+            { savedRecipes: recipeId },
+            { $pull: { savedRecipes: recipeId } }
+        )
+        const result4 = await User.updateMany(
+            { sharedRecipes: recipeId },
+            { $pull: { sharedRecipes: recipeId } }
+        )
+
+        console.log(`${result.nModified} users updated`);
+    } catch (error) {
+        console.error('Error deleting recipe from saved lists:', error);
+    }
     Recipe.findByIdAndDelete(id)
         .then(result => {
             res.json({ redirect: redirectUrl });
