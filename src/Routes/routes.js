@@ -76,7 +76,7 @@ router.post('/viewOtherProfile', async (req, res) => {
   const { email } = req.body;
   console.log(email);
   const user = await User.findOne({ email });
-  console.log(req.user.username)
+ 
   res.render('user_profile', { mongo_user: user, current_user: req.user});
 });
 
@@ -90,6 +90,42 @@ router.get('/uploadrecipe', (req, res) => {
     res.render('recipeUpload', { user: req.user });
   }
 });
+router.get('/recipeLiked', async (req, res) => {
+  if (req.user) {
+    try {
+      // Retrieve the liked recipe object IDs
+      const likedRecipeIds = req.user.likedRecipes;
+
+      // Fetch the liked recipes from the database
+      const likedRecipes = await Recipe.find({ _id: { $in: likedRecipeIds } });
+
+      res.render('home', { currentUser: req.user, posts: likedRecipes });
+    } catch (error) {
+      // Handle the error appropriately
+      console.error(error);
+      res.status(500).send('Internal Server Error');
+    }
+  }
+});
+
+router.get('/recipeSaved', async (req, res) => {
+  if (req.user) {
+    try {
+      // Retrieve the saved recipe object IDs
+      const savedRecipeIds = req.user.savedRecipes;
+
+      // Fetch the saved recipes from the database
+      const savedRecipes = await Recipe.find({ _id: { $in: savedRecipeIds } });
+
+      res.render('home', { currentUser: req.user, posts: savedRecipes });
+    } catch (error) {
+      // Handle the error appropriately
+      console.error(error);
+      res.status(500).send('Internal Server Error');
+    }
+  }
+});
+
 router.get('/register', (req, res) => {
   const message = req.flash('message')[0];
   res.render('register', { error: '' });
@@ -257,6 +293,54 @@ router.put('/updateFirstName', function(req, res) {
       res.status(500).json({ error: 'An error occurred' });
     });
 
+});
+router.post('/follow', (req, res) => {
+  const { uploader, current_user } = req.body;
+  const redirectUrl = req.headers.referer || '/';
+  User.findById(current_user)
+      .then(user => {
+          user.followedUsers.push(uploader);
+          return user.save();
+      })
+      .catch(err => {
+          console.log(err);
+      });
+  User.findById(uploader)
+      .then(user => {
+          user.followers.push(uploader);
+          // Retrieve the saved recipe object IDs
+          const followRecipeIds = req.user.followedUsers;
+
+          // Fetch the saved recipes from the database
+          const followRecipe =  Recipe.find({ _id: { $in: followRecipeIds } });
+          res.redirect('/home');
+          return user.save();
+      })
+      .catch(err => {
+          console.log(err);
+      });
+});
+
+router.post('/unfollow', (req, res) => {
+  const { uploader, current_user } = req.body;
+  const redirectUrl = req.headers.referer || '/';
+  User.findById(current_user)
+      .then(user => {
+          user.followedUsers.pop(uploader);
+          return user.save();
+      })
+      .catch(err => {
+          console.log(err);
+      });
+  User.findById(uploader)
+      .then(user => {
+          user.followers.pop(current_user);
+          res.redirect('/home');
+          return user.save();
+      })
+      .catch(err => {
+          console.log(err);
+      });
 });
 
 module.exports = router;

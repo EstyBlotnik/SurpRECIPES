@@ -40,10 +40,24 @@
 							<button onclick="redirectToUserAccount()" class="my-acount-btn" id="my-acount-btn" data-doc="<%= mongo_user._id %>"
 								data-user="<%= current_user._id %>"><i class="my-acount"></i> My
 							Acount</button>
-
 							<% }else {%>
-								<button class="follow-btn" id="follow-btn" data-uploader="<%= mongo_user._id %>"
-									data-user="<%= current_user._id %>"><i class="follow"></i>Follow</button>
+								<% if (current_user.followedUsers.includes(mongo_user._id)) { %>
+									<form action="/unfollow" method="POST">
+									<button class="unfollow-btn" id="unfollow-btn" data-uploader="<%= mongo_user._id %>" data-user="<%= current_user._id %>">
+									  <i class="unfollow"></i> UnFollow
+									</button>
+									<input type="hidden" name="uploader" value="<%= mongo_user._id  %>">
+                  					<input type="hidden" name="current_user" value="<%= current_user._id %>">
+									</form>
+								  <% } else { %>
+									<form action="/follow" method="POST">
+									<button class="follow-btn" id="follow-btn" data-uploader="<%= mongo_user._id %>" data-user="<%= current_user._id %>">
+									  <i class="follow"></i> Follow
+									</button>
+									<input type="hidden" name="uploader" value="<%= mongo_user._id %>">
+                  					<input type="hidden" name="current_user" value="<%= current_user._id  %>">
+									</form>
+								  <% } %>
 								<% } %>
 					</div>
 					<div class="follow-nav">
@@ -72,6 +86,8 @@
 
 						</li>
 						<li onclick="tabs(1)" class="Followers-num">
+							<span class="numof-followers"><br></br></span>
+							<span class="button"><%=mongo_user.followers.length%></span>
 							<span class="button"><%=mongo_user.followers.length%></span>
 							<span class="button-text">Followers</span>
 							<div class="scrolling-list">
@@ -87,7 +103,7 @@
 			</div>
 		</div>
 		</div>
-		<script src="user_profile.js"></script>
+		<script src="user_profile.js"></script> 
 </body>
 
 </html>
