@@ -13,10 +13,10 @@ body {
   }
   
   h3 {
-    font-size: 40px;
-    font-weight: bold;
     text-align: center;
     margin-bottom: 20px;
+    font-size: 2.8em;
+    font-weight: normal;
   }
   
   hr {
@@ -28,10 +28,15 @@ body {
   .form-control {
     width: 84%;
     padding: 16px;
-    border: 1px solid #f3bfbf;
+    background-color: hsla(324, 100%, 99%, 0.3);
+    border: 1px solid #eae3e3;
     transform: none;
     border-radius: 4px;
     transition: border-color 0.3s;
+    color:white;
+    font-family: "Open Sans", Helvetica, Arial, sans-serif;
+    font-weight:lighter;
+    font-size: 1.15em;
   }
   
   .form-control:focus {
@@ -58,7 +63,7 @@ body {
   }
    
   .bg-secondary-soft {
-  background-color: rgba(139, 118, 118, 0.4); /* Set the background color with transparency */
+  background-color: rgba(70, 57, 57, 0.4); /* Set the background color with transparency */
   border: 1px solid #ddd;
   border-radius: 4px;
   padding: 20px;
@@ -90,8 +95,8 @@ body {
   .btn {
     display: inline-block;
     padding: 10px 20px;
-    font-size: 16px;
-    font-weight: bold;
+    font-size: 1em;
+    font-weight:lighter;
     text-align: center;
     text-decoration: none;
     border-radius: 4px;
@@ -100,17 +105,7 @@ body {
     margin-bottom: 10px;
   }
   
-  .btn-primary {
-    background-color: #007bff;
-    color: #fff;
-    border: none;
-  }
-  
-  .btn-primary:hover {
-    background-color: #0069d9;
-  }
-  
-  .btn-danger {
+  .statisticl-button {
     background-color: #d4af7a;
     color: #fff;
     border: none;
@@ -120,7 +115,7 @@ body {
     font-family: "Open Sans", Helvetica, Arial, sans-serif;
   }
   
-  .btn-danger:hover {
+  .statisticl-button:hover {
     background-color: #d4af7a;
    
   }
@@ -150,11 +145,6 @@ body {
   
   .mb-0 {
     margin-bottom: 0;
-  }
-  
-  .my-4 {
-    margin-top: 20px;
-    margin-bottom: 20px;
   }
   
   .my-5 {
@@ -223,9 +213,19 @@ body {
     color: #ffff;
   }
   
-  .form-label {
-    font-weight: bold;
-    color: #000000;
+  .form-label  {
+    font-weight:normal;
+    font-size: 1.3em;
+    margin-bottom: 7px;
+    color: #ffffff;
+  }
+
+  .mb-4.mt-0, .my-4 {
+    font-weight:bolder;
+    font-size: 1.5em;
+    margin-bottom: 7px;
+    margin: revert;
+    color: #ffffff;
   }
   
   .btn-success-soft {
@@ -235,15 +235,15 @@ body {
     font-family: "Open Sans", Helvetica, Arial, sans-serif;
   }
 
-  .edit, .editsubmit, .submit, .delete{
+  .edit, .editsubmit, .submit, .delete, .statisticl-button{
 
     background-color: #d4af7a;
     color: #fff;
     border: none;
     display: inline-block;
     padding: 10px 20px;
-    font-size: 16px;
-    font-weight: bold;
+    font-size: 1em;
+    font-weight:lighter;
     text-align: center;
     text-decoration: none;
     border-radius: 4px;
@@ -264,12 +264,21 @@ body {
   }
   
   .btn-danger-soft:hover ,
-  .edit:hover,.editsubmit:hover, .submit:hover , .delete:hover {
+  .edit:hover,.editsubmit:hover, .submit:hover , .delete:hover, .statisticl-button:hover {
     background-color: #eccc9f;
   }
 
-  
   .editable {
-    background-color: #fff5f5; /* Set the desired background color for editable fields */
+    background-color: hsla(325, 65%, 92%, 0.427);
+    border: 3px solid #eae3e3; /* Set the desired background color for editable fields */
   }
+
+  #statistical-data-box {
+    background-color: #ffffff;
+    border: 1px solid #dddddd;
+    padding: 20px;
+    margin-top: 20px;
+  }
+
+  
   
