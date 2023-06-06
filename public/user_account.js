@@ -158,41 +158,41 @@ document.addEventListener('DOMContentLoaded', function() {
         // Handle any errors that occur during the request
       });
     }
-    const statisticallButton = document.querySelector('.btn btn-danger btn-lg');
-    statisticallButton.addEventListener('click', function() {
+    // const statisticallButton = document.querySelector('.btn btn-danger btn-lg');
+    // statisticallButton.addEventListener('click', function() {
   
-    const calculateAverageLikesPerRecipe = async (userId) => {
-      try {
-        const user = await User.findById(userId);
-        const recipeCount = user.uploadedRecipes.length;
-        let totalLikes = 0;
+    // const calculateAverageLikesPerRecipe = async (userId) => {
+    //   try {
+    //     const user = await User.findById(userId);
+    //     const recipeCount = user.uploadedRecipes.length;
+    //     let totalLikes = 0;
     
-        for (const recipeId of user.uploadedRecipes) {
-          const recipe = await Recipe.findById(recipeId);
-          totalLikes += recipe.likes;
-        }
+    //     for (const recipeId of user.uploadedRecipes) {
+    //       const recipe = await Recipe.findById(recipeId);
+    //       totalLikes += recipe.likes;
+    //     }
     
-        const averageLikesPerRecipe = totalLikes / recipeCount;
-        return averageLikesPerRecipe;
-      } catch (error) {
-        throw new Error('Failed to calculate average likes per recipe.');
-      }
-    };
+    //     const averageLikesPerRecipe = totalLikes / recipeCount;
+    //     return averageLikesPerRecipe;
+    //   } catch (error) {
+    //     throw new Error('Failed to calculate average likes per recipe.');
+    //   }
+    // };
     
-    // Usage:
-    const userId = 'yourUserId'; // Replace with the ID of the user you want to calculate the average for
-    calculateAverageLikesPerRecipe(userId)
-      .then((averageLikesPerRecipe) => {
-        console.log('Average likes per recipe:', averageLikesPerRecipe);
-      })
-      .catch((error) => {
-        console.error(error);
-      });
+    // // Usage:
+    // const userId = 'yourUserId'; // Replace with the ID of the user you want to calculate the average for
+    // calculateAverageLikesPerRecipe(userId)
+    //   .then((averageLikesPerRecipe) => {
+    //     console.log('Average likes per recipe:', averageLikesPerRecipe);
+    //   })
+    //   .catch((error) => {
+    //     console.error(error);
+    //   });
     
 
 
 
-    });
+ //   });
 
 
   
