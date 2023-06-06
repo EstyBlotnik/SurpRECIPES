@@ -341,6 +341,20 @@ router.post('/unfollow', (req, res) => {
       .catch(err => {
           console.log(err);
       });
+
+      // Assuming you have a route set up for getting user data
+app.get('/userrecipes', async (req, res) => {
+  try {
+    const userId = req.user.id; // Assuming you have authenticated the user and have access to their ID
+    const user = await User.findById(userId).populate('uploadedRecipes');
+    res.json(user.uploadedRecipes);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Server Error' });
+  }
+});
+
+
 });
 
 module.exports = router;

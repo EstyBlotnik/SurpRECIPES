@@ -80,6 +80,7 @@ document.addEventListener('DOMContentLoaded', function() {
         .then(response => response.json())
         .then(data => {
           // Handle the response from the server if needed
+          
           console.log(data);
 
            // Reset the background color of the fields to white
@@ -159,14 +160,35 @@ document.addEventListener('DOMContentLoaded', function() {
       });
     }
     
-
- 
-
-
-
+    const statisticalButton = document.querySelector('.statisticl-button');
+    statisticalButton.addEventListener('click', function() {
+      fetch('/userrecipes')
+        .then(response => response.json())
+        .then(uploadedRecipes => {
+          // Calculate the sum of likes from uploaded recipes
+          let totalLikes = 0;
+          uploadedRecipes.forEach(recipe => {
+            totalLikes += recipe.likes;
+          });
+    
+          // Calculate the average likes per uploaded recipe
+          const averageLikesPerRecipe = totalLikes / uploadedRecipes.length;
+    
+          // Display the statistical data
+          const contentDiv = document.getElementById('statistical-message');
+          contentDiv.style.color = 'white';
+          const successMessage = `Average likes per uploaded recipe: ${averageLikesPerRecipe.toFixed(2)}`;
+          contentDiv.innerHTML = successMessage;
+        })
+        .catch(error => {
+          console.error(error);
+        });
     });
+    
+
+    
 
 
   
 
-    
+  });
