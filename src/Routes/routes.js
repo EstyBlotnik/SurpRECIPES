@@ -35,18 +35,19 @@ router.post('/register', async (req, res) => {
   console.log(username);
   console.log(password);
   console.log(confirmpassword);
+  console.log(username.length);
   try {
     const existingUser = await User.findOne({ email });
     if (existingUser) {
       return res.render('register', { error: 'The email provided is already registered. Please try with a different email.' });
     }
-    if (username.length < 4 && username.length > 20) {
+    if (username.length < 4 || username.length > 20) {
       return res.render('register', { error: 'Username must have at least 4 characters' });
     }
     if (!validateEmail(email)) {
       return res.render('register', { error: 'Invalid email format' });
     }
-    if (password.length < 6 && password.length > 20) {
+    if (password.length < 6 || password.length > 20) {
       return res.render('register', { error: 'Password must be between 6 and 20 characters long' });
     }
     if (password !== confirmpassword) {
