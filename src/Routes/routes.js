@@ -25,26 +25,8 @@ router.post('/login', passport.authenticate('local', {
   failureFlash: true // Enable flash messages for failure cases
 }));
 
-router.post('/editRecipe', async (req, res) => {
-  const { postId } = req.body;
-  console.log(postId);
-  const post=await Recipe.findById(postId);
-  res.render('edit_recipe',{post});
-});
 
-router.put('/edit_recipe', (req, res) => {
-  console.log("name");
-  const{category, name, instructions, preparationTime, dishes}=req.body;
-  console.log("name");
-  console.log("category");
-  return res.status(200).json({ message: 'Password updated successfully' });
-});
 
-router.get('/editRecipe', (req, res) => {
-  if (req.user) {
-    res.render('user_profile', { mongo_user: req.user, current_user: req.user});
-  }
-});
 
 router.post('/register', async (req, res) => {
   const { email, username, password, confirmpassword } = req.body;
@@ -325,7 +307,7 @@ router.post('/follow', (req, res) => {
       });
   User.findById(uploader)
       .then(user => {
-          user.followers.push(uploader);
+          user.followers.push(current_user);
           // Retrieve the saved recipe object IDs
           const followRecipeIds = req.user.followedUsers;
 
@@ -359,20 +341,6 @@ router.post('/unfollow', (req, res) => {
       .catch(err => {
           console.log(err);
       });
-
-      // Assuming you have a route set up for getting user data
-app.get('/userrecipes', async (req, res) => {
-  try {
-    const userId = req.user.id; // Assuming you have authenticated the user and have access to their ID
-    const user = await User.findById(userId).populate('uploadedRecipes');
-    res.json(user.uploadedRecipes);
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ message: 'Server Error' });
-  }
-});
-
-
 });
 
 module.exports = router;
