@@ -77,13 +77,13 @@ router.post('/viewOtherProfile', async (req, res) => {
   const { email } = req.body;
   console.log(email);
   const user = await User.findOne({ email });
- 
-  res.render('user_profile', { mongo_user: user, current_user: req.user});
+
+  res.render('user_profile', { mongo_user: user, current_user: req.user });
 });
 
 router.get('/user_profile', (req, res) => {
   if (req.user) {
-    res.render('user_profile', { mongo_user: req.user, current_user: req.user});
+    res.render('user_profile', { mongo_user: req.user, current_user: req.user });
   }
 });
 router.get('/uploadrecipe', (req, res) => {
@@ -131,12 +131,30 @@ router.get('/register', (req, res) => {
   const message = req.flash('message')[0];
   res.render('register', { error: '' });
 });
-router.get('/home', (req, res) => {
+router.get('/home', async (req, res) => {
   if (req.user) {
-    Recipe.find()
-      .then(result => {
-        res.render('home', { currentUser: req.user, posts: result });
+    try {
+      const user = await User.findById(req.user._id);
+      const followedUsersId = user.followedUsers;
+      const followedUsers = await User.find({ _id: { $in: followedUsersId } });
+      let recipesId = [];
+
+      followedUsers.forEach(followedUser => {
+        recipesId = recipesId.concat(followedUser.uploadedRecipes, followedUser.sharedRecipes);
       });
+      const recipes = await Recipe.find({
+        _id: { $in: recipesId }
+      });
+      console.log(recipesId);
+      res.render('home', { currentUser: req.user, posts: recipes });
+      // console.log('Recipes:', recipes);
+    } catch (error) {
+      console.error('Error fetching recipes:', error);
+    }
+    // Recipe.find()
+    //   .then(result => {
+    // res.render('home', { currentUser: req.user, posts: result });
+    // });
   } else {
     res.redirect('/login');
   }
@@ -145,6 +163,7 @@ router.get('/explore', (req, res) => {
   if (req.user) {
     Recipe.find()
       .then(result => {
+        
         res.render('explore', { currentUser: req.user, posts: result });
       });
   } else {
@@ -179,13 +198,13 @@ router.get('/category', (req, res) => {
   }
 });
 
-router.get('/contact',userController.renderContact);
-router.get('/user_profile',userController.renderUserProfile);
-router.get('/user_account',userController.renderUserAccount);
+router.get('/contact', userController.renderContact);
+router.get('/user_profile', userController.renderUserProfile);
+router.get('/user_account', userController.renderUserAccount);
 //Define the route to handle the delete request
-router.delete('/deleteAccount', function(req, res) {
+router.delete('/deleteAccount', function (req, res) {
   const userId = req.user._id;
-console.log(userId);
+  console.log(userId);
   User.findByIdAndRemove(userId)
     .then(() => {
       // Deletion successful
@@ -200,13 +219,14 @@ console.log(userId);
 
 
 router.post('/checkOldPassword', async (req, res) => {
-  const {oldPassword } = req.body;
+  const { oldPassword } = req.body;
 
   try {
     // Retrieve the current user's password from the database
     const user = await User.findById(req.user._id); // Assuming you have the authenticated user's ID available in req.user.id
 
-    if (!user) {console.log("errorrr!!!!");
+    if (!user) {
+      console.log("errorrr!!!!");
 
       return res.status(404).json({ message: 'User not found' });
     }
@@ -254,17 +274,17 @@ router.put('/updatePassword', async (req, res) => {
 
 
 
-router.put('/updateFirstName', function(req, res) {
-    // Get the updated first name from the request body
-    const updatedFirstName = req.body.firstName;
-    const updatedLastName = req.body.lastName;
-    const updatedStatus = req.body.status;
-    const updatedUserName = req.body.username;
-    const userId = req.user._id;
-    if(updatedFirstName==null){
-      console.log("undefind!");
-    }
-    else{
+router.put('/updateFirstName', function (req, res) {
+  // Get the updated first name from the request body
+  const updatedFirstName = req.body.firstName;
+  const updatedLastName = req.body.lastName;
+  const updatedStatus = req.body.status;
+  const updatedUserName = req.body.username;
+  const userId = req.user._id;
+  if (updatedFirstName == null) {
+    console.log("undefind!");
+  }
+  else {
     console.log(updatedFirstName);
     console.log(userId);
   }
@@ -299,49 +319,49 @@ router.post('/follow', (req, res) => {
   const { uploader, current_user } = req.body;
   const redirectUrl = req.headers.referer || '/';
   User.findById(current_user)
-      .then(user => {
-          user.followedUsers.push(uploader);
-          return user.save();
-      })
-      .catch(err => {
-          console.log(err);
-      });
+    .then(user => {
+      user.followedUsers.push(uploader);
+      return user.save();
+    })
+    .catch(err => {
+      console.log(err);
+    });
   User.findById(uploader)
-      .then(user => {
-          user.followers.push(current_user);
-          // Retrieve the saved recipe object IDs
-          const followRecipeIds = req.user.followedUsers;
+    .then(user => {
+      user.followers.push(current_user);
+      // Retrieve the saved recipe object IDs
+      const followRecipeIds = req.user.followedUsers;
 
-          // Fetch the saved recipes from the database
-          const followRecipe =  Recipe.find({ _id: { $in: followRecipeIds } });
-          res.redirect('/home');
-          return user.save();
-      })
-      .catch(err => {
-          console.log(err);
-      });
+      // Fetch the saved recipes from the database
+      const followRecipe = Recipe.find({ _id: { $in: followRecipeIds } });
+      res.redirect('/home');
+      return user.save();
+    })
+    .catch(err => {
+      console.log(err);
+    });
 });
 
 router.post('/unfollow', (req, res) => {
   const { uploader, current_user } = req.body;
   const redirectUrl = req.headers.referer || '/';
   User.findById(current_user)
-      .then(user => {
-          user.followedUsers.pop(uploader);
-          return user.save();
-      })
-      .catch(err => {
-          console.log(err);
-      });
+    .then(user => {
+      user.followedUsers.pop(uploader);
+      return user.save();
+    })
+    .catch(err => {
+      console.log(err);
+    });
   User.findById(uploader)
-      .then(user => {
-          user.followers.pop(current_user);
-          res.redirect('/home');
-          return user.save();
-      })
-      .catch(err => {
-          console.log(err);
-      });
+    .then(user => {
+      user.followers.pop(current_user);
+      res.redirect('/home');
+      return user.save();
+    })
+    .catch(err => {
+      console.log(err);
+    });
 });
 
 module.exports = router;
