@@ -159,17 +159,55 @@ router.get('/home', async (req, res) => {
     res.redirect('/login');
   }
 });
-router.get('/explore', (req, res) => {
+router.get('/exploreByDate', (req, res) => {
   if (req.user) {
+
     Recipe.find()
+      .sort({ createdAt: -1 }) // Sort in descending order based on the `updatedAt` field
       .then(result => {
-        
         res.render('explore', { currentUser: req.user, posts: result });
       });
   } else {
     res.redirect('/login');
   }
 });
+router.get('/explore', (req, res) => {
+  if (req.user) {
+
+    Recipe.find()
+      .sort({ likes: -1 }) // Sort in descending order based on the `updatedAt` field
+      .then(result => {
+        res.render('explore', { currentUser: req.user, posts: result });
+      });
+  } else {
+    res.redirect('/login');
+  }
+});
+router.get('/exploreByA-Bdoun', (req, res) => {
+  if (req.user) {
+
+    Recipe.find()
+      .sort({ name: -1 }) // Sort in descending order based on the `updatedAt` field
+      .then(result => {
+        res.render('explore', { currentUser: req.user, posts: result });
+      });
+  } else {
+    res.redirect('/login');
+  }
+});
+router.get('/exploreByA-Bup', (req, res) => {
+  if (req.user) {
+
+    Recipe.find()
+      .sort({ name: 1 }) // Sort in descending order based on the `updatedAt` field
+      .then(result => {
+        res.render('explore', { currentUser: req.user, posts: result });
+      });
+  } else {
+    res.redirect('/login');
+  }
+});
+
 router.get('/search_recipe', (req, res) => {
   if (req.user) {
     Recipe.find()
