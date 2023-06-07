@@ -159,7 +159,7 @@ router.get('/home', async (req, res) => {
     res.redirect('/login');
   }
 });
-router.get('/exploreByDate', (req, res) => {
+router.get('/exploreByupload_date', (req, res) => {
   if (req.user) {
 
     Recipe.find()
@@ -183,7 +183,19 @@ router.get('/explore', (req, res) => {
     res.redirect('/login');
   }
 });
-router.get('/exploreByA-Bdoun', (req, res) => {
+router.get('/exploreBylikes', (req, res) => {
+  if (req.user) {
+
+    Recipe.find()
+      .sort({ likes: -1 }) // Sort in descending order based on the `updatedAt` field
+      .then(result => {
+        res.render('explore', { currentUser: req.user, posts: result });
+      });
+  } else {
+    res.redirect('/login');
+  }
+});
+router.get('/exploreByab_desc', (req, res) => {
   if (req.user) {
 
     Recipe.find()
@@ -196,7 +208,7 @@ router.get('/exploreByA-Bdoun', (req, res) => {
     res.redirect('/login');
   }
 });
-router.get('/exploreByA-Bup', (req, res) => {
+router.get('/exploreByab_asc', (req, res) => {
   if (req.user) {
 
     Recipe.find()
