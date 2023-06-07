@@ -93,7 +93,7 @@
   <div class="w-full min-h-screen bg-gray-200 p-3 sm:p-6 md:p-12 casing">
     <div class="sort-container">
       <label for="sortType">Sort by:</label>
-      <select id="sortType" onchange="sendServerRequest(this.value)">
+      <select id="sortType" onchange="window.location.href = 'exploreBy' + this.value;">
         <option value="likes">Please select a sort</option>
         <option value="likes">Likes</option>
         <option value="ab_asc">AB (Ascending)</option>
@@ -427,26 +427,6 @@
         // element.style.display = 'none';
       }
       // Perform further actions with the doc value
-    }
-
-    function sendServerRequest(sortType) {
-      fetch('/exploreBy' + sortType)
-        .then(function(response) {
-          return response.text(); // Extract the response HTML content
-        })
-        .then(function(html) {
-          // Create a new DOM parser to parse the received HTML
-          var parser = new DOMParser();
-          var newDocument = parser.parseFromString(html, 'text/html');
-
-          // Replace the current document with the new one
-          document.open();
-          document.write(newDocument.documentElement.innerHTML);
-          document.close();
-        })
-        .catch(function(error) {
-          // Handle any errors that occurred during the request
-        });
     }
   </script>
 
