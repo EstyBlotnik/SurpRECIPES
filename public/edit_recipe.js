@@ -183,6 +183,6 @@ function showError(message) {
     errorMessage.textContent = message;
 }
 function showMessage() {
-    alert("Your recipe is changed.");
+    alert("The changes were successfully saved!\nYou can exit this page safely.");
   }
 // Add event listener to the form save event
