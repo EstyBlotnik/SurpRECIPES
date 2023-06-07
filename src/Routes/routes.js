@@ -187,6 +187,7 @@ router.get('/exploreByA-Bdoun', (req, res) => {
   if (req.user) {
 
     Recipe.find()
+      .collation({ locale: "en" })
       .sort({ name: -1 }) // Sort in descending order based on the `updatedAt` field
       .then(result => {
         res.render('explore', { currentUser: req.user, posts: result });
@@ -199,6 +200,7 @@ router.get('/exploreByA-Bup', (req, res) => {
   if (req.user) {
 
     Recipe.find()
+      .collation({ locale: "en" })
       .sort({ name: 1 }) // Sort in descending order based on the `updatedAt` field
       .then(result => {
         res.render('explore', { currentUser: req.user, posts: result });
