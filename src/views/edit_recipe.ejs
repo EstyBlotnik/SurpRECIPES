@@ -74,7 +74,7 @@
     <input type="file" id="image" name="image" accept="image/*" data-doc="<%= post.image %>"><br><br> -->
 
 
-    <button class="save" value="Save changes">Save changes</button>
+    <button class="save" data-doc="<%= post._id %>" value="Save changes">Save changes</button>
     <p id="error-msg"></p>
   </div>
   <script src="edit_recipe.js"></script>

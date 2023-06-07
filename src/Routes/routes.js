@@ -421,5 +421,43 @@ router.post('/unfollow', (req, res) => {
       console.log(err);
     });
 });
+router.put('/editRecipe', async (req, res) => {
+  const { category, name, ingridients, instructions, preparationTime, dishes, postId } = req.body;
+  const post = await Recipe.findById(postId);
+
+  console.log(category);
+  console.log(name);
+  console.log(ingridients);
+  console.log(instructions);
+  console.log(preparationTime);
+  console.log(dishes);
+  console.log(postId);
+  Recipe.findOneAndUpdate(
+    { _id: postId }, // Filter to find the recipe by its ID
+    {
+      $set: {
+        category: category,
+        preparationTime: preparationTime,
+        name: name,
+        dishes: dishes,
+        ingredients: ingridients,
+        instructions: instructions
+      }
+    },
+    { new: true } // Return the updated recipe
+  )
+  .then(updatedRecipe => {
+    console.log(updatedRecipe);
+    res.status(200).json(updatedRecipe);
+  })
+  .catch(error => {
+    console.error(error);
+    res.status(500).json({ error: 'Failed to update recipe' });
+  });
+  // const post = await Recipe.findById(postId);
+  // return res.render('edit_recipe', { post: post });
+  
+});
+
 
 module.exports = router;
