@@ -10,10 +10,10 @@
 </head>
 
 <body>
-  <h1>Edit your recipe</h1>
-
-  <form id="recipeForm" class="cont" enctype="multipart/form-data">
-
+  <div class="title">
+    <h2 style="font-size: 40px;" ;>Edit your recipe</h2>
+  </div>
+  <div id="recipeForm" class="cont" enctype="multipart/form-data">
     <select id="category" name="category" placeholder="<%=post.name  %>" required>
       <option value="<%= post.category  %>"><%= post.category %></option>
       <% if (post.category!=='soups'){ %>
@@ -76,7 +76,7 @@
 
     <button class="save" value="Save changes">Save changes</button>
     <p id="error-msg"></p>
-  </form>
+  </div>
   <script src="edit_recipe.js"></script>
 
 </body>

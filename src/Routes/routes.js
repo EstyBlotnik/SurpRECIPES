@@ -27,6 +27,12 @@ router.post('/login', passport.authenticate('local', {
 
 
 
+router.post('/editRecipe', async (req, res) => {
+  const { postId } = req.body;
+  const post = await Recipe.findById(postId);
+  return res.render('edit_recipe', { post: post });
+
+});
 
 router.post('/register', async (req, res) => {
   const { email, username, password, confirmpassword } = req.body;
