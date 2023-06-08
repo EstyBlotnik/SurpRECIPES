@@ -29,3 +29,15 @@ body {
     font-size: 15px;
     cursor: pointer;
 }
+
+h2 {
+    margin-top: 100px;
+}
+
+/* .title {
+    margin-top: 100px;
+    text-align: center;
+    margin-top: 50px;
+    font-size: 32px;
+    color: #fff;
+} */
