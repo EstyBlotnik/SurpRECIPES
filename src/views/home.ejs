@@ -87,7 +87,13 @@
       <!-- <main class="w-full lg:w-3/4 mx-auto flex flex-wrap content-start"> -->
       <main class="w-full lg:w-3/4 mx-auto flex flex-wrap content-start" style="margin-right: 0;">
         <!-- Inner grid -->
-
+        <% if (posts.length === 0) { %>
+          <div class="text-center py-8">
+            <p class="text-gray-800 text-3xl font-bold">There are no recipes on the site that belong to the users you follow.</p>
+            <img src="assets/img/no-posts-image.jpg" alt="No posts" class="mt-4 mx-auto" style="max-width: 200px;">
+            <p class="text-gray-800 mt-4 text-xl">But hey! We have a lot of other great<a href="/explore" class="text-blue-500"> recipes !</a></p>
+          </div>
+        <% }else{ %>
         <% posts.forEach(function(post) { %>
 
           <div class="w-full p-1">
@@ -247,6 +253,7 @@
             </div>
           </div>
           <% }) %>
+          <% } %>
       </main>
     </div>
     <script>
