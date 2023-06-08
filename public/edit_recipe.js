@@ -135,6 +135,7 @@ saveButton.addEventListener('click', (e) => {
             // Handle the response from the server if needed
             console.log(data);
             showMessage();
+            location.reload();
         })
         // .then(function (response) {
         //     if (response.ok) {
