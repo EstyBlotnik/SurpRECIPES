@@ -67,36 +67,34 @@
 			<div class="right-side">
 				<div class="nav">
 					<ul>
-						<li onclick="tabs(0)" class="Followings-num">
-							<span class="button"><%=mongo_user.followedUsers.length%></span>
-							<span class="button-text">Followings</span>
-							<div class="scrolling-list" id="dynamic-list">
-								<% if (mongo_user.followedUserss && mongo_user.followedUsers.length> 0) { %>
-									<% mongo_user.followedUsers.forEach(function(item) { %>
-										<p>
-											<%= item %>
-										</p>
-										<% }) %>
-											<% } else { %>
-												<p>No followers found.</p>
-												<% } %>
-							</div>
-
-
-
+						<li onclick class="Followings-num">
+						<span class="button"><%= followings.length %></span>
+						<span class="button-text">Followings</span>
+						<div id="followings-list" class="followings-list" >
+							<% if (followings && followings.length > 0) { %>
+							<% followings.forEach(function(item) { %>
+								<p><%= item.email %></p>
+							<% }) %>
+							<% } else { %>
+							<p>No followings found.</p>
+							<% } %>
+						</div>
 						</li>
-						<li onclick="tabs(1)" class="Followers-num">
-							<span class="numof-followers"><br></br></span>
-							<span class="button"><%=mongo_user.followers.length%></span>
+
+						<li class="Followers-num">
+							<span class="button"><%= followers.length %></span>
 							<span class="button-text">Followers</span>
-							<div class="scrolling-list">
-								<!-- Add your scrolling list items here -->
-								<p>Item A</p>
-								<p>Item B</p>
-								<p>Item C</p>
-								<!-- Add more items as needed -->
+							<div id="followers-list" class="followers-list">
+							  <% if (followers && followers.length > 0) { %>
+								<% followers.forEach(function(item) { %>
+								  <p><%= item.email %></p>
+								<% }) %>
+							  <% } else { %>
+								<p>No followers found.</p>
+							  <% } %>
 							</div>
-						</li>
+						  </li>
+						  
 					</ul>
 				</div>
 			</div>

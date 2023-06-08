@@ -55,31 +55,3 @@ unfollowboxes.forEach(unfollowbox => {
 			.catch(err => console.log(err));
 	});
 });
-
-// function tabs(index) {
-// 	var li = document.querySelectorAll('.nav ul li');
-// 	var scrollingLists = document.querySelectorAll('.scrolling-list');
-
-// 	// Toggle the display of the scrolling list for the clicked button
-// 	var list = scrollingLists[index];
-// 	list.style.display = list.style.display === 'block' ? 'none' : 'block';
-
-// 	// Update the active state of the buttons
-// 	li.forEach(function (item, i) {
-// 		if (i === index) {
-// 			item.classList.toggle('active');
-// 		} else {
-// 			item.classList.remove('active');
-// 		}
-// 	});
-// }
-
-function toggleFollowingsList() {
-	const followingsList = document.getElementById('followings-list');
-	if (followingsList.style.display === 'none') {
-	  followingsList.style.display = 'block';
-	} else {
-	  followingsList.style.display = 'none';
-	}
-  }
-  
