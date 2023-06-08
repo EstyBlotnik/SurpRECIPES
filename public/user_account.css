@@ -273,12 +273,15 @@ body {
     border: 3px solid #eae3e3; /* Set the desired background color for editable fields */
   }
 
-  #statistical-data-box {
-    background-color: #ffffff;
-    border: 1px solid #dddddd;
-    padding: 20px;
-    margin-top: 20px;
+  .resultContainer{
+    font-family: "Open Sans", Helvetica, Arial, sans-serif;
+    color:#fff;
+    margin-top: 10px;
+    font-size: 1.2em;
+    font-weight:lighter;
   }
+
+  
 
   
   

@@ -117,12 +117,24 @@
 							<label for="confirmPassword" class="form-label">Confirm Password *</label>
 							<input type="password" class="form-control" id="confirmPassword">
 							<div><button type="button" class="submit">Submit</button></div>
-							<div><button type="button" class="delete" id="'delete">Delete profile</button></div>
-							<div><button type="button" class="statisticl-button">Statistical data</button></div>
-							<div class="userRecipe" id="userRecipe"><%= JSON.stringify(mongo_user.uploadedRecipes) %></div>
-							<div id="statistical-message"></div>
-
-
+							<div><button type="button" class="delete" id="'delete">Delete profile</button></div> 
+							<div><button type="button" class="statisticl-button" id="myButton">Statistical data</button></div>
+							<br><br><br>
+							<div class="resultContainer" id="resultContainer"></div>
+							  
+							  <script>
+								var button = document.getElementById("myButton");
+								var resultContainer = document.getElementById("resultContainer");
+							  
+								button.addEventListener("click", function() {
+								  var numberOfLikes = <%= mongo_user.numberOfLikes %>;
+								  var numUploadedRecipes = <%= mongo_user.uploadedRecipes.length %>;
+								  var result = numberOfLikes / numUploadedRecipes;
+							  
+								  resultContainer.innerHTML = "<p>Average likes per uploaded recipe : " + result + "</p>";
+								});
+							  </script>
+							  
 							</div>
 
 						</div>
