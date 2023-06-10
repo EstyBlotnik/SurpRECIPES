@@ -106,7 +106,7 @@ router.get('/recipeLiked', async (req, res) => {
       // Fetch the liked recipes from the database
       const likedRecipes = await Recipe.find({ _id: { $in: likedRecipeIds } });
 
-      res.render('home', { currentUser: req.user, posts: likedRecipes });
+      res.render('likedRecipe', { currentUser: req.user, posts: likedRecipes });
     } catch (error) {
       // Handle the error appropriately
       console.error(error);
@@ -124,7 +124,7 @@ router.get('/recipeSaved', async (req, res) => {
       // Fetch the saved recipes from the database
       const savedRecipes = await Recipe.find({ _id: { $in: savedRecipeIds } });
 
-      res.render('home', { currentUser: req.user, posts: savedRecipes });
+      res.render('savedRecipe', { currentUser: req.user, posts: savedRecipes });
     } catch (error) {
       // Handle the error appropriately
       console.error(error);
