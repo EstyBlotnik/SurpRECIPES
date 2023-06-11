@@ -35,6 +35,15 @@ router.post('/like', (req, res) => {
                 .then(user => {
                     console.log(user.numberOfLikes);
                     user.numberOfLikes += 1;
+                    if(user.numberOfLikes<=4){
+                        user.level = "beginner"
+                    }
+                    else if(user.numberOfLikes<=9){
+                        user.level = "professional"
+                    }
+                    else{
+                        user.level = "chef"
+                    }
                     return user.save(); // Save the updated user document
                 })
                 .then(updatedUser => {
@@ -82,6 +91,16 @@ router.post('/unlike', (req, res) => {
                 .then(user => {
                     console.log(user.numberOfLikes);
                     user.numberOfLikes-= 1;
+                    if(user.numberOfLikes<=4){
+                        user.level = "beginner"
+                    }
+                    else if(user.numberOfLikes<=9){
+                        user.level = "professional"
+                    }
+                    else{
+                        user.level = "chef"
+                    }
+
                     return user.save(); // Save the updated user document
                 })
                 .then(updatedUser => {
