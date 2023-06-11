@@ -36,7 +36,7 @@ router.post('/editRecipe', async (req, res) => {
 
 router.post('/register', async (req, res) => {
   const { email, username, password, confirmpassword } = req.body;
-  const level = 'starter';
+  const level = 'beginner';
   console.log(email);
   console.log(username);
   console.log(password);
