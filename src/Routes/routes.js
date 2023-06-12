@@ -25,46 +25,35 @@ router.post('/login', passport.authenticate('local', {
   failureFlash: true // Enable flash messages for failure cases
 }));
 
+
+
 router.post('/editRecipe', async (req, res) => {
   const { postId } = req.body;
-  console.log(postId);
-  const post=await Recipe.findById(postId);
-  res.render('edit_recipe',{post});
-});
+  const post = await Recipe.findById(postId);
+  return res.render('edit_recipe', { post: post });
 
-router.put('/edit_recipe', (req, res) => {
-  console.log("name");
-  const{category, name, instructions, preparationTime, dishes}=req.body;
-  console.log("name");
-  console.log("category");
-  return res.status(200).json({ message: 'Password updated successfully' });
-});
-
-router.get('/editRecipe', (req, res) => {
-  if (req.user) {
-    res.render('user_profile', { mongo_user: req.user, current_user: req.user});
-  }
 });
 
 router.post('/register', async (req, res) => {
   const { email, username, password, confirmpassword } = req.body;
-  const level = 'starter';
+  const level = 'beginner';
   console.log(email);
   console.log(username);
   console.log(password);
   console.log(confirmpassword);
+  console.log(username.length);
   try {
     const existingUser = await User.findOne({ email });
     if (existingUser) {
       return res.render('register', { error: 'The email provided is already registered. Please try with a different email.' });
     }
-    if (username.length < 4 && username.length > 20) {
+    if (username.length < 4 || username.length > 20) {
       return res.render('register', { error: 'Username must have at least 4 characters' });
     }
     if (!validateEmail(email)) {
       return res.render('register', { error: 'Invalid email format' });
     }
-    if (password.length < 6 && password.length > 20) {
+    if (password.length < 6 || password.length > 20) {
       return res.render('register', { error: 'Password must be between 6 and 20 characters long' });
     }
     if (password !== confirmpassword) {
@@ -82,7 +71,7 @@ router.post('/register', async (req, res) => {
 
 router.get('/logout', (req, res) => {
   // req.logout();
-  res.redirect('/');
+  res.redirect('/login');
 });
 
 router.get('/', userController.renderIndex);
@@ -109,6 +98,14 @@ router.post('/viewOtherProfile', async (req, res) => {
   console.error(error);
   res.status(500).send('Internal Server Error');
 }
+
+  res.render('user_profile', { mongo_user: user, current_user: req.user });
+});
+
+router.get('/user_profile', (req, res) => {
+  if (req.user) {
+    res.render('user_profile', { mongo_user: req.user, current_user: req.user });
+  }
 });
 
 
@@ -146,7 +143,7 @@ router.get('/recipeLiked', async (req, res) => {
       // Fetch the liked recipes from the database
       const likedRecipes = await Recipe.find({ _id: { $in: likedRecipeIds } });
 
-      res.render('home', { currentUser: req.user, posts: likedRecipes });
+      res.render('likedRecipe', { currentUser: req.user, posts: likedRecipes });
     } catch (error) {
       // Handle the error appropriately
       console.error(error);
@@ -164,7 +161,7 @@ router.get('/recipeSaved', async (req, res) => {
       // Fetch the saved recipes from the database
       const savedRecipes = await Recipe.find({ _id: { $in: savedRecipeIds } });
 
-      res.render('home', { currentUser: req.user, posts: savedRecipes });
+      res.render('savedRecipe', { currentUser: req.user, posts: savedRecipes });
     } catch (error) {
       // Handle the error appropriately
       console.error(error);
@@ -177,19 +174,39 @@ router.get('/register', (req, res) => {
   const message = req.flash('message')[0];
   res.render('register', { error: '' });
 });
-router.get('/home', (req, res) => {
+router.get('/home', async (req, res) => {
   if (req.user) {
-    Recipe.find()
-      .then(result => {
-        res.render('home', { currentUser: req.user, posts: result });
+    try {
+      const user = await User.findById(req.user._id);
+      const followedUsersId = user.followedUsers;
+      const followedUsers = await User.find({ _id: { $in: followedUsersId } });
+      let recipesId = [];
+
+      followedUsers.forEach(followedUser => {
+        recipesId = recipesId.concat(followedUser.uploadedRecipes, followedUser.sharedRecipes);
       });
+      const recipes = await Recipe.find({
+        _id: { $in: recipesId }
+      });
+      console.log(recipesId);
+      res.render('home', { currentUser: req.user, posts: recipes });
+      // console.log('Recipes:', recipes);
+    } catch (error) {
+      console.error('Error fetching recipes:', error);
+    }
+    // Recipe.find()
+    //   .then(result => {
+    // res.render('home', { currentUser: req.user, posts: result });
+    // });
   } else {
     res.redirect('/login');
   }
 });
-router.get('/explore', (req, res) => {
+router.get('/exploreByupload_date', (req, res) => {
   if (req.user) {
+
     Recipe.find()
+      .sort({ createdAt: -1 }) // Sort in descending order based on the `updatedAt` field
       .then(result => {
         res.render('explore', { currentUser: req.user, posts: result });
       });
@@ -197,6 +214,57 @@ router.get('/explore', (req, res) => {
     res.redirect('/login');
   }
 });
+router.get('/explore', (req, res) => {
+  if (req.user) {
+
+    Recipe.find()
+      .sort({ likes: -1 }) // Sort in descending order based on the `updatedAt` field
+      .then(result => {
+        res.render('explore', { currentUser: req.user, posts: result });
+      });
+  } else {
+    res.redirect('/login');
+  }
+});
+router.get('/exploreBylikes', (req, res) => {
+  if (req.user) {
+
+    Recipe.find()
+      .sort({ likes: -1 }) // Sort in descending order based on the `updatedAt` field
+      .then(result => {
+        res.render('explore', { currentUser: req.user, posts: result });
+      });
+  } else {
+    res.redirect('/login');
+  }
+});
+router.get('/exploreByab_desc', (req, res) => {
+  if (req.user) {
+
+    Recipe.find()
+      .collation({ locale: "en" })
+      .sort({ name: -1 }) // Sort in descending order based on the `updatedAt` field
+      .then(result => {
+        res.render('explore', { currentUser: req.user, posts: result });
+      });
+  } else {
+    res.redirect('/login');
+  }
+});
+router.get('/exploreByab_asc', (req, res) => {
+  if (req.user) {
+
+    Recipe.find()
+      .collation({ locale: "en" })
+      .sort({ name: 1 }) // Sort in descending order based on the `updatedAt` field
+      .then(result => {
+        res.render('explore', { currentUser: req.user, posts: result });
+      });
+  } else {
+    res.redirect('/login');
+  }
+});
+
 router.get('/search_recipe', (req, res) => {
   if (req.user) {
     Recipe.find()
@@ -225,13 +293,13 @@ router.get('/category', (req, res) => {
   }
 });
 
-router.get('/contact',userController.renderContact);
-router.get('/user_profile',userController.renderUserProfile);
-router.get('/user_account',userController.renderUserAccount);
+router.get('/contact', userController.renderContact);
+router.get('/user_profile', userController.renderUserProfile);
+router.get('/user_account', userController.renderUserAccount);
 //Define the route to handle the delete request
-router.delete('/deleteAccount', function(req, res) {
+router.delete('/deleteAccount', function (req, res) {
   const userId = req.user._id;
-console.log(userId);
+  console.log(userId);
   User.findByIdAndRemove(userId)
     .then(() => {
       // Deletion successful
@@ -246,13 +314,14 @@ console.log(userId);
 
 
 router.post('/checkOldPassword', async (req, res) => {
-  const {oldPassword } = req.body;
+  const { oldPassword } = req.body;
 
   try {
     // Retrieve the current user's password from the database
     const user = await User.findById(req.user._id); // Assuming you have the authenticated user's ID available in req.user.id
 
-    if (!user) {console.log("errorrr!!!!");
+    if (!user) {
+      console.log("errorrr!!!!");
 
       return res.status(404).json({ message: 'User not found' });
     }
@@ -300,17 +369,17 @@ router.put('/updatePassword', async (req, res) => {
 
 
 
-router.put('/updateFirstName', function(req, res) {
-    // Get the updated first name from the request body
-    const updatedFirstName = req.body.firstName;
-    const updatedLastName = req.body.lastName;
-    const updatedStatus = req.body.status;
-    const updatedUserName = req.body.username;
-    const userId = req.user._id;
-    if(updatedFirstName==null){
-      console.log("undefind!");
-    }
-    else{
+router.put('/updateFirstName', function (req, res) {
+  // Get the updated first name from the request body
+  const updatedFirstName = req.body.firstName;
+  const updatedLastName = req.body.lastName;
+  const updatedStatus = req.body.status;
+  const updatedUserName = req.body.username;
+  const userId = req.user._id;
+  if (updatedFirstName == null) {
+    console.log("undefind!");
+  }
+  else {
     console.log(updatedFirstName);
     console.log(userId);
   }
@@ -345,51 +414,91 @@ router.post('/follow', (req, res) => {
   const { uploader, current_user } = req.body;
   const redirectUrl = req.headers.referer || '/';
   User.findById(current_user)
-      .then(user => {
-          user.followedUsers.push(uploader);
-          return user.save();
-      })
-      .catch(err => {
-          console.log(err);
-      });
+    .then(user => {
+      user.followedUsers.push(uploader);
+      return user.save();
+    })
+    .catch(err => {
+      console.log(err);
+    });
   User.findById(uploader)
-      .then(user => {
-          user.followers.push(uploader);
-          // Retrieve the saved recipe object IDs
-          const followRecipeIds = req.user.followedUsers;
+    .then(user => {
+      user.followers.push(current_user);
+      // Retrieve the saved recipe object IDs
+      const followRecipeIds = req.user.followedUsers;
 
-          // Fetch the saved recipes from the database
-          const followRecipe =  Recipe.find({ _id: { $in: followRecipeIds } });
-          res.redirect('/home');
-          return user.save();
-      })
-      .catch(err => {
-          console.log(err);
-      });
+      // Fetch the saved recipes from the database
+      const followRecipe = Recipe.find({ _id: { $in: followRecipeIds } });
+      res.redirect('/home');
+      return user.save();
+    })
+    .catch(err => {
+      console.log(err);
+    });
 });
 
 router.post('/unfollow', (req, res) => {
   const { uploader, current_user } = req.body;
   const redirectUrl = req.headers.referer || '/';
   User.findById(current_user)
-      .then(user => {
-          user.followedUsers.pop(uploader);
-          return user.save();
-      })
-      .catch(err => {
-          console.log(err);
-      });
+    .then(user => {
+      user.followedUsers.pop(uploader);
+      return user.save();
+    })
+    .catch(err => {
+      console.log(err);
+    });
   User.findById(uploader)
-      .then(user => {
-          user.followers.pop(current_user);
-          res.redirect('/home');
-          return user.save();
-      })
-      .catch(err => {
-          console.log(err);
-      });
-
+    .then(user => {
+      user.followers.pop(current_user);
+      res.redirect('/home');
+      return user.save();
+    })
+    .catch(err => {
+      console.log(err);
+    });
 });
+router.put('/editRecipe', async (req, res) => {
+  const { category, name, ingridients, instructions, preparationTime, dishes, postId } = req.body;
+  const post = await Recipe.findById(postId);
+
+
+
+
+  console.log(category);
+  console.log(name);
+  console.log(ingridients);
+  console.log(instructions);
+  console.log(preparationTime);
+  console.log(dishes);
+  console.log(postId);
+  Recipe.findOneAndUpdate(
+    { _id: postId }, // Filter to find the recipe by its ID
+    {
+      $set: {
+        category: category,
+        preparationTime: preparationTime,
+        name: name,
+        dishes: dishes,
+        ingredients: ingridients,
+        instructions: instructions
+      }
+    },
+    { new: true } // Return the updated recipe
+  )
+  .then(updatedRecipe => {
+    console.log(updatedRecipe);
+    res.status(200).json(updatedRecipe);
+  })
+  .catch(error => {
+    console.error(error);
+    res.status(500).json({ error: 'Failed to update recipe' });
+  });
+  // const post = await Recipe.findById(postId);
+  // return res.render('edit_recipe', { post: post });
+  
+});
+
 
 
 

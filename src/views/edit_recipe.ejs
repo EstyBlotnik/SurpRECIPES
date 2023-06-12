@@ -3,6 +3,21 @@
 
 <head>
   <title>Edit Recipe</title>
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:wght@400;500&family=Inter:wght@400;500&family=Playfair+Display:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet">
+
+  <!-- Vendor CSS Files -->
+  <link href="assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+  <link href="assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+  <link href="assets/vendor/swiper/swiper-bundle.min.css" rel="stylesheet">
+  <link href="assets/vendor/glightbox/css/glightbox.min.css" rel="stylesheet">
+  <link href="assets/vendor/aos/aos.css" rel="stylesheet">
+
+  <!-- Template Main CSS Files -->
+  <link href="assets/css/variables.css" rel="stylesheet">
+  <link href="assets/css/main.css" rel="stylesheet">
   <link rel='stylesheet' href='https://fonts.googleapis.com/css?family=Open+Sans'>
   <link rel="stylesheet" href="uploadRecipe.css">
   <link rel="stylesheet" href="edit_recipe.css">
@@ -10,10 +25,11 @@
 </head>
 
 <body>
-  <h1>Edit your recipe</h1>
-
-  <form id="recipeForm" class="cont" enctype="multipart/form-data">
-
+  <%- include('./partials/header.ejs') %>
+  <div class="title">
+    <h2 style="font-size: 60px; color: white; text-shadow: -1px 0 rgba(255, 4, 226, 0.137), 0 1px rgba(255, 4, 226, 0.137), 1px 0 rgba(255, 4, 226, 0.137), 0 -1px rgba(255, 4, 226, 0.137);">Edit your recipe</h2>
+  </div>
+  <div id="recipeForm" class="cont" enctype="multipart/form-data">
     <select id="category" name="category" placeholder="<%=post.name  %>" required>
       <option value="<%= post.category  %>"><%= post.category %></option>
       <% if (post.category!=='soups'){ %>
@@ -74,9 +90,9 @@
     <input type="file" id="image" name="image" accept="image/*" data-doc="<%= post.image %>"><br><br> -->
 
 
-    <button class="save" value="Save changes">Save changes</button>
+    <button class="save" data-doc="<%= post._id %>" value="Save changes">Save changes</button>
     <p id="error-msg"></p>
-  </form>
+  </div>
   <script src="edit_recipe.js"></script>
 
 </body>
