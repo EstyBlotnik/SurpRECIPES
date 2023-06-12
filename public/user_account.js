@@ -91,11 +91,12 @@ document.addEventListener('DOMContentLoaded', function() {
           })
 
           // Display success message
+          if (data.message === 'the user updated successfully') {
           const contentDiv = document.getElementById("message");
           contentDiv.style.color = "white";
           const successMessage = "The details have been updated successfully!";
           contentDiv.innerHTML = successMessage;
-        })
+      } })
         .catch(error => {
           // Handle any errors that occur during the request
           console.error(error);
@@ -144,6 +145,12 @@ document.addEventListener('DOMContentLoaded', function() {
           .then(response => response.json())
           .then(data => {
             // Handle the response from the server
+            if (data.message === 'Password updated successfully') {
+              const contentDiv = document.getElementById("success");
+              contentDiv.style.color = "white";
+              const successMessage = "The Password have been updated successfully!";
+              contentDiv.innerHTML = successMessage;
+          }
             console.log(data); // Replace with appropriate handling logic
           })
           .catch(error => {
