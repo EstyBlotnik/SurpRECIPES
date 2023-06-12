@@ -92,13 +92,13 @@ router.post('/viewOtherProfile', async (req, res) => {
     // Fetch the saved recipes from the database
     const followers = await User.find({ _id: { $in: followersIds } });
     const followings = await User.find({ _id: { $in: followingsIds } });
-    const posts=await Recipe.find({ _id: { $in:postIds } });
-    res.render('user_profile', { followers: followers, followings: followings, mongo_user: user, current_user: req.user,posts:posts});
-} catch (error) {
-  // Handle the error appropriately
-  console.error(error);
-  res.status(500).send('Internal Server Error');
-}
+    const posts = await Recipe.find({ _id: { $in: postIds } });
+    res.render('user_profile', { followers: followers, followings: followings, mongo_user: user, current_user: req.user, posts: posts });
+  } catch (error) {
+    // Handle the error appropriately
+    console.error(error);
+    res.status(500).send('Internal Server Error');
+  }
 });
 
 router.get('/uploadrecipe', (req, res) => {
@@ -186,13 +186,14 @@ router.get('/exploreByupload_date', (req, res) => {
     res.redirect('/login');
   }
 });
-router.get('/explore', (req, res) => {
+router.get('/explore', async (req, res) => {
+  const comments = await Comment.find();
   if (req.user) {
 
     Recipe.find()
       .sort({ likes: -1 }) // Sort in descending order based on the `updatedAt` field
       .then(result => {
-        res.render('explore', { currentUser: req.user, posts: result });
+        res.render('explore', { currentUser: req.user, posts: result, comments: comments });
       });
   } else {
     res.redirect('/login');
@@ -459,20 +460,20 @@ router.put('/editRecipe', async (req, res) => {
     },
     { new: true } // Return the updated recipe
   )
-  .then(updatedRecipe => {
-    console.log(updatedRecipe);
-    res.status(200).json(updatedRecipe);
-  })
-  .catch(error => {
-    console.error(error);
-    res.status(500).json({ error: 'Failed to update recipe' });
-  });
+    .then(updatedRecipe => {
+      console.log(updatedRecipe);
+      res.status(200).json(updatedRecipe);
+    })
+    .catch(error => {
+      console.error(error);
+      res.status(500).json({ error: 'Failed to update recipe' });
+    });
   // const post = await Recipe.findById(postId);
   // return res.render('edit_recipe', { post: post });
-  
+
 });
 
-router.post('/comment', async(req, res) => {
+router.post('/comment', async (req, res) => {
   const { postId, text, uploader } = req.body;
   console.log(text);
   console.log(uploader);
@@ -481,21 +482,23 @@ router.post('/comment', async(req, res) => {
   // Check if an image was uploaded
 
   // Create the recipe
-  const comment = new Comment({uploader:uploader, text:text, post:postId});
+  const comment = new Comment({ uploader: uploader, text: text, post: postId });
   await comment.save();
+  const comments = await Comment.find();
   Recipe.findById(postId)
 
     .then(recipe => {
-      recipe.comments.push( comment._id ); // Add the new comment to the recipe's comments array
+      recipe.comments.push(comment._id); // Add the new comment to the recipe's comments array
       return recipe.save();
     })
     .then(result => {
+      
       if (req.user) {
 
         Recipe.find()
           .sort({ likes: -1 }) // Sort in descending order based on the `updatedAt` field
           .then(result => {
-            res.render('explore', { currentUser: req.user, posts: result });
+            res.render('explore', { currentUser: req.user, posts: result, comments: comments });
           });
       } else {
         res.redirect('/login');
