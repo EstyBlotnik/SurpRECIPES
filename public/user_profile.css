@@ -1,12 +1,14 @@
 @import url("https://fonts.googleapis.com/css?family=Poppins&display=swap");
 @import url("https://fonts.googleapis.com/css?family=Bree+Serif&display=swap");
 
-* {
+/* * {
   display: block;
   padding: 0;
   margin: 0;
   box-sizing: border-box;
-}
+} */
+
+
 
 body {
   background: #e9e9e9;
@@ -16,14 +18,10 @@ body {
   margin: 0 100px;
 }
 
-/* .profile-side.user-name ,
-.profile-side.my-level{
-
-  font-family: "Open Sans", Helvetica, Arial, sans-serif; ;
-} */
-
-
-
+.profile-side.user-name,
+.profile-side.my-level {
+  font-family: "Open Sans", Helvetica, Arial, sans-serif !important;
+}
 
 .profile-header {
   width: 100%;
@@ -152,8 +150,9 @@ body {
   display: contents;
 }
 
-button.my-account-btn,
-button.follow-btn {
+.my-acount-btn,
+.follow-btn,
+.unfollow-btn {
   border: 0;
   padding: 10px;
   width: 100%;
@@ -170,26 +169,17 @@ button.follow-btn {
   box-shadow: 0px 5px 7px 0px rgba(0, 0, 0, 0.3);
   
 }
-button {
-  display: block;
-  margin: 0 auto;
-  width: 260px;
-  height: 36px;
-  border-radius: 30px;
-  color: #fff;
-  font-size: 15px;
-  cursor: pointer;
-}
 
-button.my-account-btn:hover,
-button.follow-btn:hover,
-button.my-account-btn:focus {
+.my-acount-btn:hover,
+.follow-btn:hover,
+.my-acount-btn:focus,
+.unfollow-btn:hover {
   background: rgba(246, 203, 142, 0.9);
 }
 
 
-button.my_account-btn i,
-button.follow-btn i {
+.my_acount-btn i,
+.follow-btn i {
   margin-right: 5px;
 }
 
@@ -222,8 +212,8 @@ button.follow-btn i {
   transition: all 0.2s ease-in-out;
 }
 
-.nav ul li span.numof-followings,
-.nav ul li span.numof-followers {
+.nav ul li span.Followers-num,
+.nav ul li span.Followings-num {
   display: block;
   padding: 5px 0; /* Adjust the padding as desired */
   font-size: 12px; /* Adjust the font size as desired */
@@ -248,7 +238,7 @@ button.follow-btn i {
   color: black; /* Add the desired text color */
 }
 
-.scrolling-list {
+.followers-list , .followings-list {
   position: absolute;
   top: 100%;
   left: 0;
@@ -260,18 +250,25 @@ button.follow-btn i {
   display: none;
 }
 
-.nav ul li:hover .scrolling-list,
-.nav ul li.active .scrolling-list {
+.nav ul li:hover .followers-list,
+.nav ul li.active .followers-list,
+.nav ul li:hover .followings-list,
+.nav ul li.active .followings-list
+{
   display: block;
 }
 
-.scrolling-list p {
+.followers-list p ,
+.followings-list p
+{
   padding: 10px;
   margin: 0;
   transition: background-color 0.2s ease-in-out;
 }
 
-.scrolling-list p:hover {
+.followers-list p:hover,
+.followings-list p:hover
+{
   background-color: rgba(212, 175, 122, 0.9); /* Add the desired background color on hover */
   color: #fff; /* Add the desired text color on hover */
 }
@@ -300,14 +297,14 @@ button.follow-btn i {
   .profile-img img {
     height: 200px;
     width: 200px;
-    left: 50px;
+    left: 25px;
     top: 50px;
   }
 }
 
 @media (max-width: 900px) {
   body {
-    margin: 0 20px;
+    margin:0 20px;
   }
 
   .profile-header {
