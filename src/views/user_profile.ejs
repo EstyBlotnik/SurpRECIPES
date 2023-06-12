@@ -68,18 +68,18 @@
 				<div class="nav">
 					<ul>
 						<li onclick class="Followings-num">
-						<span class="button"><%= followings.length %></span>
-						<span class="button-text">Followings</span>
-						<div id="followings-list" class="followings-list" >
-							<% if (followings && followings.length > 0) { %>
-							<% followings.forEach(function(item) { %>
-								<p><%= item.email %></p>
-							<% }) %>
-							<% } else { %>
-							<p>No followings found.</p>
-							<% } %>
-						</div>
-						</li>
+							<span class="button"><%= followings.length %></span>
+							<span class="button-text">Followings</span>
+							<div id="followings-list" class="followings-list" >
+								<% if (followings && followings.length > 0) { %>
+								<% followings.forEach(function(item) { %>
+									<p><%= item.email %></p>
+								<% }) %>
+								<% } else { %>
+								<p>No followings found.</p>
+								<% } %>
+							</div>
+							</li>
 
 						<li class="Followers-num">
 							<span class="button"><%= followers.length %></span>
