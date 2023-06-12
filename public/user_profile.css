@@ -405,6 +405,7 @@ main {
   margin-left: 20px;
 }
 
+}
 #card-3 {
   /* Additional CSS properties for the card */
 }
@@ -425,4 +426,3 @@ main {
 .toggle-content.show {
   display: block;
 }
-
