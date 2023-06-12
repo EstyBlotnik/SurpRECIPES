@@ -98,6 +98,31 @@
     .toggle-content.show {
       display: block;
     }
+    .comment {
+  margin-bottom: 10px;
+  padding: 10px;
+  background-color: #ffffff;
+  border-radius: 5px;
+}
+
+.comment-text {
+  margin: 0;
+}
+
+.delete-comment-button {
+  background-color: #ff0000;
+  color: #ffffff;
+  right: 5px; /* Updated */
+  border: none;
+  padding: 5px 10px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.delete-comment-button:hover {
+  background-color: #cc0000;
+}
+
 
     .comment-textbox {
       width: 100%;
@@ -288,33 +313,43 @@
             </div>
           </div>
         </div>
-        <div id="comment-box-<%=post._id%>" class="toggle-content">
-
+        <div id="comment-box-<%= post._id %>" class="toggle-content">
           <% comments.forEach(function(comment) {  %>
-          <% if(post.comments.includes(comment._id)){ %>
-          <li><%=comment.text  %></li>
-          <li><%=comment._id  %></li>
-          <% } %>
+            <% if (post.comments.includes(comment._id)) { %>
+              <div class="comment">
+                <p class="comment-text"><%= comment.text %></p>
+                <% if (comment.uploader == currentUser._id) { %>
+                  <form action="/comment/<%= comment._id %>" method="POST" class="delete-comment-form">
+                    <input type="hidden" name="_method" value="DELETE">
+                    <button type="submit" class="delete-comment-button">Delete</button>
+                  </form>
+                <% } %>
+              </div>
+            <% } %>
           <% }) %>
 
           <form action="/comment" method="post">
-            <textarea id="comment-textbox<%=post._id%>" class="comment-textbox" rows="4" cols="50" placeholder="Enter your comment" data-doc="<%= post._id %>"></textarea>></textarea>
+            <textarea id="comment-textbox<%=post._id%>" class="comment-textbox" rows="4" cols="50" placeholder="Enter your comment" data-doc="<%= post._id %>"></textarea></textarea>
 
             <!-- <textarea class="comment-textbox" rows="4" cols="50" placeholder="Enter your comment"></textarea> -->
-            <button class="comment-button elegant-button" data-doc="<%= post._id %>">Submit</button>
+            <button class="comment-button elegant-button" data-doc="<%= post._id %>"> Submit</button>
             <input type="hidden" name="postId" value="<%= post._id %>">
-            <!-- <input type="hidden" name="text" value="comment-textbox.value"> -->
-            <input type="hidden" name="text" id="comment-textid<%=post._id%>" value="esty">
-
+            <input type="hidden" name="text" id="comment-textid<%= post._id %>" value="">
             <input type="hidden" name="uploader" value="<%= currentUser._id %>">
           </form>
         </div>
-
-      </div>
+        
+        
+            </div>
       <% }) %>
     </main>
   </div>
   <script>
+    function updateHiddenInputValue(postId) {
+    var textbox = document.getElementById('comment-textbox' + postId);
+    var hiddenInput = document.getElementById('comment-textid' + postId);
+    hiddenInput.value = textbox.value;
+  }
     const trashcans = document.querySelectorAll('button.delete');
     trashcans.forEach(trashcan => {
       trashcan.addEventListener('click', (e) => {
