@@ -289,8 +289,13 @@
               </div>
             </div>
             <div id="comment-box-<%=post._id%>" class="toggle-content">
+              <form action="/comment" method="post">
               <textarea class="comment-textbox" rows="4" cols="50" placeholder="Enter your comment"></textarea>
               <button class="comment-button elegant-button" data-doc="<%= post._id %>">Submit</button>
+              <input type="hidden" name="postId" value="<%= post._id %>">
+              <input type="hidden" name="text" value= "comment-textbox.value">
+              <input type="hidden" name="uploader" value= "<%= currentUser._id %>">
+            </form>
             </div>
                                   
         </div>

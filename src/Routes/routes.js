@@ -5,6 +5,7 @@ const passport = require('passport');
 const bcrypt = require('bcrypt');
 const User = require('../models/users');
 const Recipe = require('../models/recipe');
+const Comment = require('../models/comment');
 
 const validateEmail = (email) => {
   // Regular expression to validate email format
@@ -470,7 +471,40 @@ router.put('/editRecipe', async (req, res) => {
   
 });
 
+router.post('/comment', async(req, res) => {
+  const { postId, text, uploader } = req.body;
+  console.log(text);
+  console.log(uploader);
+  console.log(postId);
 
+  // Check if an image was uploaded
+
+  // Create the recipe
+  const comment = new Comment({uploader:uploader, text:text, post:postId});
+  await comment.save();
+  Recipe.findById(postId)
+
+    .then(recipe => {
+      recipe.comments.push( comment._id ); // Add the new comment to the recipe's comments array
+      return recipe.save();
+    })
+    .then(result => {
+      if (req.user) {
+
+        Recipe.find()
+          .sort({ likes: -1 }) // Sort in descending order based on the `updatedAt` field
+          .then(result => {
+            res.render('explore', { currentUser: req.user, posts: result });
+          });
+      } else {
+        res.redirect('/login');
+      }
+    })
+    .catch(error => {
+      console.error('Error adding comment:', error);
+      res.status(500).json({ error: 'Internal server error' });
+    });
+});
 
 
 module.exports = router;
