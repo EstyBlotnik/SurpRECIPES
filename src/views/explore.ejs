@@ -298,10 +298,10 @@
           <% }) %>
 
           <form action="/comment" method="post">
-            <textarea id="comment-textbox<%=post._id%>" class="comment-textbox" rows="4" cols="50" placeholder="Enter your comment" data-doc="<%= post._id %>"></textarea>></textarea>
+            <textarea id="comment-textbox<%=post._id%>" class="comment-textbox" rows="4" cols="50" placeholder="Enter your comment" data-doc="<%= post._id %>"></textarea></textarea>
 
             <!-- <textarea class="comment-textbox" rows="4" cols="50" placeholder="Enter your comment"></textarea> -->
-            <button class="comment-button elegant-button" data-doc="<%= post._id %>">Submit</button>
+            <button class="comment-button elegant-button" data-doc="<%= post._id %>"> Submit</button>
             <input type="hidden" name="postId" value="<%= post._id %>">
             <!-- <input type="hidden" name="text" value="comment-textbox.value"> -->
             <input type="hidden" name="text" id="comment-textid<%=post._id%>" value="esty">
