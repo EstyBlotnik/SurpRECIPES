@@ -307,6 +307,7 @@ body {
     margin:0 20px;
   }
 
+
   .profile-header {
     display: flex;
     height: 100%;
@@ -356,12 +357,12 @@ body {
     margin: 5px 0;
   }
 
-@media (max-width: 400px) {
+/* @media (max-width: 400px) {
   body {
     margin: center;
   }
 
-}
+} */
 .tab h1 {
   font-family: "Open Sans", Helvetica, Arial, sans-serif;
   display: flex;
@@ -373,7 +374,7 @@ body {
   display: flex;
   justify-content: flex-end;
 }
-
+}
 main {
   width: 100%;
   max-width: 1024px;
@@ -404,6 +405,7 @@ main {
   margin-left: 20px;
 }
 
+}
 #card-3 {
   /* Additional CSS properties for the card */
 }
@@ -423,5 +425,4 @@ main {
 
 .toggle-content.show {
   display: block;
-}
 }

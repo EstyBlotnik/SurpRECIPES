@@ -372,6 +372,7 @@ router.put('/updateFirstName', function (req, res) {
   )
     .then(updatedUser => {
       // Handle the updated user if needed
+      return res.status(200).json({ message: 'the user updated successfully' });
       console.log(updatedUser);
       res.json(updatedUser);
     })

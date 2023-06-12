@@ -87,7 +87,7 @@
 									<% followings.forEach(function(item) { %>
 										<form action="/viewOtherProfile" method="post">
 											<button
-												class="inline-block list-none text-sm font-semibold uploader"
+												class="inline-block list-none text-sm uploader"
 												data-doc="<%=item.email %>"
 												data-user="<%= mongo_user._id %>">
 												<span class="hidden md:inline">
@@ -114,7 +114,7 @@
 									<% followers.forEach(function(item) { %>
 										<form action="/viewOtherProfile" method="post">
 											<button
-												class="inline-block list-none text-sm font-semibold uploader"
+												class="inline-block list-none text-sm uploader"
 												data-doc="<%=item.email %>"
 												data-user="<%= mongo_user._id %>">
 												<span class="hidden md:inline">
