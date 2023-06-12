@@ -368,4 +368,60 @@ body {
   justify-content: center;
   margin: 20px auto;
 }
+
+body {
+  display: flex;
+  justify-content: flex-end;
+}
+
+main {
+  width: 100%;
+  max-width: 1024px;
+  margin-right: 20px;
+
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+}
+
+.toggle-button {
+  background-color: #f5f0f4;
+  border: none;
+  color: rgb(238, 41, 41);
+  padding: 10px 20px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 4px 2px;
+  cursor: pointer;
+  transition-duration: 0.4s;
+  border-radius: 30px;
+}
+
+.container {
+  margin-left: 20px;
+}
+
+#card-3 {
+  /* Additional CSS properties for the card */
+}
+
+.other-content {
+  /* Additional CSS properties for the content adjacent to the left of the card */
+}
+
+
+.toggle-button:hover {
+  background-color: #fd8e8e;
+}
+
+.toggle-content {
+  display: none;
+}
+
+.toggle-content.show {
+  display: block;
+}
 }

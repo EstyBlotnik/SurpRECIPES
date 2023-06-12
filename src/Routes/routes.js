@@ -85,14 +85,14 @@ router.post('/viewOtherProfile', async (req, res) => {
   const user = await User.findOne({ email });
   try {
     // Retrieve the saved recipe object IDs
-    const followersIds = req.user.followers;
-    const followingsIds = req.user.followedUsers;
-
+    const followersIds = user.followers;
+    const followingsIds = user.followedUsers;
+    const postIds = user.uploadedRecipes;
     // Fetch the saved recipes from the database
     const followers = await User.find({ _id: { $in: followersIds } });
     const followings = await User.find({ _id: { $in: followingsIds } });
- 
-    res.render('user_profile', { followers: followers, followings: followings, mongo_user: user, current_user: req.user});
+    const posts=await Recipe.find({ _id: { $in:postIds } });
+    res.render('user_profile', { followers: followers, followings: followings, mongo_user: user, current_user: req.user,posts:posts});
 } catch (error) {
   // Handle the error appropriately
   console.error(error);
