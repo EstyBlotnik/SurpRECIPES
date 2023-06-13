@@ -78,7 +78,7 @@ router.post('/unlike', (req, res) => {
     // console.log(postId);
     User.findById(userId)
         .then(user => {
-            user.likedRecipes.pop(postId);
+            user.likedRecipes.pull(postId);
             return user.save();
         })
         .catch(err => {
@@ -166,7 +166,7 @@ router.post('/unsave', (req, res) => {
     // console.log(postId);
     User.findById(userId)
         .then(user => {
-            user.savedRecipes.pop(postId);
+            user.savedRecipes.pull(postId);
             res.json({ redirect: redirectUrl });
             return user.save();
         })
