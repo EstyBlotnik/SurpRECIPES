@@ -343,6 +343,7 @@
             <input type="hidden" name="postId" value="<%= post._id %>">
             <input type="hidden" name="text" id="comment-textid<%=post._id%>" value="">
             <input type="hidden" name="uploader" value="<%= currentUser._id %>">
+            <input type="hidden" name="poster"  value="<%=post.uploader%>">
           </form>
         </div>
                 

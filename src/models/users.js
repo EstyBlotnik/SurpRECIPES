@@ -69,7 +69,11 @@ const userSchema = new mongoose.Schema({
   averageUploadsPerWeek: {
     type: Number,
     default: 0
-  }
+  },
+  commentsOnPost : [{
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Comment'
+  }]
 });
 
 const User = mongoose.model('User', userSchema);

@@ -249,6 +249,17 @@ router.get('/search_recipe', (req, res) => {
   }
 });
 
+// router.get('/notification', (req, res) => {
+//   if (req.user) {
+//     Recipe.find()
+//       .then(result => {
+//         res.render('notification', { currentUser: req.user, posts: result });
+//       });
+//   } else {
+//     res.redirect('/login');
+//   }
+// });
+
 router.get('/category', (req, res) => {
   const category = req.query.category; // Get the category from the URL parameter
 
@@ -269,6 +280,7 @@ router.get('/category', (req, res) => {
 router.get('/contact', userController.renderContact);
 router.get('/user_profile', userController.renderUserProfile);
 router.get('/user_account', userController.renderUserAccount);
+router.get('/notification', userController.renderUserNotes);
 //Define the route to handle the delete request
 router.delete('/deleteAccount', function (req, res) {
   const userId = req.user._id;
@@ -474,15 +486,16 @@ router.put('/editRecipe', async (req, res) => {
 });
 
 router.post('/comment', async (req, res) => {
-  const { postId, text, uploader } = req.body;
+  const { postId, text, uploader, poster } = req.body;
   console.log(text);
   console.log(uploader);
   console.log(postId);
+  console.log(poster);
 
   // Check if an image was uploaded
 
   // Create the recipe
-  const comment = new Comment({ uploader: uploader, text: text, post: postId });
+  const comment = new Comment({ uploader: uploader, text: text, post: postId, read:false });
   await comment.save();
   const comments = await Comment.find();
   Recipe.findById(postId)
@@ -508,7 +521,42 @@ router.post('/comment', async (req, res) => {
       console.error('Error adding comment:', error);
       res.status(500).json({ error: 'Internal server error' });
     });
+  
+    Recipe.findById(postId)
+    .then(result => {
+        User.findOne({ email: result.uploader })
+        .then(user => {
+          user.commentsOnPost.push(comment);
+          return user.save();
+        })
+        .catch(err => {
+          console.log(err);
+        });
+    })
+    .catch(err => {
+        // Handle any errors related to finding the recipe
+        console.error(err);
+    });
+
 });
+
+router.post('/read_comment', async (req, res) => {
+  const { commentId} = req.body;
+
+  Comment.findById(commentId)
+
+  .then(comment => {
+    comment.read = true; // Add the new comment to the recipe's comments array
+    comment.save();
+    res.redirect('/user_profile');
+  })
+  .catch(err => {
+      // Handle any errors related to finding the recipe
+      console.error(err);
+    });
+
+});
+
 
 router.delete('/comment/:commentId', async (req, res) => {
   const commentId = req.params.commentId;
