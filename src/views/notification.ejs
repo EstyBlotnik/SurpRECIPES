@@ -39,18 +39,20 @@
                 <% const post = posts.find(p => p._id.toString() === comment.post.toString()); %>
                 <% if (post) { %>
                     <div class="notification-item <%= comment && !comment.read ? 'unread' : '' %>">
-                        <p><strong>Comment:</strong> <%= comment.text %></p>
-                        <p><strong>Post:</strong> <%= post.name %></p>
-                    
-                    
-                    <form action="/read_comment" method="POST" class="read-comment-form">
-                      <input type="hidden" name="commentId" value="<%= comment._id %>">
-
-                      <button type="submit" class="read-comment-button">View in profile!</button>
-                    </form>
-                  </div>
-
-                    <% } %>
+                        <div class="notification-header">
+                            <span class="notification-icon"><i class="fas fa-comment"></i></span>
+                            <span class="notification-time"><%= comment.createdAt.toDateString() %></span>
+                        </div>
+                        <div class="notification-content">
+                            <p class="notification-comment"><strong>Comment:</strong> <%= comment.text %></p>
+                            <p class="notification-post"><strong>Post:</strong> <%= post.name %></p>
+                        </div>
+                        <form action="/read_comment" method="POST" class="read-comment-form">
+                            <input type="hidden" name="commentId" value="<%= comment._id %>">
+                            <button type="submit" class="read-comment-button">View in profile!</button>
+                        </form>
+                    </div>
+                <% } %>
             <% } %>
         <% }) %>
     <% } %>
@@ -60,10 +62,58 @@
             padding: 10px;
             margin-bottom: 10px;
             border-radius: 5px;
+            background-color: #f8f8f8;
+            box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
         }
 
         .unread {
-            background-color: lightblue;
+            background-color: #e7f2fe;
+        }
+
+        .notification-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 8px;
+        }
+
+        .notification-icon {
+            color: #4a4a4a;
+            font-size: 20px;
+            margin-right: 10px;
+        }
+
+        .notification-time {
+            color: #7f7f7f;
+        }
+
+        .notification-content {
+            margin-bottom: 12px;
+        }
+
+        .notification-comment,
+        .notification-post {
+            margin: 0;
+            color: #333333;
+        }
+
+        .read-comment-form {
+            display: flex;
+            justify-content: flex-end;
+        }
+
+        .read-comment-button {
+            padding: 8px 16px;
+            border: none;
+            border-radius: 5px;
+            background-color: #007bff;
+            color: #fff;
+            font-size: 14px;
+            cursor: pointer;
+        }
+
+        .read-comment-button:hover {
+            background-color: #0056b3;
         }
     </style>
 </body>
