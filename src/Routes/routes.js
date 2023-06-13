@@ -6,6 +6,19 @@ const bcrypt = require('bcrypt');
 const User = require('../models/users');
 const Recipe = require('../models/recipe');
 const Comment = require('../models/comment');
+const mongoose = require('mongoose');
+const multer = require('multer');
+var fs = require('fs');
+var storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+      cb(null, 'uploads')
+  },
+  filename: (req, file, cb) => {
+      cb(null, file.fieldname + '-' + Date.now()+'adi')
+  }
+});
+// Create the multer upload middleware
+const upload = multer({ storage: storage });
 
 const validateEmail = (email) => {
   // Regular expression to validate email format
@@ -79,6 +92,31 @@ router.get('/', userController.renderIndex);
 
 
 router.get('/about', userController.renderAbout);
+
+router.get('/viewOtherProfile', userController.renderUserProfile);
+
+router.post('/uploadphoto',upload.single('image'),  async(req,res)=>{
+  try {
+  const userId = req.user.id; // Assuming req.user contains the user's ID
+   console.log("hii")
+    // Find the user based on the user ID
+    const user = await User.findById(userId);
+// Check if an image was uploaded
+  if (req.file) {
+    // Image uploaded, include it in the recipe data
+    user.image = {
+      data: fs.readFileSync(req.file.path),
+      contentType: req.file.mimetype
+    };
+  }
+  await user.save();
+  
+  res.sendStatus(200);
+ } catch (error) {
+      console.error('Error creating profilphoto:', error);
+      res.status(500).send('Error creating profilphoto. Please try again.');
+    }
+});
 
 router.post('/viewOtherProfile', async (req, res) => {
   const { email } = req.body;

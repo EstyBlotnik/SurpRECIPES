@@ -62,6 +62,11 @@ const userSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: 'User'
   }],
+  image: {
+    data: Buffer, // Store image data as a Buffer type
+    contentType: String, // Store the content type of the image
+   
+  },
   averageLikesPerRecipe: {
     type: Number,
     default: 0

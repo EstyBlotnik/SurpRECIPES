@@ -84,9 +84,12 @@
 										<i class="fas fa-fw fa-user position-absolute top-50 start-50 translate-middle text-secondary"></i>
 									</div>
 									<!-- Button -->
-									<input type="file" id="customFile" name="file" hidden="">
-									<label class="btn btn-success-soft btn-block" for="customFile">Upload</label>
-									<button type="button" class="btn btn-danger-soft">Remove</button>
+									<form action="/uploadphoto" method="POST">
+									<input type="file" id="image" name="image" placeholder="Image:"  accept="image/*"><br><br>
+									<!-- <label class="btn btn-success-soft btn-block" for="customFile">Upload</label>
+									<button type="submit" class="btn btn-danger-soft">submit</button> -->
+									<input class="submit" type="submit" value="Upload photo">
+								    </form>
 									<!-- Content -->
 									<p class="text-muted mt-3 mb-0"><span class="me-1">Note:</span>Minimum size 300px x 300px</p>
 								</div>

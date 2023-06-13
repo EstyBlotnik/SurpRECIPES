@@ -3,6 +3,18 @@ const Recipe = require('../models/recipe');
 const express = require('express');
 const router = express.Router();
 const mongoose = require('mongoose');
+const multer = require('multer');
+var fs = require('fs');
+var storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+      cb(null, 'uploads')
+  },
+  filename: (req, file, cb) => {
+      cb(null, file.fieldname + '-' + Date.now()+'adi')
+  }
+});
+// Create the multer upload middleware
+const upload = multer({ storage: storage });
 
 exports.renderIndex = (req, res) => {
   res.render('index');
@@ -30,6 +42,28 @@ exports.renderUserAccount= (req, res) => {
 
   };
 
+// exports.uploadphoto = async(req,res)=>{
+//   try {
+//   const userId = req.user.id; // Assuming req.user contains the user's ID
+//    console.log("hii")
+//     // Find the user based on the user ID
+//     const user = await User.findById(userId);
+// // Check if an image was uploaded
+//   if (req.file) {
+//     // Image uploaded, include it in the recipe data
+//     user.image = {
+//       data: fs.readFileSync(req.file.path),
+//       contentType: req.file.mimetype
+//     };
+//   }
+//   await user.save();
+  
+//   res.sendStatus(200);
+//  } catch (error) {
+//       console.error('Error creating profilphoto:', error);
+//       res.status(500).send('Error creating profilphoto. Please try again.');
+//     }
+// }
 
 exports.renderUserProfile =  async (req, res) => {
   if (req.user) {
