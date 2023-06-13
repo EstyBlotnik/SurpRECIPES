@@ -134,8 +134,14 @@
                     </span> portions </div>
                 </div>
                 <div id="recipe-details">
-                  <img src="download.png" alt="Recipe Image" id="recipe-image"
+                  <% if (post.image && post.image.data) { %>
+                    <img src="data:<%= post.image.contentType %>;base64,<%= post.image.data.toString('base64') %>" alt="Recipe Image">
+                  <% } else { %>
+                    <img src="download.png" alt="Recipe Image" id="recipe-image"
                     style="float: right; margin-right: 50px;margin-top: -70px; height: 200px; border: 1px solid #333; border-radius: 5px;">
+                  <% } %>
+                  
+                 
                   <!-- <button class="block w-full p-2 hover:bg-gray-200 text-gray-700 hover:text-blue-500 focus:outline-none focus:bg-blue-100 focus:text-blue-500"> -->
                   <!-- <ul class="toggle-content"> -->
                   <button class="IngredientsList toggle-button" name="ingButton"

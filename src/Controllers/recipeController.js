@@ -1,9 +1,17 @@
 const multer = require('multer');
 const Recipe = require('../models/recipe');
 const User = require('../models/users');
-
+var fs = require('fs');
+var storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+      cb(null, 'uploads')
+  },
+  filename: (req, file, cb) => {
+      cb(null, file.fieldname + '-' + Date.now()+'adi')
+  }
+});
 // Create the multer upload middleware
-const upload = multer({ dest: 'uploads/' });
+const upload = multer({ storage: storage });
 
 // Handle POST request to '/recipe/upload'
 exports.uploadRecipe = [
@@ -30,7 +38,7 @@ exports.uploadRecipe = [
       if (req.file) {
         // Image uploaded, include it in the recipe data
         recipeData.image = {
-          data: req.file.buffer,
+          data: fs.readFileSync(req.file.path),
           contentType: req.file.mimetype
         };
       }
