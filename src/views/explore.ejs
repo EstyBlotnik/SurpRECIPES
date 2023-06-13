@@ -108,6 +108,11 @@
 .comment-text {
   margin: 0;
 }
+.comment-uploader {
+  font-size: 12px;
+  color: #888888;
+  margin-top: 2px;
+}
 
 .delete-comment-button {
   background-color: #ff0000;
@@ -317,6 +322,8 @@
           <% comments.forEach(function(comment) {  %>
             <% if (post.comments.includes(comment._id)) { %>
               <div class="comment">
+                <p class="comment-uploader">Uploader: <%= currentUser.email %></p>
+
                 <p class="comment-text"><%= comment.text %></p>
                 <% if (comment.uploader == currentUser._id) { %>
                   <form action="/comment/<%= comment._id %>" method="POST" class="delete-comment-form">
@@ -327,18 +334,15 @@
               </div>
             <% } %>
           <% }) %>
-
-          <form action="/comment" method="post">
-            <textarea id="comment-textbox<%=post._id%>" class="comment-textbox" rows="4" cols="50" placeholder="Enter your comment" data-doc="<%= post._id %>"></textarea></textarea>
-
-            <!-- <textarea class="comment-textbox" rows="4" cols="50" placeholder="Enter your comment"></textarea> -->
-            <button class="comment-button elegant-button" data-doc="<%= post._id %>"> Submit</button>
+          <form action="/comment" method="post" onsubmit="updateHiddenInputValue('<%= post._id %>')">
+            <textarea id="comment-textbox<%=post._id%>" class="comment-textbox" rows="4" cols="50" placeholder="Enter your comment" data-doc="<%= post._id %>"></textarea>
+            <button class="comment-button elegant-button" data-doc="<%= post._id %>">Submit</button>
             <input type="hidden" name="postId" value="<%= post._id %>">
-            <input type="hidden" name="text" id="comment-textid<%= post._id %>" value="">
+            <input type="hidden" name="text" id="comment-textid<%=post._id%>" value="">
             <input type="hidden" name="uploader" value="<%= currentUser._id %>">
           </form>
         </div>
-        
+                
         
             </div>
       <% }) %>
@@ -567,6 +571,12 @@
     //     document.getElementById('comment-text').value = commentText;
     //   });
     // });
+
+  function updateHiddenInputValue(postId) {
+    var textbox = document.getElementById('comment-textbox' + postId);
+    var hiddenInput = document.getElementById('comment-textid' + postId);
+    hiddenInput.value = textbox.value;
+  }
   </script>
 
 </body>
