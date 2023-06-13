@@ -219,7 +219,7 @@
             </div>
             <div id="recipe-details">
               <% if (post.image && post.image.data) { %>
-                <img src="data:<%= post.image.contentType %>;base64,<%= post.image.data.toString('base64') %>" alt="Recipe Image" style="float: right; margin-right: 50px;margin-top: -70px; height: 200px; border: 1px solid #333; border-radius: 5px;">>
+                <img src="data:<%= post.image.contentType %>;base64,<%= post.image.data.toString('base64') %>" alt="Recipe Image" style="float: right; margin-right: 50px;margin-top: -70px; height: 200px; border: 1px solid #333; border-radius: 5px;">
               <% } else { %>
                 <img src="download.png" alt="Recipe Image" id="recipe-image"
                 style="float: right; margin-right: 50px;margin-top: -70px; height: 200px; border: 1px solid #333; border-radius: 5px;">
