@@ -468,61 +468,67 @@ router.put('/updateFirstName', function (req, res) {
     });
 
 });
-router.post('/follow', (req, res) => {
+router.post('/follow', async (req, res) => {
   const { uploader, current_user } = req.body;
   const redirectUrl = req.headers.referer || '/';
-  User.findById(current_user)
-    .then(user => {
-      user.followedUsers.push(uploader);
-      return user.save();
-    })
-    .catch(err => {
-      console.log(err);
-    });
-  User.findById(uploader)
-    .then(user => {
-      user.followers.push(current_user);
-      // Retrieve the saved recipe object IDs
-      const followRecipeIds = req.user.followedUsers;
-
-      // Fetch the saved recipes from the database
-      const followRecipe = Recipe.find({ _id: { $in: followRecipeIds } });
-      res.redirect('/home');
-      return user.save();
-    })
-    .catch(err => {
-      console.log(err);
-    });
+  const current = await User.findById(current_user);
+  current.followedUsers.push(uploader);
+  await current.save();
+  const user = await User.findById(uploader)
+  user.followers.push(current_user);
+  // Retrieve the saved recipe object IDs
+  // const followRecipeIds = req.user.followedUsers;
+  // const followRecipe = Recipe.find({ _id: { $in: followRecipeIds } });
+  await user.save();
+  try {
+    // Retrieve the saved recipe object IDs
+    const followersIds = user.followers;
+    const followingsIds = user.followedUsers;
+    const postIds = user.uploadedRecipes;
+    // Fetch the saved recipes from the database
+    const followers = await User.find({ _id: { $in: followersIds } });
+    const followings = await User.find({ _id: { $in: followingsIds } });
+    const posts = await Recipe.find({ _id: { $in: postIds } });
+    return res.render('user_profile', { followers: followers, followings: followings, mongo_user: user, current_user: current, posts: posts });
+  } catch (error) {
+    // Handle the error appropriately
+    console.error(error);
+    res.status(500).send('Internal Server Error');
+  }
 });
 
-router.post('/unfollow', (req, res) => {
+router.post('/unfollow', async (req, res) => {
   const { uploader, current_user } = req.body;
   const redirectUrl = req.headers.referer || '/';
-  User.findById(current_user)
-    .then(user => {
-      user.followedUsers.pop(uploader);
-      return user.save();
-    })
-    .catch(err => {
-      console.log(err);
-    });
-  User.findById(uploader)
-    .then(user => {
-      user.followers.pop(current_user);
-      res.redirect('/home');
-      return user.save();
-    })
-    .catch(err => {
-      console.log(err);
-    });
+  const current = await User.findById(current_user);
+  current.followedUsers.pull(uploader);
+  await current.save();
+  const user = await User.findById(uploader)
+  user.followers.pull(current_user);
+  // Retrieve the saved recipe object IDs
+  // const followRecipeIds = req.user.followedUsers;
+  // const followRecipe = Recipe.find({ _id: { $in: followRecipeIds } });
+  await user.save();
+  try {
+    // Retrieve the saved recipe object IDs
+    const followersIds = user.followers;
+    const followingsIds = user.followedUsers;
+    const postIds = user.uploadedRecipes;
+    // Fetch the saved recipes from the database
+    const followers = await User.find({ _id: { $in: followersIds } });
+    const followings = await User.find({ _id: { $in: followingsIds } });
+    const posts = await Recipe.find({ _id: { $in: postIds } });
+    return res.render('user_profile', { followers: followers, followings: followings, mongo_user: user, current_user: current, posts: posts });
+  } catch (error) {
+    // Handle the error appropriately
+    console.error(error);
+    res.status(500).send('Internal Server Error');
+  }
 });
+
 router.put('/editRecipe', async (req, res) => {
   const { category, name, ingridients, instructions, preparationTime, dishes, postId } = req.body;
   const post = await Recipe.findById(postId);
-
-
-
-
   console.log(category);
   console.log(name);
   console.log(ingridients);
