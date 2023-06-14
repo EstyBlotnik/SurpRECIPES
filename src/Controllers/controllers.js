@@ -3,6 +3,8 @@ const Recipe = require('../models/recipe');
 const express = require('express');
 const router = express.Router();
 const mongoose = require('mongoose');
+const Comment = require('../models/comment');
+
 
 exports.renderIndex = (req, res) => {
   res.render('index');
@@ -11,6 +13,16 @@ exports.renderIndex = (req, res) => {
 exports.renderUserHomePage = (req, res) => {
   res.render('user_home_page');
 };
+
+exports.renderUserNotes= async (req, res) => {
+  const comments = await Comment.find(); 
+  const posts = await Recipe.find();
+
+  if (req.user) {
+    res.render('notification', { mongo_user: req.user, comments:comments, posts:posts });
+  }
+
+  };
 
 
 exports.renderAbout = (req, res) => {
