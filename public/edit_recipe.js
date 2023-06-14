@@ -87,6 +87,16 @@ saveButton.addEventListener('click', (e) => {
         showError('Please enter the number of dishes.');
         return;
     }
+    if (!isPositiveInteger(prepTime)) {
+        showError('Preparation time must be a positive integer.');
+        return;
+    }
+
+    // Validate number of dishes
+    if (!isPositiveInteger(dishes)) {
+        showError('Number of dishes must be a positive integer.');
+        return;
+    }
     // Validate preparation time
     // if (!(isPositiveInteger(prepTime))) {
     //     showError('Preparation time must be a positive integer.');
@@ -183,7 +193,10 @@ function showError(message) {
     var errorMessage = document.getElementById('error-msg');
     errorMessage.textContent = message;
 }
+function isPositiveInteger(value) {
+    return /^\d+$/.test(value) && parseInt(value) > 0;
+}
 function showMessage() {
     alert("The changes were successfully saved!\nYou can exit this page safely.");
-  }
+}
 // Add event listener to the form save event
