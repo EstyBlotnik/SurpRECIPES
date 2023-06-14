@@ -27,6 +27,24 @@ const validateEmail = (email) => {
 };
 
 
+const calculateUnreadComments = async (req, res, next) => {
+  if (req.user) {
+    // Fetch the logged-in user's comments
+    const user = await User.findById(req.user._id).populate('commentsOnPost');
+
+    // Filter the comments to get the unread ones
+    const unreadComments = user.commentsOnPost.filter(comment => !comment.read);
+
+    // Add the unreadComments array to response locals
+    res.locals.unreadComments = unreadComments;
+  }
+
+  next();
+};
+
+// Register the middleware function
+router.use(calculateUnreadComments);
+
 
 router.get('/login', (req, res) => {
   const message = req.flash('error')[0]; // Retrieve the error message from the flash session
@@ -145,6 +163,8 @@ router.get('/uploadrecipe', (req, res) => {
   }
 });
 router.get('/recipeLiked', async (req, res) => {
+  const comments = await Comment.find();
+
   if (req.user) {
     try {
       // Retrieve the liked recipe object IDs
@@ -153,7 +173,7 @@ router.get('/recipeLiked', async (req, res) => {
       // Fetch the liked recipes from the database
       const likedRecipes = await Recipe.find({ _id: { $in: likedRecipeIds } });
 
-      res.render('likedRecipe', { currentUser: req.user, posts: likedRecipes });
+      res.render('likedRecipe', { currentUser: req.user, posts: likedRecipes, comments:comments });
     } catch (error) {
       // Handle the error appropriately
       console.error(error);
@@ -163,6 +183,8 @@ router.get('/recipeLiked', async (req, res) => {
 });
 
 router.get('/recipeSaved', async (req, res) => {
+  const comments = await Comment.find();
+
   if (req.user) {
     try {
       // Retrieve the saved recipe object IDs
@@ -171,7 +193,7 @@ router.get('/recipeSaved', async (req, res) => {
       // Fetch the saved recipes from the database
       const savedRecipes = await Recipe.find({ _id: { $in: savedRecipeIds } });
 
-      res.render('savedRecipe', { currentUser: req.user, posts: savedRecipes });
+      res.render('savedRecipe', { currentUser: req.user, posts: savedRecipes , comments:comments});
     } catch (error) {
       // Handle the error appropriately
       console.error(error);
@@ -185,8 +207,14 @@ router.get('/register', (req, res) => {
   res.render('register', { error: '' });
 });
 router.get('/home', async (req, res) => {
+  const comments = await Comment.find();
+
   if (req.user) {
     try {
+      // Fetch the unread comments
+      const unreadComments = res.locals.unreadComments;
+
+      // Fetch the other necessary data for the "home" page
       const user = await User.findById(req.user._id);
       const followedUsersId = user.followedUsers;
       const followedUsers = await User.find({ _id: { $in: followedUsersId } });
@@ -195,30 +223,28 @@ router.get('/home', async (req, res) => {
       followedUsers.forEach(followedUser => {
         recipesId = recipesId.concat(followedUser.uploadedRecipes, followedUser.sharedRecipes);
       });
-      const recipes = await Recipe.find({
-        _id: { $in: recipesId }
-      });
-      console.log(recipesId);
-      res.render('home', { currentUser: req.user, posts: recipes });
-      // console.log('Recipes:', recipes);
+
+      const recipes = await Recipe.find({ _id: { $in: recipesId } });
+
+      res.render('home', { currentUser: req.user, posts: recipes, unreadComments: unreadComments, comments:comments });
     } catch (error) {
       console.error('Error fetching recipes:', error);
+      res.redirect('/error'); // Redirect to an error page or handle the error accordingly
     }
-    // Recipe.find()
-    //   .then(result => {
-    // res.render('home', { currentUser: req.user, posts: result });
-    // });
   } else {
     res.redirect('/login');
   }
 });
-router.get('/exploreByupload_date', (req, res) => {
+
+router.get('/exploreByupload_date', async (req, res) => {
+  const comments = await Comment.find();
+
   if (req.user) {
 
     Recipe.find()
       .sort({ createdAt: -1 }) // Sort in descending order based on the `updatedAt` field
       .then(result => {
-        res.render('explore', { currentUser: req.user, posts: result });
+        res.render('explore', { currentUser: req.user, posts: result , comments:comments});
       });
   } else {
     res.redirect('/login');
@@ -237,50 +263,58 @@ router.get('/explore', async (req, res) => {
     res.redirect('/login');
   }
 });
-router.get('/exploreBylikes', (req, res) => {
+router.get('/exploreBylikes',async (req, res) => {
+  const comments = await Comment.find();
+
   if (req.user) {
 
     Recipe.find()
       .sort({ likes: -1 }) // Sort in descending order based on the `updatedAt` field
       .then(result => {
-        res.render('explore', { currentUser: req.user, posts: result });
+        res.render('explore', { currentUser: req.user, posts: result, comments:comments });
       });
   } else {
     res.redirect('/login');
   }
 });
-router.get('/exploreByab_desc', (req, res) => {
+router.get('/exploreByab_desc', async (req, res) => {
+  const comments = await Comment.find();
+
   if (req.user) {
 
     Recipe.find()
       .collation({ locale: "en" })
       .sort({ name: -1 }) // Sort in descending order based on the `updatedAt` field
       .then(result => {
-        res.render('explore', { currentUser: req.user, posts: result });
+        res.render('explore', { currentUser: req.user, posts: result, comments:comments });
       });
   } else {
     res.redirect('/login');
   }
 });
-router.get('/exploreByab_asc', (req, res) => {
+router.get('/exploreByab_asc', async (req, res) => {
+  const comments = await Comment.find();
+
   if (req.user) {
 
     Recipe.find()
       .collation({ locale: "en" })
       .sort({ name: 1 }) // Sort in descending order based on the `updatedAt` field
       .then(result => {
-        res.render('explore', { currentUser: req.user, posts: result });
+        res.render('explore', { currentUser: req.user, posts: result, comments:comments });
       });
   } else {
     res.redirect('/login');
   }
 });
 
-router.get('/search_recipe', (req, res) => {
+router.get('/search_recipe', async (req, res) => {
+  const comments = await Comment.find();
+
   if (req.user) {
     Recipe.find()
       .then(result => {
-        res.render('search_recipe', { currentUser: req.user, posts: result });
+        res.render('search_recipe', { currentUser: req.user, posts: result, comments:comments });
       });
   } else {
     res.redirect('/login');
@@ -298,13 +332,13 @@ router.get('/search_recipe', (req, res) => {
 //   }
 // });
 
-router.get('/category', (req, res) => {
+router.get('/category', async (req, res) => {
   const category = req.query.category; // Get the category from the URL parameter
-
+  const comments = await Comment.find();
   if (req.user) {
     Recipe.find({ category }) // Filter the recipes by category
       .then(result => {
-        res.render('category', { currentUser: req.user, posts: result, category });
+        res.render('category', { currentUser: req.user, posts: result, category, comments:comments });
       })
       .catch(error => {
         console.error(error);
@@ -537,19 +571,16 @@ router.post('/comment', async (req, res) => {
   await comment.save();
   const comments = await Comment.find();
   Recipe.findById(postId)
-
     .then(recipe => {
       recipe.comments.push(comment._id); // Add the new comment to the recipe's comments array
       return recipe.save();
     })
     .then(result => {
-      
       if (req.user) {
-
         Recipe.find()
           .sort({ likes: -1 }) // Sort in descending order based on the `updatedAt` field
           .then(result => {
-            res.render('explore', { currentUser: req.user, posts: result, comments: comments });
+            res.redirect('/explore'); // Redirect to the explore route after successful comment addition
           });
       } else {
         res.redirect('/login');
@@ -560,9 +591,9 @@ router.post('/comment', async (req, res) => {
       res.status(500).json({ error: 'Internal server error' });
     });
   
-    Recipe.findById(postId)
+  Recipe.findById(postId)
     .then(result => {
-        User.findOne({ email: result.uploader })
+      User.findOne({ email: result.uploader })
         .then(user => {
           user.commentsOnPost.push(comment);
           return user.save();
@@ -572,10 +603,9 @@ router.post('/comment', async (req, res) => {
         });
     })
     .catch(err => {
-        // Handle any errors related to finding the recipe
-        console.error(err);
+      // Handle any errors related to finding the recipe
+      console.error(err);
     });
-
 });
 
 router.post('/read_comment', async (req, res) => {
@@ -595,30 +625,36 @@ router.post('/read_comment', async (req, res) => {
 
 });
 
+router.delete('/delete_comment', async (req, res) => {
+  const { commentId } = req.query;
 
-router.delete('/comment/:commentId', async (req, res) => {
-  const commentId = req.params.commentId;
-
-  try {
-    const comment = await Comment.findById(commentId);
-    if (!comment) {
-      return res.status(404).json({ error: 'Comment not found' });
-    }
-
-    // Check if the logged-in user is the uploader of the comment
-    if (comment.uploader.toString() !== req.user._id.toString()) {
-      return res.status(401).json({ error: 'Unauthorized' });
-    }
-
-    // Delete the comment
-    await comment.remove();
-
-    res.status(200).json({ message: 'Comment deleted successfully' });
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ error: 'Internal Server Error' });
-  }
+  Comment.findByIdAndRemove(commentId)
+    .then(() => {
+      // Deletion successful
+      res.sendStatus(200);
+    })
+    .catch(error => {
+      // Handle deletion error
+      console.error(error);
+      res.sendStatus(500);
+    });
 });
+
+router.delete('/deleteComment', function (req, res) {
+  const { commentId } = req.query;
+
+  Comment.findByIdAndRemove(commentId)
+    .then(() => {
+      // Deletion successful
+      res.sendStatus(200);
+    })
+    .catch(error => {
+      // Handle deletion error
+      console.error(error);
+      res.sendStatus(500);
+    });
+});
+
 
 
 

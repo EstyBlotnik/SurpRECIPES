@@ -329,9 +329,9 @@
 
                 <p class="comment-text"><%= comment.text %></p>
                 <% if (comment.uploader == currentUser._id) { %>
-                  <form action="/comment/<%= comment._id %>" method="POST" class="delete-comment-form">
-                    <input type="hidden" name="_method" value="DELETE">
-                    <button type="submit" class="delete-comment-button">Delete</button>
+                  <form method="post" class="delete-comment-form">
+                    <input type="hidden" name="commentId" value="<%= comment._id %>">
+                    <button class="delete-comment-button" data-doc="<%= comment._id %>">Delete</button>
                   </form>
                 <% } %>
               </div>
@@ -370,6 +370,7 @@
           .catch(err => console.log(err));
       });
     });
+
 
     const likeboxes = document.querySelectorAll('button.like');
     likeboxes.forEach(likebox => {
@@ -581,7 +582,41 @@
     var hiddenInput = document.getElementById('comment-textid' + postId);
     hiddenInput.value = textbox.value;
   }
+  
+  const deleteComment = (commentId) => {
+    fetch(`/deleteComment?commentId=${commentId}`, {
+      method: 'DELETE'
+    })
+      .then(response => {
+        if (response.ok) {
+          // Deletion successful
+          console.log('Comment deleted successfully');
+          // Perform any necessary UI updates
+          location.reload(); // Refresh the page
+        } else {
+          // Handle deletion error
+          console.error('Failed to delete comment');
+          // Perform any necessary error handling or UI updates
+        }
+      })
+      .catch(error => {
+        // Handle network errors
+        console.error(error);
+      });
+  };
+
+  const deleteButtons = document.querySelectorAll('.delete-comment-button');
+  deleteButtons.forEach(button => {
+    button.addEventListener('click', (event) => {
+      event.preventDefault();
+      const commentId = button.dataset.doc;
+      deleteComment(commentId);
+    });
+  });
+  
   </script>
+
+  
 
 </body>
 

@@ -1,16 +1,25 @@
 <!-- ======= Header ======= -->
 <header id="header" class="header d-flex align-items-center fixed-top">
     <div class="container-fluid container-xl d-flex align-items-center justify-content-between">
-    
         <a href="/home" class="logo d-flex align-items-center">
-        <!-- Uncomment the line below if you also wish to use an image logo -->
-        <!-- <img src="assets/img/logo.png" alt=""> -->
-        <h1>SurpRECIPES</h1>
+            <!-- Uncomment the line below if you also wish to use an image logo -->
+            <!-- <img src="assets/img/logo.png" alt=""> -->
+            <h1>SurpRECIPES</h1>
         </a>
     
         <nav id="navbar" class="navbar">
             <ul>
-                <li><a href="/notification">Notifications</a></li>
+                <li>
+                    <% if (unreadComments.length > 0) { %>
+                        <a href="/notification" class="notification-icon">
+                            <img src="assets/img/new.png" alt="Notification">
+                        </a>
+                    <% } else { %>
+                        <a href="/notification" class="notification-icon">
+                            <img src="assets/img/grey.jpg" alt="Notification">
+                        </a>
+                    <% } %>
+                </li>
                 <li><a href="user_profile">Profile</a></li>
                 <li><a href="/explore">Explore</a></li>
                 <li><a href="uploadrecipe">New Recipe</a></li>
@@ -18,7 +27,21 @@
                 <li><a href="/logout">Log out</a></li>
             </ul>
         </nav><!-- .navbar -->
-    
     </div>
-    
 </header><!-- End Header -->
+
+<style>
+    .navbar ul li {
+        margin-right: 20px;
+    }
+
+    .navbar ul li:last-child {
+        margin-right: 0;
+    }
+
+    .navbar .notification-icon img {
+        height: 20px;
+        width: 20px;
+        margin-right: 5px;
+    }
+</style>
