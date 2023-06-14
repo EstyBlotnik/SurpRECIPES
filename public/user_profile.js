@@ -90,26 +90,26 @@ likeboxes.forEach(likebox => {
   });
 });
 
-const unlikeboxes = document.querySelectorAll('button.unlike');
-unlikeboxes.forEach(unlikebox => {
-  unlikebox.addEventListener('click', (e) => {
-	const endpoint = `/viewRecipe/unlike`;
-	const data = {
-	  userId: unlikebox.dataset.user,
-	  postId: unlikebox.dataset.doc,
-	};
-	fetch(endpoint, {
-	  method: 'POST',
-	  headers: {
-		'Content-Type': 'application/json',
-	  },
-	  body: JSON.stringify(data),
-	})
-	  .then(response => response.json())
-	  .then(data => window.location.href = data.redirect)
-	  .catch(err => console.log(err));
-  });
-});
+// const unlikeboxes = document.querySelectorAll('button.unlike');
+// unlikeboxes.forEach(unlikebox => {
+//   unlikebox.addEventListener('click', (e) => {
+// 	const endpoint = `/viewRecipe/unlike`;
+// 	const data = {
+// 	  userId: unlikebox.dataset.user,
+// 	  postId: unlikebox.dataset.doc,
+// 	};
+// 	fetch(endpoint, {
+// 	  method: 'POST',
+// 	  headers: {
+// 		'Content-Type': 'application/json',
+// 	  },
+// 	  body: JSON.stringify(data),
+// 	})
+// 	  .then(response => response.json())
+// 	  .then(data => window.location.href = data.redirect)
+// 	  .catch(err => console.log(err));
+//   });
+// });
 
 
 const saveboxes = document.querySelectorAll('button.save');

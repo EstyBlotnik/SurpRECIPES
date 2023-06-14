@@ -11,10 +11,10 @@ const multer = require('multer');
 var fs = require('fs');
 var storage = multer.diskStorage({
   destination: (req, file, cb) => {
-      cb(null, 'uploads')
+    cb(null, 'uploads')
   },
   filename: (req, file, cb) => {
-      cb(null, file.fieldname + '-' + Date.now()+'adi')
+    cb(null, file.fieldname + '-' + Date.now() + 'adi')
   }
 });
 // Create the multer upload middleware
@@ -113,27 +113,27 @@ router.get('/about', userController.renderAbout);
 
 router.get('/viewOtherProfile', userController.renderUserProfile);
 
-router.post('/uploadphoto',upload.single('image'),  async(req,res)=>{
+router.post('/uploadphoto', upload.single('image'), async (req, res) => {
   try {
-  const userId = req.user.id; // Assuming req.user contains the user's ID
-   console.log("hii")
+    const userId = req.user.id; // Assuming req.user contains the user's ID
+    console.log("hii")
     // Find the user based on the user ID
     const user = await User.findById(userId);
-// Check if an image was uploaded
-  if (req.file) {
-    // Image uploaded, include it in the recipe data
-    user.image = {
-      data: fs.readFileSync(req.file.path),
-      contentType: req.file.mimetype
-    };
-  }
-  await user.save();
-  
-  res.sendStatus(200);
- } catch (error) {
-      console.error('Error creating profilphoto:', error);
-      res.status(500).send('Error creating profilphoto. Please try again.');
+    // Check if an image was uploaded
+    if (req.file) {
+      // Image uploaded, include it in the recipe data
+      user.image = {
+        data: fs.readFileSync(req.file.path),
+        contentType: req.file.mimetype
+      };
     }
+    await user.save();
+
+    res.sendStatus(200);
+  } catch (error) {
+    console.error('Error creating profilphoto:', error);
+    res.status(500).send('Error creating profilphoto. Please try again.');
+  }
 });
 
 router.post('/viewOtherProfile', async (req, res) => {
@@ -173,7 +173,7 @@ router.get('/recipeLiked', async (req, res) => {
       // Fetch the liked recipes from the database
       const likedRecipes = await Recipe.find({ _id: { $in: likedRecipeIds } });
 
-      res.render('likedRecipe', { currentUser: req.user, posts: likedRecipes, comments:comments });
+      res.render('likedRecipe', { currentUser: req.user, posts: likedRecipes, comments: comments });
     } catch (error) {
       // Handle the error appropriately
       console.error(error);
@@ -193,7 +193,7 @@ router.get('/recipeSaved', async (req, res) => {
       // Fetch the saved recipes from the database
       const savedRecipes = await Recipe.find({ _id: { $in: savedRecipeIds } });
 
-      res.render('savedRecipe', { currentUser: req.user, posts: savedRecipes , comments:comments});
+      res.render('savedRecipe', { currentUser: req.user, posts: savedRecipes, comments: comments });
     } catch (error) {
       // Handle the error appropriately
       console.error(error);
@@ -226,7 +226,7 @@ router.get('/home', async (req, res) => {
 
       const recipes = await Recipe.find({ _id: { $in: recipesId } });
 
-      res.render('home', { currentUser: req.user, posts: recipes, unreadComments: unreadComments, comments:comments });
+      res.render('home', { currentUser: req.user, posts: recipes, unreadComments: unreadComments, comments: comments });
     } catch (error) {
       console.error('Error fetching recipes:', error);
       res.redirect('/error'); // Redirect to an error page or handle the error accordingly
@@ -244,7 +244,7 @@ router.get('/exploreByupload_date', async (req, res) => {
     Recipe.find()
       .sort({ createdAt: -1 }) // Sort in descending order based on the `updatedAt` field
       .then(result => {
-        res.render('explore', { currentUser: req.user, posts: result , comments:comments});
+        res.render('explore', { currentUser: req.user, posts: result, comments: comments });
       });
   } else {
     res.redirect('/login');
@@ -263,7 +263,7 @@ router.get('/explore', async (req, res) => {
     res.redirect('/login');
   }
 });
-router.get('/exploreBylikes',async (req, res) => {
+router.get('/exploreBylikes', async (req, res) => {
   const comments = await Comment.find();
 
   if (req.user) {
@@ -271,7 +271,7 @@ router.get('/exploreBylikes',async (req, res) => {
     Recipe.find()
       .sort({ likes: -1 }) // Sort in descending order based on the `updatedAt` field
       .then(result => {
-        res.render('explore', { currentUser: req.user, posts: result, comments:comments });
+        res.render('explore', { currentUser: req.user, posts: result, comments: comments });
       });
   } else {
     res.redirect('/login');
@@ -286,7 +286,7 @@ router.get('/exploreByab_desc', async (req, res) => {
       .collation({ locale: "en" })
       .sort({ name: -1 }) // Sort in descending order based on the `updatedAt` field
       .then(result => {
-        res.render('explore', { currentUser: req.user, posts: result, comments:comments });
+        res.render('explore', { currentUser: req.user, posts: result, comments: comments });
       });
   } else {
     res.redirect('/login');
@@ -301,7 +301,7 @@ router.get('/exploreByab_asc', async (req, res) => {
       .collation({ locale: "en" })
       .sort({ name: 1 }) // Sort in descending order based on the `updatedAt` field
       .then(result => {
-        res.render('explore', { currentUser: req.user, posts: result, comments:comments });
+        res.render('explore', { currentUser: req.user, posts: result, comments: comments });
       });
   } else {
     res.redirect('/login');
@@ -314,7 +314,7 @@ router.get('/search_recipe', async (req, res) => {
   if (req.user) {
     Recipe.find()
       .then(result => {
-        res.render('search_recipe', { currentUser: req.user, posts: result, comments:comments });
+        res.render('search_recipe', { currentUser: req.user, posts: result, comments: comments });
       });
   } else {
     res.redirect('/login');
@@ -338,7 +338,7 @@ router.get('/category', async (req, res) => {
   if (req.user) {
     Recipe.find({ category }) // Filter the recipes by category
       .then(result => {
-        res.render('category', { currentUser: req.user, posts: result, category, comments:comments });
+        res.render('category', { currentUser: req.user, posts: result, category, comments: comments });
       })
       .catch(error => {
         console.error(error);
@@ -573,7 +573,7 @@ router.post('/comment', async (req, res) => {
   // Check if an image was uploaded
 
   // Create the recipe
-  const comment = new Comment({ uploader: uploader, text: text, post: postId, read:false });
+  const comment = new Comment({ uploader: uploader, text: text, post: postId, read: false });
   await comment.save();
   const comments = await Comment.find();
   Recipe.findById(postId)
@@ -596,7 +596,7 @@ router.post('/comment', async (req, res) => {
       console.error('Error adding comment:', error);
       res.status(500).json({ error: 'Internal server error' });
     });
-  
+
   Recipe.findById(postId)
     .then(result => {
       User.findOne({ email: result.uploader })
@@ -615,16 +615,16 @@ router.post('/comment', async (req, res) => {
 });
 
 router.post('/read_comment', async (req, res) => {
-  const { commentId} = req.body;
+  const { commentId } = req.body;
 
   Comment.findById(commentId)
 
-  .then(comment => {
-    comment.read = true; // Add the new comment to the recipe's comments array
-    comment.save();
-    res.redirect('/user_profile');
-  })
-  .catch(err => {
+    .then(comment => {
+      comment.read = true; // Add the new comment to the recipe's comments array
+      comment.save();
+      res.redirect('/user_profile');
+    })
+    .catch(err => {
       // Handle any errors related to finding the recipe
       console.error(err);
     });
@@ -661,7 +661,45 @@ router.delete('/deleteComment', function (req, res) {
     });
 });
 
+router.post('/unlikeFromProfile', async (req, res) => {
+  const { userId, postId } = req.body;
+  try {
+    const current = await User.findById(userId);
+    const post = await Recipe.findById(postId)
+    const user = await User.findOne({ email: post.uploader })
+    console.log(current);
+    console.log(post);
+    console.log(user);
+    current.likedRecipes.pull(postId);
+    await current.save();
+    user.numberOfLikes -= 1;
+    if (user.numberOfLikes <= 4) {
+      user.level = "beginner"
+    }
+    else if (user.numberOfLikes <= 9) {
+      user.level = "professional"
+    }
+    else {
+      user.level = "chef"
+    }
+    await user.save();
+    const result = await Recipe.findByIdAndUpdate(postId, { $inc: { likes: -1 } });
 
+    // Retrieve the saved recipe object IDs
+    const followersIds = user.followers;
+    const followingsIds = user.followedUsers;
+    const postIds = user.uploadedRecipes;
+    // Fetch the saved recipes from the database
+    const followers = await User.find({ _id: { $in: followersIds } });
+    const followings = await User.find({ _id: { $in: followingsIds } });
+    const posts = await Recipe.find({ _id: { $in: postIds } });
+    return res.render('user_profile', { followers: followers, followings: followings, mongo_user: user, current_user: current, posts: posts });
+  } catch (error) {
+    // Handle the error appropriately
+    console.error(error);
+    res.status(500).send('Internal Server Error');
+  }
+});
 
 
 module.exports = router;
