@@ -121,6 +121,7 @@ router.post('/uploadphoto',upload.single('image'),  async(req,res)=>{
     const user = await User.findById(userId);
 // Check if an image was uploaded
   if (req.file) {
+    console.log("hi2")
     // Image uploaded, include it in the recipe data
     user.image = {
       data: fs.readFileSync(req.file.path),
@@ -131,6 +132,7 @@ router.post('/uploadphoto',upload.single('image'),  async(req,res)=>{
   
   res.sendStatus(200);
  } catch (error) {
+      console.log("error")
       console.error('Error creating profilphoto:', error);
       res.status(500).send('Error creating profilphoto. Please try again.');
     }
