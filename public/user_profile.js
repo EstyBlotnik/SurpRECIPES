@@ -112,47 +112,47 @@ trashcans.forEach(trashcan => {
 // });
 
 
-const saveboxes = document.querySelectorAll('button.save');
-saveboxes.forEach(savebox => {
-  savebox.addEventListener('click', (e) => {
-	const endpoint = `/viewRecipe/save`;
-	const data = {
-	  userId: savebox.dataset.user,
-	  postId: savebox.dataset.doc,
-	};
-	fetch(endpoint, {
-	  method: 'POST',
-	  headers: {
-		'Content-Type': 'application/json',
-	  },
-	  body: JSON.stringify(data),
-	})
-	  .then(response => response.json())
-	  .then(data => window.location.href = data.redirect)
-	  .catch(err => console.log(err));
-  });
-});
+// const saveboxes = document.querySelectorAll('button.save');
+// saveboxes.forEach(savebox => {
+//   savebox.addEventListener('click', (e) => {
+// 	const endpoint = `/viewRecipe/save`;
+// 	const data = {
+// 	  userId: savebox.dataset.user,
+// 	  postId: savebox.dataset.doc,
+// 	};
+// 	fetch(endpoint, {
+// 	  method: 'POST',
+// 	  headers: {
+// 		'Content-Type': 'application/json',
+// 	  },
+// 	  body: JSON.stringify(data),
+// 	})
+// 	  .then(response => response.json())
+// 	  .then(data => window.location.href = data.redirect)
+// 	  .catch(err => console.log(err));
+//   });
+// });
 
-const unsaveboxes = document.querySelectorAll('button.unsave');
-unsaveboxes.forEach(unsavebox => {
-  unsavebox.addEventListener('click', (e) => {
-	const endpoint = `/viewRecipe/unsave`;
-	const data = {
-	  userId: unsavebox.dataset.user,
-	  postId: unsavebox.dataset.doc,
-	};
-	fetch(endpoint, {
-	  method: 'POST',
-	  headers: {
-		'Content-Type': 'application/json',
-	  },
-	  body: JSON.stringify(data),
-	})
-	  .then(response => response.json())
-	  .then(data => window.location.href = data.redirect)
-	  .catch(err => console.log(err));
-  });
-});
+// const unsaveboxes = document.querySelectorAll('button.unsave');
+// unsaveboxes.forEach(unsavebox => {
+//   unsavebox.addEventListener('click', (e) => {
+// 	const endpoint = `/viewRecipe/unsave`;
+// 	const data = {
+// 	  userId: unsavebox.dataset.user,
+// 	  postId: unsavebox.dataset.doc,
+// 	};
+// 	fetch(endpoint, {
+// 	  method: 'POST',
+// 	  headers: {
+// 		'Content-Type': 'application/json',
+// 	  },
+// 	  body: JSON.stringify(data),
+// 	})
+// 	  .then(response => response.json())
+// 	  .then(data => window.location.href = data.redirect)
+// 	  .catch(err => console.log(err));
+//   });
+// });
 
 const shareboxes = document.querySelectorAll('button.share');
 shareboxes.forEach(sharebox => {

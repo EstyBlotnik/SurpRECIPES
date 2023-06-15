@@ -119,23 +119,23 @@ router.post('/uploadphoto', upload.single('image'), async (req, res) => {
     console.log("hii")
     // Find the user based on the user ID
     const user = await User.findById(userId);
-// Check if an image was uploaded
-  if (req.file) {
-    console.log("hi2")
-    // Image uploaded, include it in the recipe data
-    user.image = {
-      data: fs.readFileSync(req.file.path),
-      contentType: req.file.mimetype
-    };
-  }
-  await user.save();
-  
-  res.sendStatus(200);
- } catch (error) {
-      console.log("error")
-      console.error('Error creating profilphoto:', error);
-      res.status(500).send('Error creating profilphoto. Please try again.');
+    // Check if an image was uploaded
+    if (req.file) {
+      console.log("hi2")
+      // Image uploaded, include it in the recipe data
+      user.image = {
+        data: fs.readFileSync(req.file.path),
+        contentType: req.file.mimetype
+      };
     }
+    await user.save();
+
+    res.sendStatus(200);
+  } catch (error) {
+    console.log("error")
+    console.error('Error creating profilphoto:', error);
+    res.status(500).send('Error creating profilphoto. Please try again.');
+  }
 });
 
 router.post('/viewOtherProfile', async (req, res) => {
@@ -743,5 +743,55 @@ router.post('/likeFromProfile', async (req, res) => {
   }
 });
 
+
+router.post('/saveFromProfile', async (req, res) => {
+  const { userId, postId } = req.body;
+  try {
+    const current = await User.findById(userId);
+    const post = await Recipe.findById(postId)
+    const user = await User.findOne({ email: post.uploader })
+    current.savedRecipes.push(postId);
+    console.log(current);
+    console.log(post);
+    console.log(user);
+    const followersIds = user.followers;
+    const followingsIds = user.followedUsers;
+    const postIds = user.uploadedRecipes;
+    // Fetch the saved recipes from the database
+    const followers = await User.find({ _id: { $in: followersIds } });
+    const followings = await User.find({ _id: { $in: followingsIds } });
+    const posts = await Recipe.find({ _id: { $in: postIds } });
+    return res.render('user_profile', { followers: followers, followings: followings, mongo_user: user, current_user: current, posts: posts });
+  } catch (error) {
+    // Handle the error appropriately
+    console.error(error);
+    res.status(500).send('Internal Server Error');
+  }
+});
+
+router.post('/unsaveFromProfile', async (req, res) => {
+  const { userId, postId } = req.body;
+  try {
+    const current = await User.findById(userId);
+    const post = await Recipe.findById(postId)
+    const user = await User.findOne({ email: post.uploader })
+    current.savedRecipes.pull(postId);
+    console.log(current);
+    console.log(post);
+    console.log(user);
+    const followersIds = user.followers;
+    const followingsIds = user.followedUsers;
+    const postIds = user.uploadedRecipes;
+    // Fetch the saved recipes from the database
+    const followers = await User.find({ _id: { $in: followersIds } });
+    const followings = await User.find({ _id: { $in: followingsIds } });
+    const posts = await Recipe.find({ _id: { $in: postIds } });
+    return res.render('user_profile', { followers: followers, followings: followings, mongo_user: user, current_user: current, posts: posts });
+  } catch (error) {
+    // Handle the error appropriately
+    console.error(error);
+    res.status(500).send('Internal Server Error');
+  }
+});
 
 module.exports = router;
