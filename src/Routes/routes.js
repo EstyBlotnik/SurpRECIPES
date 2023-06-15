@@ -793,5 +793,26 @@ router.post('/unsaveFromProfile', async (req, res) => {
     res.status(500).send('Internal Server Error');
   }
 });
+router.post('/shareFromProfile', async(req, res) => {
+  const { userId, postId } = req.body;
+  try {
+    const current = await User.findById(userId);
+    const post = await Recipe.findById(postId)
+    const user = await User.findOne({ email: post.uploader })
+    current.sharedRecipes.push(postId);
+    const followersIds = user.followers;
+    const followingsIds = user.followedUsers;
+    const postIds = user.uploadedRecipes;
+    // Fetch the saved recipes from the database
+    const followers = await User.find({ _id: { $in: followersIds } });
+    const followings = await User.find({ _id: { $in: followingsIds } });
+    const posts = await Recipe.find({ _id: { $in: postIds } });
+    return res.render('user_profile', { followers: followers, followings: followings, mongo_user: user, current_user: current, posts: posts });
+  } catch (error) {
+    // Handle the error appropriately
+    console.error(error);
+    res.status(500).send('Internal Server Error');
+  }
+});
 
 module.exports = router;
