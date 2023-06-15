@@ -702,5 +702,46 @@ router.post('/unlikeFromProfile', async (req, res) => {
   }
 });
 
+router.post('/likeFromProfile', async (req, res) => {
+  const { userId, postId } = req.body;
+  console.log();
+  try {
+    const current = await User.findById(userId);
+    const post = await Recipe.findById(postId)
+    const user = await User.findOne({ email: post.uploader })
+    console.log(current);
+    console.log(post);
+    console.log(user);
+    current.likedRecipes.push(postId);
+    await current.save();
+    user.numberOfLikes += 1;
+    if (user.numberOfLikes <= 4) {
+      user.level = "beginner"
+    }
+    else if (user.numberOfLikes <= 9) {
+      user.level = "professional"
+    }
+    else {
+      user.level = "chef"
+    }
+    await user.save();
+    const result = await Recipe.findByIdAndUpdate(postId, { $inc: { likes: 1 } });
+
+    // Retrieve the saved recipe object IDs
+    const followersIds = user.followers;
+    const followingsIds = user.followedUsers;
+    const postIds = user.uploadedRecipes;
+    // Fetch the saved recipes from the database
+    const followers = await User.find({ _id: { $in: followersIds } });
+    const followings = await User.find({ _id: { $in: followingsIds } });
+    const posts = await Recipe.find({ _id: { $in: postIds } });
+    return res.render('user_profile', { followers: followers, followings: followings, mongo_user: user, current_user: current, posts: posts });
+  } catch (error) {
+    // Handle the error appropriately
+    console.error(error);
+    res.status(500).send('Internal Server Error');
+  }
+});
+
 
 module.exports = router;

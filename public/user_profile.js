@@ -69,26 +69,26 @@ trashcans.forEach(trashcan => {
   });
 });
 
-const likeboxes = document.querySelectorAll('button.like');
-likeboxes.forEach(likebox => {
-  likebox.addEventListener('click', (e) => {
-	const endpoint = `/viewRecipe/like`;
-	const data = {
-	  userId: likebox.dataset.user,
-	  postId: likebox.dataset.doc,
-	};
-	fetch(endpoint, {
-	  method: 'POST',
-	  headers: {
-		'Content-Type': 'application/json',
-	  },
-	  body: JSON.stringify(data),
-	})
-	  .then(response => response.json())
-	  .then(data => window.location.href = data.redirect)
-	  .catch(err => console.log(err));
-  });
-});
+// const likeboxes = document.querySelectorAll('button.like');
+// likeboxes.forEach(likebox => {
+//   likebox.addEventListener('click', (e) => {
+// 	const endpoint = `/viewRecipe/like`;
+// 	const data = {
+// 	  userId: likebox.dataset.user,
+// 	  postId: likebox.dataset.doc,
+// 	};
+// 	fetch(endpoint, {
+// 	  method: 'POST',
+// 	  headers: {
+// 		'Content-Type': 'application/json',
+// 	  },
+// 	  body: JSON.stringify(data),
+// 	})
+// 	  .then(response => response.json())
+// 	  .then(data => window.location.href = data.redirect)
+// 	  .catch(err => console.log(err));
+//   });
+// });
 
 // const unlikeboxes = document.querySelectorAll('button.unlike');
 // unlikeboxes.forEach(unlikebox => {
