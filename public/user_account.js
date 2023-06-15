@@ -20,26 +20,26 @@ document.addEventListener('DOMContentLoaded', function() {
     });
   });
 
-  const uploadPhotoBtn = document.querySelector('.submitphoto');
-  uploadPhotoBtn.addEventListener('click', function(){
-    fetch('/uploadphoto', {
-      method: 'POST'
+  // const uploadPhotoBtn = document.querySelector('.submitphoto');
+  // uploadPhotoBtn.addEventListener('click', function(){
+  //   fetch('/uploadphoto', {
+  //     method: 'POST'
     
-    })
-    .then(response => {
-      if (response.ok) {
-         console.log("upload photo")
-        //window.location.href = '/home';
-      } else {
-        // Handle deletion error
-        console.error('Error upload photo account');
-      }
-    })
-    .catch(error => {
-      // Handle any network or server error
-      console.error('Error:', error);
-    });
-  });
+  //   })
+  //   .then(response => {
+  //     if (response.ok) {
+  //        console.log("upload photo")
+  //       //window.location.href = '/home';
+  //     } else {
+  //       // Handle deletion error
+  //       console.error('Error upload photo account');
+  //     }
+  //   })
+  //   .catch(error => {
+  //     // Handle any network or server error
+  //     console.error('Error:', error);
+  //   });
+  // });
     
 
     const deleteAccountBtn = document.querySelector('.delete');
@@ -79,12 +79,20 @@ document.addEventListener('DOMContentLoaded', function() {
       const lastNameInput = document.getElementById('lastname');
       const statusInput = document.getElementById('Status');
       const userNameInput = document.getElementById('user-name');
-  
+    
       // Get the updated value from the input field
       const updatedFirstName = firstNameInput.value;
       const updateLastName = lastNameInput.value;
       const updatedStatus = statusInput.value;
       const updatedUserName = userNameInput.value;
+      console.log(updatedUserName)
+      if (updatedUserName === '' ){
+        const contentDiv = document.getElementById("message");
+        contentDiv.style.color = "black";
+        const successMessage = "Username cannot be empty.";
+        contentDiv.innerHTML = successMessage;
+        return;
+      }
       // Send an HTTP request to update the value in the database
       fetch('/updateFirstName', {
         method: 'PUT',
@@ -123,12 +131,36 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 
-    const submitPasswordButton = document.querySelector('.submit');
+    const submitPasswordButton = document.querySelector('.submitpassword');
     submitPasswordButton.addEventListener('click', function() {
       const oldPassword = document.getElementById('oldPassword').value;
       const newPassword = document.getElementById('newPassword').value;
       const confirmPassword = document.getElementById('confirmPassword').value;
-    
+      if (oldPassword === '' || newPassword === '' || confirmPassword === '') {
+        const contentDiv = document.getElementById("success");
+        const data = "The password cannot be changed, if you do not fill in all the fields above";
+        contentDiv.style.color = "black";
+        contentDiv.innerHTML = data;
+        return; // Exit the function if any field is empty
+      }
+
+    // Validate the input fields
+    if (newPassword.length < 6 || confirmPassword.length < 6 && newPassword.length >6 || confirmPassword.length > 6) {
+      const contentDiv = document.getElementById("success");
+      const data = " Please enter a password with 6 characters.";
+        contentDiv.style.color = "black";
+        contentDiv.innerHTML = data;
+        return;
+    }
+
+    if (newPassword !== confirmPassword) {
+      const contentDiv = document.getElementById("success");
+      const data = " The password cannot be changed, one or more of the fields are incorrect";
+      contentDiv.style.color = "black";
+      contentDiv.innerHTML = data;
+      return;
+    }
+
       // Call the changePassword function
       changePassword(oldPassword, newPassword, confirmPassword);
     });
@@ -178,7 +210,10 @@ document.addEventListener('DOMContentLoaded', function() {
             // Handle any errors that occur during the request
           });
         } else {
-          alert("Old password is incorrect.");
+          const contentDiv = document.getElementById("success");
+              contentDiv.style.color = "black";
+              const successMessage = "The old password is incorrect";
+              contentDiv.innerHTML = successMessage;
         }
       })
       .catch(error => {
@@ -187,9 +222,5 @@ document.addEventListener('DOMContentLoaded', function() {
       });
     }
    
-    
-    
-
-  
 
   });

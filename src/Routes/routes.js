@@ -113,30 +113,30 @@ router.get('/about', userController.renderAbout);
 
 router.get('/viewOtherProfile', userController.renderUserProfile);
 
-router.post('/uploadphoto', upload.single('image'), async (req, res) => {
-  try {
-    const userId = req.user.id; // Assuming req.user contains the user's ID
-    console.log("hii")
-    // Find the user based on the user ID
-    const user = await User.findById(userId);
-// Check if an image was uploaded
-  if (req.file) {
-    console.log("hi2")
-    // Image uploaded, include it in the recipe data
-    user.image = {
-      data: fs.readFileSync(req.file.path),
-      contentType: req.file.mimetype
-    };
-  }
-  await user.save();
+// router.post('/uploadphoto', upload.single('image'), async (req, res) => {
+//   try {
+//     const userId = req.user.id; // Assuming req.user contains the user's ID
+//     console.log("hii")
+//     // Find the user based on the user ID
+//     const user = await User.findById(userId);
+// // Check if an image was uploaded
+//   if (req.file) {
+//     console.log("hi2")
+//     // Image uploaded, include it in the recipe data
+//     user.image = {
+//       data: fs.readFileSync(req.file.path),
+//       contentType: req.file.mimetype
+//     };
+//   }
+//   await user.save();
   
-  res.sendStatus(200);
- } catch (error) {
-      console.log("error")
-      console.error('Error creating profilphoto:', error);
-      res.status(500).send('Error creating profilphoto. Please try again.');
-    }
-});
+//   res.sendStatus(200);
+//  } catch (error) {
+//       console.log("error")
+//       console.error('Error creating profilphoto:', error);
+//       res.status(500).send('Error creating profilphoto. Please try again.');
+//     }
+// });
 
 router.post('/viewOtherProfile', async (req, res) => {
   const { email } = req.body;
@@ -358,18 +358,28 @@ router.get('/notification', userController.renderUserNotes);
 //Define the route to handle the delete request
 router.delete('/deleteAccount', function (req, res) {
   const userId = req.user._id;
-  console.log(userId);
+
   User.findByIdAndRemove(userId)
     .then(() => {
-      // Deletion successful
-      res.sendStatus(200);
+      // Deletion successful, now delete the user's recipes
+      Recipe.deleteMany({ uploader: userId })
+        .then(() => {
+          // Recipes deleted successfully
+          res.sendStatus(200);
+        })
+        .catch(error => {
+          // Handle recipe deletion error
+          console.error(error);
+          res.sendStatus(500);
+        });
     })
     .catch(error => {
-      // Handle deletion error
+      // Handle user deletion error
       console.error(error);
       res.sendStatus(500);
     });
 });
+
 
 
 router.post('/checkOldPassword', async (req, res) => {
