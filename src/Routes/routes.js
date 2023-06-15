@@ -225,8 +225,7 @@ router.get('/home', async (req, res) => {
       followedUsers.forEach(followedUser => {
         recipesId = recipesId.concat(followedUser.uploadedRecipes, followedUser.sharedRecipes);
       });
-
-      const recipes = await Recipe.find({ _id: { $in: recipesId } });
+      const recipes = await Recipe.find({ _id: { $in: recipesId } }).sort({ createdAt: -1 });
 
       res.render('home', { currentUser: req.user, posts: recipes, unreadComments: unreadComments, comments: comments });
     } catch (error) {
