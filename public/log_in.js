@@ -157,6 +157,8 @@ function signUp(event) {
   const email = signUpForm.querySelector('input[type="email"]').value;
   const password = signUpForm.querySelector('input[type="password"]').value;
 
+    }
+
   // Retrieve the value of the "confirm-password" field
   const confirmPassword = signUpForm.querySelector('input[type="password"][name="confirm-password"]').value;
 
@@ -193,6 +195,7 @@ function signUp(event) {
       email: email,
       password: password,
       username: username,
+      createdAt: new Date()
     }),
   })
     .then(response => response.json())
@@ -206,7 +209,7 @@ function signUp(event) {
       errorMsgUp.textContent = 'The user already exists.';
     });
 
-}
+
 
 function showError(element, message) {
   const errorContainer = element.parentElement.querySelector('.error-message');

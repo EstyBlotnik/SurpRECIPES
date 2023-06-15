@@ -179,6 +179,14 @@
 				<h3>My Account</h3>
 				<hr>
 			</div>
+
+			<!-- button -->
+			<div class="gap-3 d-md-flex justify-content-md-end text-center">
+				<button class="link-button" onclick="window.location.href='/recipeSaved'">Saved Recipe</button>
+				<button class="link-button" onclick="window.location.href='/recipeLiked'">Liked Recipe</button>
+
+			</div>
+
 			<!-- Form START -->
 			<form class="file-upload">
 				<div class="row mb-5 gx-5">
@@ -225,7 +233,7 @@
                                   <!-- Join Date -->
 								<div class="Join Date">
 									<label for="inputJoinDate" class="form-label">Join Date*</label>
-									<input type="Join Date" class="form-control" id="Join Date" value="24.4.23"readonly>
+									<input type="text" class="form-control" id="Join Date" value="<%= mongo_user.createdAt ? mongo_user.createdAt.toLocaleDateString('en-GB') : 'N/A' %>" readonly>
 									<button type="button" class="edit">Edit Details</button>
                                     <button type="button" class="editsubmit">Submit</button>
 									<div id="message"></div>
@@ -293,6 +301,7 @@
 								  var numberOfLikes = <%= mongo_user.numberOfLikes %>;
 								  var numUploadedRecipes = <%= mongo_user.uploadedRecipes.length %>;
 								  var result = numberOfLikes / numUploadedRecipes;
+								  console.log(mongo_user.numberOfLikes , mongo_user.uploadedRecipes.length )
 							  
 								  resultContainer.innerHTML = "<p>Average likes per uploaded recipe : " + result + "</p>";
 								});
@@ -304,11 +313,6 @@
 						</div>
 					</div>
 				</div> <!-- Row END -->
-				<!-- button -->
-				<div class="gap-3 d-md-flex justify-content-md-end text-center">
-					<a href="/recipeSaved">Saved Recipe</a>
-					<a href="/recipeLiked">Liked Recipe</a>
-				</div>
 			</form> <!-- Form END -->
 		</div>
 	</div>

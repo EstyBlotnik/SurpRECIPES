@@ -2,15 +2,15 @@
 <html lang="en">
 
 <head>
-	<meta charset="UTF-8">
+  <meta charset="UTF-8">
 
-	<%- include('./partials/head.ejs') %>
-		
-		
-		 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+  <%- include('./partials/head.ejs') %>
+
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
   <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
   <link rel="mask-icon" type="image/x-icon" href="https://cpwebassets.codepen.io/assets/favicon/logo-pin-b4b4269c16397ad2f0f7a01bcdf513a1994f4c94b8af2f191c09eb0d601762b1.svg" color="#111" />
- 
+
   <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/1.0.1/tailwind.min.css'>
   <link rel='stylesheet' href='https://cdn.lineicons.com/1.0.1/LineIcons.min.css'>
   <link rel="stylesheet" type="text/css" href="user_profile.css">
@@ -18,320 +18,271 @@
 </head>
 
 <body>
-	<%- include('./partials/header.ejs') %>
-		<div class="container">
-			<div class="profile-header">
-				<div class="profile-img">
-					<% if (mongo_user.image && mongo_user.image.data) { %>
-						<img src="data:<%= mongo_user.image.contentType %>;base64,<%= mongo_user.image.data.toString('base64') %>" alt="photo Image" style="float: right; margin-right: 50px;margin-top: -70px; height: 200px; border: 1px solid #333; border-radius: 5px;">
-					  <% } else { %>
-						<img src="./defaltuserprofile.png" width="200">
-					  <% } %>
-					
-				</div>
-			</div>
-		</div>
-		</div>
+  <%- include('./partials/header.ejs') %>
+  <div class="container">
+    <div class="profile-header">
+      <div class="profile-img">
+        <% if (mongo_user.image && mongo_user.image.data) { %>
+        <img src="data:<%= mongo_user.image.contentType %>;base64,<%= mongo_user.image.data.toString('base64') %>" alt="photo Image" style="float: right; margin-right: 50px;margin-top: -70px; height: 200px; border: 1px solid #333; border-radius: 5px;">
+        <% } else { %>
+        <img src="./defaltuserprofile.png" width="200">
+        <% } %>
 
-		<div class="main-bd" style="margin-right: 50px; width:300px;">
-			<div class="left-side">
-				<div class="profile-side">
-					<h1 class="user-name" style="font-family: Open Sans, Helvetica, Arial, sans-serif; font-size:35px ;  ">
-						<%= mongo_user.username %><br></br>
-					</h1>
-					<div class="my-level" style="font-family: Open Sans, Helvetica, Arial, sans-serif; font-size:25px ;  ">
-						<h3>My Level: <p class="level" style="font-family: Open Sans, Helvetica, Arial, sans-serif; font-size:13px ;">
-							<br>
-								<%= mongo_user.level %><br></br>
-							</p>
-						</h3>
+      </div>
+    </div>
+  </div>
+  </div>
 
-					</div>
-					<div class="profile-btn">
-						<%if (mongo_user.email===current_user.email){ %>
-							<button onclick="redirectToUserAccount()" class="my-acount-btn" id="my-acount-btn"
-								data-doc="<%= mongo_user._id %>" data-user="<%= current_user._id %>"><i
-									class="my-acount"></i> My
-								Acount</button>
-							<% }else {%>
-								<% if (current_user.followedUsers.includes(mongo_user._id)) { %>
-									<form action="/unfollow" method="POST">
-										<button class="unfollow-btn" id="unfollow-btn"
-											data-uploader="<%= mongo_user._id %>" data-user="<%= current_user._id %>">
-											<i class="unfollow"></i> UnFollow
-										</button>
-										<input type="hidden" name="uploader" value="<%= mongo_user._id  %>">
-										<input type="hidden" name="current_user" value="<%= current_user._id %>">
-									</form>
-									<% } else { %>
-										<form action="/follow" method="POST">
-											<button class="follow-btn" id="follow-btn"
-												data-uploader="<%= mongo_user._id %>"
-												data-user="<%= current_user._id %>">
-												<i class="follow"></i> Follow
-											</button>
-											<input type="hidden" name="uploader" value="<%= mongo_user._id %>">
-											<input type="hidden" name="current_user" value="<%= current_user._id  %>">
-										</form>
-										<% } %>
-											<% } %>
-					</div>
-					<div class="follow-nav">
-					</div>
-				</div>
-			</div>
-			<div class="right-side">
-				<div class="nav">
-					<ul>
-						<li onclick class="Followings-num">
-							<span class="button">
-								<%= followings.length %>
-							</span>
-							<span class="button-text">Followings</span>
-							<div id="followings-list" class="followings-list">
-								<% if (followings && followings.length> 0) { %>
-									<% followings.forEach(function(item) { %>
-										<form action="/viewOtherProfile" method="post">
-											<button
-												class="inline-block list-none text-sm uploader"
-												data-doc="<%=item.email %>"
-												data-user="<%= mongo_user._id %>">
-												<span class="hidden md:inline">
-													<%=item.email%>
-												</span>
-											</button>
-											<input type="hidden" name="email"
-												value="<%= item.email %>">
-										</form>
-										<% }) %>
-											<% } else { %>
-												<p>No followings found.</p>
-												<% } %>
-							</div>
-						</li>
+  <div class="main-bd" style="margin-right: 50px; width:300px;">
+    <div class="left-side">
+      <div class="profile-side">
+        <h1 class="user-name" style="font-family: Open Sans, Helvetica, Arial, sans-serif; font-size:35px ;  ">
+          <%= mongo_user.username %><br></br>
+        </h1>
+        <div class="my-level" style="font-family: Open Sans, Helvetica, Arial, sans-serif; font-size:25px ;  ">
+          <h3>My Level: <p class="level" style="font-family: Open Sans, Helvetica, Arial, sans-serif; font-size:13px ;">
+              <br>
+              <%= mongo_user.level %><br></br>
+            </p>
+          </h3>
 
-						<li class="Followers-num">
-							<span class="button">
-								<%= followers.length %>
-							</span>
-							<span class="button-text">Followers</span>
-							<div id="followers-list" class="followers-list">
-								<% if (followers && followers.length> 0) { %>
-									<% followers.forEach(function(item) { %>
-										<form action="/viewOtherProfile" method="post">
-											<button
-												class="inline-block list-none text-sm uploader"
-												data-doc="<%=item.email %>"
-												data-user="<%= mongo_user._id %>">
-												<span class="hidden md:inline">
-													<%=item.email%>
-												</span>
-											</button>
-											<input type="hidden" name="email"
-												value="<%= item.email %>">
-										</form>
-									
-										<% }) %>
-											<% } else { %>
-												<p>No followers found.</p>
-												<% } %>
-							</div>
-						</li>
+        </div>
+        <div class="profile-btn">
+          <%if (mongo_user.email===current_user.email){ %>
+          <button onclick="redirectToUserAccount()" class="my-acount-btn" id="my-acount-btn" data-doc="<%= mongo_user._id %>" data-user="<%= current_user._id %>"><i class="my-acount"></i> My
+            Acount</button>
+          <% }else {%>
+          <% if (current_user.followedUsers.includes(mongo_user._id)) { %>
+          <form action="/unfollow" method="POST">
+            <button class="unfollow-btn" id="unfollow-btn" data-uploader="<%= mongo_user._id %>" data-user="<%= current_user._id %>">
+              <i class="unfollow"></i> UnFollow
+            </button>
+            <input type="hidden" name="uploader" value="<%= mongo_user._id  %>">
+            <input type="hidden" name="current_user" value="<%= current_user._id %>">
+          </form>
+          <% } else { %>
+          <form action="/follow" method="POST">
+            <button class="follow-btn" id="follow-btn" data-uploader="<%= mongo_user._id %>" data-user="<%= current_user._id %>">
+              <i class="follow"></i> Follow
+            </button>
+            <input type="hidden" name="uploader" value="<%= mongo_user._id %>">
+            <input type="hidden" name="current_user" value="<%= current_user._id  %>">
+          </form>
+          <% } %>
+          <% } %>
+        </div>
+        <div class="follow-nav">
+        </div>
+      </div>
+    </div>
+    <div class="right-side">
+      <div class="nav">
+        <ul>
+          <li onclick class="Followings-num">
+            <span class="button">
+              <%= followings.length %>
+            </span>
+            <span class="button-text">Followings</span>
+            <div id="followings-list" class="followings-list">
+              <% if (followings && followings.length> 0) { %>
+              <% followings.forEach(function(item) { %>
+              <form action="/viewOtherProfile" method="post">
+                <button class="inline-block list-none text-sm uploader" data-doc="<%=item.email %>" data-user="<%= mongo_user._id %>">
+                  <span class="hidden md:inline">
+                    <%=item.email%>
+                  </span>
+                </button>
+                <input type="hidden" name="email" value="<%= item.email %>">
+              </form>
+              <% }) %>
+              <% } else { %>
+              <p>No followings found.</p>
+              <% } %>
+            </div>
+          </li>
 
-					</ul>
+          <li class="Followers-num">
+            <span class="button">
+              <%= followers.length %>
+            </span>
+            <span class="button-text">Followers</span>
+            <div id="followers-list" class="followers-list">
+              <% if (followers && followers.length> 0) { %>
+              <% followers.forEach(function(item) { %>
+              <form action="/viewOtherProfile" method="post">
+                <button class="inline-block list-none text-sm uploader" data-doc="<%=item.email %>" data-user="<%= mongo_user._id %>">
+                  <span class="hidden md:inline">
+                    <%=item.email%>
+                  </span>
+                </button>
+                <input type="hidden" name="email" value="<%= item.email %>">
+              </form>
 
-				</div>
-				<div class="w-full min-h-screen p-3 sm:p-6 md:p-12 casing">
+              <% }) %>
+              <% } else { %>
+              <p>No followers found.</p>
+              <% } %>
+            </div>
+          </li>
 
-					<!-- <main class="w-full lg:w-3/4 mx-auto flex flex-wrap content-start"> -->
-					<main class="w-full lg:w-3/4 mx-auto flex flex-wrap content-start" style=" margin-left: 50px;">
-						<!-- Inner grid -->
-						
-								<% posts.forEach(function(post) { %>
+        </ul>
 
-									<div class="w-full p-1"  style=" margin-left: -80px;width: 740px;">
+      </div>
+      <div class="w-full min-h-screen p-3 sm:p-6 md:p-12 casing">
 
-										<!-- Social-media-post-like card -->
-										<div id="card-3"
-											class="bg-gray-100 shadow-lg rounded overflow-hidden flex flex-wrap flex-col">
-											<div class="container">
-												<header class="p-3 flex items-center">
-													<img src="nomima.jpg" alt="<%=post.uploader%>"
-														class="rounded-full mr-2" width="80"
-														style="border-radius: 50%;" />
-													<div>
-														<form action="/viewOtherProfile" method="post">
-															<button
-																class="inline-block list-none text-sm font-semibold uploader"
-																data-doc="<%= post.uploader %>"
-																data-user="<%= mongo_user._id %>">
-																<span class="hidden md:inline">
-																	<%=post.uploader%>
-																</span>
-															</button>
-															<input type="hidden" name="email"
-																value="<%= post.uploader %>">
-														</form>
-														<small class="text-light text-gray-600">
-															<%=post.createdAt%>
-														</small>
-													</div>
-												</header>
-												<h2>
-													<%=post.name %>
-												</h2>
-												<div class="inline-block list-none text-sm text-white font-semibold">
-													<div class="inline-block bg-blue-500 px-2 rounded-full"><span
-															id="category-name">
-															<%=post.category%>
-														</span></div>
-													<div class="inline-block bg-green-400 px-2 rounded-full"> <span
-															id="preparation-time">
-															<%=post.preparationTime%>
-														</span> min preparation </div>
-													<div class="inline-block bg-pink-500 px-2 rounded-full"><span
-															id="amount-of-portions">
-															<%=post.dishes%>
-														</span> portions </div>
-												</div>
-												<div id="recipe-details">
-													<% if (post.image && post.image.data) { %>
-														<img src="data:<%= post.image.contentType %>;base64,<%= post.image.data.toString('base64') %>" alt="Recipe Image" style="float: right; margin-right: 50px;margin-top: -70px; height: 200px; border: 1px solid #333; border-radius: 5px;">
-													  <% } else { %>
-														<img src="download.png" alt="Recipe Image" id="recipe-image"
-														style="float: right; margin-right: 50px;margin-top: -70px; height: 200px; border: 1px solid #333; border-radius: 5px;">
-													  <% } %>
-													<!-- <button class="block w-full p-2 hover:bg-gray-200 text-gray-700 hover:text-blue-500 focus:outline-none focus:bg-blue-100 focus:text-blue-500"> -->
-													<!-- <ul class="toggle-content"> -->
-													<button class="IngredientsList toggle-button" name="ingButton"
-														data-doc="<%= post._id %>">Ingredients</button>
-													<div id="ing-<%=post._id%>">
-														<% post.ingredients.forEach(ingredient=>{%>
-															<li class="post-element">
-																<%=ingredient%>
-															</li>
-															<% }) %>
-													</div>
-													<!-- </ul> -->
-													<button class="InstructionsList toggle-button" name="insButton"
-														data-doc="<%= post._id %>">Instructions</button>
-													<div class="post-element" id="ins-<%=post._id%>"
-														style="margin-right: 100px;">
-														<%=post.instructions%>
-													</div>
+        <!-- <main class="w-full lg:w-3/4 mx-auto flex flex-wrap content-start"> -->
+        <main class="w-full lg:w-3/4 mx-auto flex flex-wrap content-start" style=" margin-left: 50px;">
+          <!-- Inner grid -->
 
-													<footer class="w-full border-t border-gray-200 mt-3">
-														<ul class="list-none w-full flex text-center" role="navigation">
+          <% posts.forEach(function(post) { %>
 
-															<%if (current_user.email!==post.uploader){%>
-																<% if(current_user.likedRecipes.includes(post._id)){ %>
-																	<li class="inline-block w-1/3">
-																		<form action="/unlikeFromProfile" method="post">
-																			<button class="block w-full p-2 hover:bg-gray-200 text-gray-700 hover:text-gray-500 focus:outline-none focus:bg-gray-100 focus:text-gray-500 unlike" data-doc="<%= post._id %>" data-user="<%= current_user._id %>">
-																			  <!-- <span class="hidden md:inline"><%=post.likes %> </span> -->
-																			  <span class="fas fa-heart"></span>
-																			  <span class="hidden md:inline">Unlike</span>
-																			</button>
-																			<input type="hidden" name="userId" value="<%=current_user._id %>">
-																			<input type="hidden" name="postId" value="<%=post._id %>">
-																		  </form>
-																	</li>
-																	<% } else{%>
-																		<li class="inline-block w-1/3">
-																			<button
-																				class="block w-full p-2 hover:bg-gray-200 text-gray-700 hover:text-pink-600 focus:outline-none focus:bg-pink-100 focus:text-pink-600 like"
-																				data-doc="<%= post._id %>"
-																				data-user="<%= current_user._id %>">
-																				<span class="hidden md:inline">
-																					<%=post.likes %>
-																				</span>
-																				<span class="lni-heart"></span>
-																				<span
-																					class="hidden md:inline">Like</span>
-																			</button>
-																		</li>
-																		<% } %>
-																			<% if(!current_user.savedRecipes.includes(post._id)){
-																				%>
-																				<li class="inline-block w-1/3">
-																					<button
-																						class="block w-full p-2 hover:bg-gray-200 text-gray-700 hover:text-blue-500 focus:outline-none focus:bg-blue-100 focus:text-blue-500 save"
-																						data-doc="<%= post._id %>"
-																						data-user="<%= current_user._id %>">
-																						<span
-																							class="lni-bookmark"></span>
-																						<span
-																							class="hidden md:inline">Save</span>
-																					</button>
-																				</li>
-																				<% }else{ %>
-																					<li class="inline-block w-1/3">
-																						<button
-																							class="block w-full p-2 hover:bg-gray-200 text-gray-700 hover:text-blue-500 focus:outline-none focus:bg-blue-100 focus:text-blue-500 unsave"
-																							data-doc="<%= post._id %>"
-																							data-user="<%= current_user._id %>">
-																							<span
-																								class="fas fa-bookmark"></span>
-																							<span
-																								class="hidden md:inline">Unsave</span>
-																						</button>
-																					</li>
-																					<% } %>
-																						<li class="inline-block w-1/3">
-																							<button
-																								class="block w-full p-2 hover:bg-gray-200 text-gray-700 hover:text-blue-500 focus:outline-none focus:bg-blue-100 focus:text-blue-500 share"
-																								data-doc="<%= post._id %>"
-																								data-user="<%= current_user._id %>">
-																								<span
-																									class="lni-share-alt"></span>
-																								<span
-																									class="hidden md:inline">Share</span>
-																							</button>
-																						</li>
-																						<%}else{%>
-																							<li
-																								class="inline-block w-1/3">
-																								<div
-																									class="block w-full p-2 text-gray-700 focus:bg-pink-100 focus:text-pink-600">
-																									<span
-																										class="hidden md:inline">
-																										<%=post.likes %>
-																									</span>
-																									<span
-																										class="lni-heart"></span>
-																									<span
-																										class="hidden md:inline">Likes</span>
-																								</div>
-																							</li>
-																							<li
-																								class="inline-block w-1/3">
-																								<form
-																									action="/editRecipe"
-																									method="post">
-																									<button
-																										class="block w-full p-2 hover:bg-gray-200 text-gray-700 hover:text-blue-500 focus:outline-none focus:bg-blue-100 focus:text-blue-500 ">
-																										<span
-																											class="lni-pencil"></span>
-																										<span
-																											class="hidden md:inline">Edit</span>
-																									</button>
-																									<input type="hidden"
-																										name="postId"
-																										value="<%= post._id %>">
-																								</form>
-																							</li>
-																							<li
-																								class="inline-block w-1/3">
-																								<button
-																									class="block w-full p-2 hover:bg-gray-200 text-gray-700 hover:text-red-500 focus:outline-none focus:bg-red-100 focus:text-red-500 delete"
-																									data-doc="<%= post._id %>">
-																									<span
-																										class="lni-trash"></span>
-																									<span
-																										class="hidden md:inline">Delete</span>
-																								</button>
-																							</li>
-																							<%}%>
+          <div class="w-full p-1" style=" margin-left: -80px;width: 740px;">
+
+            <!-- Social-media-post-like card -->
+            <div id="card-3" class="bg-gray-100 shadow-lg rounded overflow-hidden flex flex-wrap flex-col">
+              <div class="container">
+                <header class="p-3 flex items-center">
+                  <img src="nomima.jpg" alt="<%=post.uploader%>" class="rounded-full mr-2" width="80" style="border-radius: 50%;" />
+                  <div>
+                    <form action="/viewOtherProfile" method="post">
+                      <button class="inline-block list-none text-sm font-semibold uploader" data-doc="<%= post.uploader %>" data-user="<%= mongo_user._id %>">
+                        <span class="hidden md:inline">
+                          <%=post.uploader%>
+                        </span>
+                      </button>
+                      <input type="hidden" name="email" value="<%= post.uploader %>">
+                    </form>
+                    <small class="text-light text-gray-600">
+                      <%=post.createdAt%>
+                    </small>
+                  </div>
+                </header>
+                <h2 style="font-size: 30px;">
+                  <strong><%=post.name %></strong>
+                </h2>
+
+                <div class="inline-block list-none text-sm text-white font-semibold">
+                  <div class="inline-block bg-blue-500 px-2 rounded-full"><span id="category-name">
+                      <%=post.category%>
+                    </span></div>
+                  <div class="inline-block bg-green-400 px-2 rounded-full"> <span id="preparation-time">
+                      <%=post.preparationTime%>
+                    </span> min prepar </div>
+                  <div class="inline-block bg-pink-500 px-2 rounded-full"><span id="amount-of-portions">
+                      <%=post.dishes%>
+                    </span> portions </div>
+                </div>
+                <div id="recipe-details">
+                  <% if (post.image && post.image.data) { %>
+                  <img src="data:<%= post.image.contentType %>;base64,<%= post.image.data.toString('base64') %>" alt="Recipe Image" style="float: right; margin-right: 50px;margin-top: -70px; height: 200px; border: 1px solid #333; border-radius: 5px;">
+                  <% } else { %>
+                  <img src="download.png" alt="Recipe Image" id="recipe-image" style="float: right; margin-right: 50px;margin-top: -70px; height: 200px; border: 1px solid #333; border-radius: 5px;">
+                  <% } %>
+                  <!-- <button class="block w-full p-2 hover:bg-gray-200 text-gray-700 hover:text-blue-500 focus:outline-none focus:bg-blue-100 focus:text-blue-500"> -->
+                  <!-- <ul class="toggle-content"> -->
+                  <button class="IngredientsList toggle-button" name="ingButton" data-doc="<%= post._id %>">Ingredients</button>
+                  <div id="ing-<%=post._id%>">
+                    <% post.ingredients.forEach(ingredient=>{%>
+                    <li class="post-element">
+                      <%=ingredient%>
+                    </li>
+                    <% }) %>
+                  </div>
+                  <!-- </ul> -->
+                  <button class="InstructionsList toggle-button" name="insButton" data-doc="<%= post._id %>">Instructions</button>
+                  <div class="post-element" id="ins-<%=post._id%>" style="margin-right: 100px;">
+                    <%=post.instructions%>
+                  </div>
+
+                  <footer class="w-full border-t border-gray-200 mt-3">
+                    <ul class="list-none w-full flex text-center" role="navigation">
+
+                      <%if (current_user.email!==post.uploader){%>
+                      <% if(current_user.likedRecipes.includes(post._id)){ %>
+                      <li class="inline-block w-1/3">
+                        <form action="/unlikeFromProfile" method="post">
+                          <button class="block w-full p-2 hover:bg-gray-200 text-gray-700 hover:text-gray-500 focus:outline-none focus:bg-gray-100 focus:text-gray-500 unlike" data-doc="<%= post._id %>" data-user="<%= current_user._id %>">
+                            <!-- <span class="hidden md:inline"><%=post.likes %> </span> -->
+                            <span class="fas fa-heart"></span>
+                            <span class="hidden md:inline">Unlike</span>
+                          </button>
+                          <input type="hidden" name="userId" value="<%=current_user._id %>">
+                          <input type="hidden" name="postId" value="<%=post._id %>">
+                        </form>
+                      </li>
+                      <% } else{%>
+                      <li class="inline-block w-1/3">
+                        <form action="/likeFromProfile" method="post">
+                          <button class="block w-full p-2 hover:bg-gray-200 text-gray-700 hover:text-pink-600 focus:outline-none focus:bg-pink-100 focus:text-pink-600 ">
+                            <span class="hidden md:inline"><%=post.likes %> </span>
+                            <span class="lni-heart"></span>
+                            <span class="hidden md:inline">like</span>
+                          </button>
+                          <input type="hidden" name="userId" value="<%=current_user._id %>">
+                          <input type="hidden" name="postId" value="<%=post._id %>">
+                        </form>
+                      </li>
+                      <% } %>
+                      <% if(!current_user.savedRecipes.includes(post._id)){														%>
+                      <li class="inline-block w-1/3">
+                        <form action="/saveFromProfile" method="post">
+                          <button class="block w-full p-2 hover:bg-gray-200 text-gray-700 hover:text-blue-500 focus:outline-none focus:bg-blue-100 focus:text-blue-500 save" data-doc="<%= post._id %>" data-user="<%= current_user._id %>">
+                            <span class="hidden md:inline"><%=post.likes %> </span>
+                            <span class="lni-bookmark"></span>
+                            <span class="hidden md:inline">Save</span>
+                          </button>
+                          <input type="hidden" name="userId" value="<%=current_user._id %>">
+                          <input type="hidden" name="postId" value="<%=post._id %>">
+                        </form>
+                      </li>
+                      <% }else{ %>
+                      <li class="inline-block w-1/3">
+                        <form action="/unsaveFromProfile" method="post">
+                          <button class="block w-full p-2 hover:bg-gray-200 text-gray-700 hover:text-blue-500 focus:outline-none focus:bg-blue-100 focus:text-blue-500 unsave" data-doc="<%= post._id %>" data-user="<%= current_user._id %>">
+                            <span class="fas fa-bookmark"></span>
+                            <span class="hidden md:inline">Unsave</span>
+                          </button>
+                          <input type="hidden" name="userId" value="<%=current_user._id %>">
+                          <input type="hidden" name="postId" value="<%=post._id %>">
+                        </form>
+                      </li>
+                      <% } %>
+                      <li class="inline-block w-1/3">
+						<form action="/shareFromProfile" method="post">
+							<button class="block w-full p-2 hover:bg-gray-200 text-gray-700 hover:text-blue-500 focus:outline-none focus:bg-blue-100 focus:text-blue-500 share" data-doc="<%= post._id %>" data-user="<%= current_user._id %>">
+								<span class="lni-share-alt"></span>
+								<span class="hidden md:inline">Share</span>
+							  </button>
+							<input type="hidden" name="userId" value="<%=current_user._id %>">
+							<input type="hidden" name="postId" value="<%=post._id %>">
+						  </form>
+                      </li>
+                      <%}else{%>
+                      <li class="inline-block w-1/3">
+                        <div class="block w-full p-2 text-gray-700 focus:bg-pink-100 focus:text-pink-600">
+                          <span class="hidden md:inline">
+                            <%=post.likes %>
+                          </span>
+                          <span class="lni-heart"></span>
+                          <span class="hidden md:inline">Likes</span>
+                        </div>
+                      </li>
+                      <li class="inline-block w-1/3">
+                        <form action="/editRecipe" method="post">
+                          <button class="block w-full p-2 hover:bg-gray-200 text-gray-700 hover:text-blue-500 focus:outline-none focus:bg-blue-100 focus:text-blue-500 ">
+                            <span class="lni-pencil"></span>
+                            <span class="hidden md:inline">Edit</span>
+                          </button>
+                          <input type="hidden" name="postId" value="<%= post._id %>">
+                        </form>
+                      </li>
+                      <li class="inline-block w-1/3">
+                        <button class="block w-full p-2 hover:bg-gray-200 text-gray-700 hover:text-red-500 focus:outline-none focus:bg-red-100 focus:text-red-500 delete" data-doc="<%= post._id %>">
+                          <span class="lni-trash"></span>
+                          <span class="hidden md:inline">Delete</span>
+                        </button>
+                      </li>
+                      <%}%>
 
 																								<li
 																									class="inline-block w-1/3">
@@ -351,17 +302,17 @@
 										</div>
 									</div>
 									<% }) %>
-					</main>
-				</div>
+        </main>
+      </div>
 
 
 
-			</div>
-		</div>
+    </div>
+  </div>
 
 
-		</div>
-		<script src="user_profile.js"></script>
+  </div>
+  <script src="user_profile.js"></script>
 </body>
 
 </html>
