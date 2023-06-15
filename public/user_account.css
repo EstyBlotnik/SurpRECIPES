@@ -235,7 +235,7 @@ body {
     font-family: "Open Sans", Helvetica, Arial, sans-serif;
   }
 
-  .edit, .editsubmit, .submit, .delete, .statisticl-button {
+  .edit, .editsubmit, .submit, .delete, .statisticl-button , .link-button {
 
     background-color: #d4af7a;
     color: #fff;
