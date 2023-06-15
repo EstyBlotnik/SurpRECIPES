@@ -20,26 +20,26 @@ document.addEventListener('DOMContentLoaded', function() {
     });
   });
 
-  const uploadPhotoBtn = document.querySelector('.submitphoto');
-  uploadPhotoBtn.addEventListener('click', function(){
-    fetch('/uploadphoto', {
-      method: 'POST'
+  // const uploadPhotoBtn = document.querySelector('.submitphoto');
+  // uploadPhotoBtn.addEventListener('click', function(){
+  //   fetch('/uploadphoto', {
+  //     method: 'POST'
     
-    })
-    .then(response => {
-      if (response.ok) {
-         console.log("upload photo")
-        //window.location.href = '/home';
-      } else {
-        // Handle deletion error
-        console.error('Error upload photo account');
-      }
-    })
-    .catch(error => {
-      // Handle any network or server error
-      console.error('Error:', error);
-    });
-  });
+  //   })
+  //   .then(response => {
+  //     if (response.ok) {
+  //        console.log("upload photo")
+  //       //window.location.href = '/home';
+  //     } else {
+  //       // Handle deletion error
+  //       console.error('Error upload photo account');
+  //     }
+  //   })
+  //   .catch(error => {
+  //     // Handle any network or server error
+  //     console.error('Error:', error);
+  //   });
+  // });
     
 
     const deleteAccountBtn = document.querySelector('.delete');

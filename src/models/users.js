@@ -3,11 +3,9 @@ const mongoose = require('mongoose');
 const userSchema = new mongoose.Schema({
   firstName: {
     type: String,
-    
   },
   lastName: {
     type: String,
-    
   },
   email: {
     type: String,
@@ -17,7 +15,6 @@ const userSchema = new mongoose.Schema({
   username: {
     type: String,
     required: true,
-    
   },
   password: {
     type: String,
@@ -36,7 +33,6 @@ const userSchema = new mongoose.Schema({
   },
   link: {
     type: String,
-    
   },
   uploadedRecipes: [{
     type: mongoose.Schema.Types.ObjectId,
@@ -63,9 +59,8 @@ const userSchema = new mongoose.Schema({
     ref: 'User'
   }],
   image: {
-    data: Buffer, // Store image data as a Buffer type
-    contentType: String, // Store the content type of the image
-   
+    data: Buffer,
+    contentType: String,
   },
   averageLikesPerRecipe: {
     type: Number,
@@ -75,10 +70,13 @@ const userSchema = new mongoose.Schema({
     type: Number,
     default: 0
   },
-  commentsOnPost : [{
+  commentsOnPost: [{
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Comment'
-  }]
+  }],
+  createdAt: {
+    type: Date
+  }
 });
 
 const User = mongoose.model('User', userSchema);
