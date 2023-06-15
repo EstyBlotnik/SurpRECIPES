@@ -81,7 +81,53 @@
 </header><!-- End Header -->
 
 <style>
+
+.header .logo h1 {
+    font-size: 30px;
+    font-weight: 700;
+    color: var(--color-default);
+    font-family: var(--font-primary);
+	margin-right: 350px;
+    margin-left: 100px;
+    margin-top: 25px;
+}
+
+.navbar a, .navbar a:focus {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 0 10px 30px;
+    font-family: var(--font-default);
+    font-size: 16px;
+    font-weight: 500;
+    color: rgba(var(--color-default-rgb), 1);
+    white-space: nowrap;
+    transition: 0.3s;
+	}
   
+  .align-items-center {
+    align-items: center!important;
+	}
+
+	.justify-content-between {
+    justify-content: space-between!important;
+	}
+
+	.d-flex {
+    display: flex!important;
+	}
+
+	.fixed-top {
+    position: fixed;
+    top: 0;
+    right: 0;
+    left: 0;
+    z-index: 1030;
+	}
+
+	.justify-content-between {
+    justify-content: space-between!important;
+	}
 
     .navbar ul li:last-child {
         margin-right: 0;
@@ -119,7 +165,7 @@
     transition: all 0.5s;
     z-index: 997;
     background: #f2f2f2;
-    margin-top: -20px;
+    margin-top: 0px;
 }
 </style>
 
@@ -200,7 +246,7 @@
 									</div>
 									<!-- Button -->
 									<form action="/uploadphoto" method="POST">
-									<input type="file" id="image" name="image" placeholder="Image:"  accept="image/*"><br><br>
+									<input type="file" class="file-upload" value="choose file" id="image" name="image" placeholder="Image:"  accept="image/*"><br><br>
 									<!-- <label class="btn btn-success-soft btn-block" for="customFile">Upload</label>
 									<button type="submit" class="btn btn-danger-soft">submit</button> -->
 									<input class="submit" type="submit" value="Upload photo">
