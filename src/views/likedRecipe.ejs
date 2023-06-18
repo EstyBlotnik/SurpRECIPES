@@ -73,6 +73,65 @@
     .toggle-content.show {
       display: block;
     }
+
+    .comment {
+  margin-bottom: 10px;
+  padding: 10px;
+  background-color: #ffffff;
+  border-radius: 5px;
+}
+
+.comment-text {
+  margin: 0;
+}
+.comment-uploader {
+  font-size: 12px;
+  color: #888888;
+  margin-top: 2px;
+}
+
+.delete-comment-button {
+  background-color: #ff0000;
+  color: #ffffff;
+  right: 5px; /* Updated */
+  border: none;
+  padding: 5px 10px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.delete-comment-button:hover {
+  background-color: #cc0000;
+}
+
+
+    .comment-textbox {
+      width: 100%;
+      /* Set the width to 100% to match the parent element's width */
+    }
+
+    .comment-button {
+      background-color: gray;
+      color: white;
+      border: none;
+      padding: 8px 16px;
+      border-radius: 4px;
+      font-weight: bold;
+    }
+
+    .comment-button:hover {
+      background-color: darkgray;
+      cursor: pointer;
+    }
+
+    .elegant-button {
+      background-color: #007bff;
+      color: white;
+    }
+
+    .elegant-button:hover {
+      background-color: #0056b3;
+    }
   </style>
   <title>
     User Home Page
@@ -240,204 +299,310 @@
                                       </li>
                                       <%}%>
 
-                                        <li class="inline-block w-1/3">
-                                          <button
-                                            class="block w-full p-2 hover:bg-gray-200 text-gray-700 hover:text-indigo-600 focus:outline-none focus:bg-indigo-100 focus:text-indigo-600">
-                                            <span class="lni-comment-reply"></span>
-                                            <span class="hidden md:inline">Comment</span>
-                                          </button>
-                                        </li>
+                                      <li class="inline-block w-1/3">
+                                        <button class="block w-full p-2 hover:bg-gray-200 text-gray-700 hover:text-indigo-600 focus:outline-none focus:bg-indigo-100 focus:text-indigo-600 comment-toggle" data-doc="<%= post._id %>">
+                                      <span class="lni-comment-reply"></span>
+                                      <span class="hidden md:inline">Comment</span>
+                                      </button>
+                                      </li>
 
                     </ul>
                   </footer>
                 </div>
               </div>
             </div>
+            <div id="comment-box-<%= post._id %>" class="toggle-content">
+              <% comments.forEach(function(comment) {  %>
+                <% if (post.comments.includes(comment._id)) { %>
+                  <div class="comment">
+                    <p class="comment-uploader">Uploader: <%= currentUser.email %></p>
+    
+                    <p class="comment-text"><%= comment.text %></p>
+                    <% if (comment.uploader == currentUser._id) { %>
+                      <form method="post" class="delete-comment-form">
+                        <input type="hidden" name="commentId" value="<%= comment._id %>">
+                        <button class="delete-comment-button" data-doc="<%= comment._id %>">Delete</button>
+                      </form>
+                    <% } %>
+                  </div>
+                <% } %>
+              <% }) %>
+              <form action="/comment" method="post" onsubmit="updateHiddenInputValue('<%= post._id %>')">
+                <textarea id="comment-textbox<%=post._id%>" class="comment-textbox" rows="4" cols="50" placeholder="Enter your comment" data-doc="<%= post._id %>"></textarea>
+                <button class="comment-button elegant-button" data-doc="<%= post._id %>">Submit</button>
+                <input type="hidden" name="postId" value="<%= post._id %>">
+                <input type="hidden" name="text" id="comment-textid<%=post._id%>" value="">
+                <input type="hidden" name="uploader" value="<%= currentUser._id %>">
+                <input type="hidden" name="poster"  value="<%=post.uploader%>">
+              </form>
+            </div>
+
           </div>
           <% }) %>
           <% } %>
       </main>
     </div>
     <script>
-      const trashcans = document.querySelectorAll('button.delete');
-      trashcans.forEach(trashcan => {
-        trashcan.addEventListener('click', (e) => {
-          const endpoint = `/viewRecipe/${trashcan.dataset.doc}`;
-          fetch(endpoint, {
+      function updateHiddenInputValue(postId) {
+    var textbox = document.getElementById('comment-textbox' + postId);
+    var hiddenInput = document.getElementById('comment-textid' + postId);
+    hiddenInput.value = textbox.value;
+  }
+    const trashcans = document.querySelectorAll('button.delete');
+    trashcans.forEach(trashcan => {
+      trashcan.addEventListener('click', (e) => {
+        const endpoint = `/viewRecipe/${trashcan.dataset.doc}`;
+        fetch(endpoint, {
             method: 'DELETE',
           })
-            .then(response => response.json())
-            .then(data => window.location.href = data.redirect)
-            .catch(err => console.log(err));
-        });
+          .then(response => response.json())
+          .then(data => window.location.href = data.redirect)
+          .catch(err => console.log(err));
       });
+    });
 
-      const likeboxes = document.querySelectorAll('button.like');
-      likeboxes.forEach(likebox => {
-        likebox.addEventListener('click', (e) => {
-          const endpoint = `/viewRecipe/like`;
-          const data = {
-            userId: likebox.dataset.user,
-            postId: likebox.dataset.doc,
-          };
-          fetch(endpoint, {
+
+    const likeboxes = document.querySelectorAll('button.like');
+    likeboxes.forEach(likebox => {
+      likebox.addEventListener('click', (e) => {
+        const endpoint = `/viewRecipe/like`;
+        const data = {
+          userId: likebox.dataset.user,
+          postId: likebox.dataset.doc,
+        };
+        fetch(endpoint, {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',
             },
             body: JSON.stringify(data),
           })
-            .then(response => response.json())
-            .then(data => window.location.href = data.redirect)
-            .catch(err => console.log(err));
-        });
+          .then(response => response.json())
+          .then(data => window.location.href = data.redirect)
+          .catch(err => console.log(err));
       });
+    });
 
-      const unlikeboxes = document.querySelectorAll('button.unlike');
-      unlikeboxes.forEach(unlikebox => {
-        unlikebox.addEventListener('click', (e) => {
-          const endpoint = `/viewRecipe/unlike`;
-          const data = {
-            userId: unlikebox.dataset.user,
-            postId: unlikebox.dataset.doc,
-          };
-          fetch(endpoint, {
+    const unlikeboxes = document.querySelectorAll('button.unlike');
+    unlikeboxes.forEach(unlikebox => {
+      unlikebox.addEventListener('click', (e) => {
+        const endpoint = `/viewRecipe/unlike`;
+        const data = {
+          userId: unlikebox.dataset.user,
+          postId: unlikebox.dataset.doc,
+        };
+        fetch(endpoint, {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',
             },
             body: JSON.stringify(data),
           })
-            .then(response => response.json())
-            .then(data => window.location.href = data.redirect)
-            .catch(err => console.log(err));
-        });
+          .then(response => response.json())
+          .then(data => window.location.href = data.redirect)
+          .catch(err => console.log(err));
       });
+    });
 
 
-      const saveboxes = document.querySelectorAll('button.save');
-      saveboxes.forEach(savebox => {
-        savebox.addEventListener('click', (e) => {
-          const endpoint = `/viewRecipe/save`;
-          const data = {
-            userId: savebox.dataset.user,
-            postId: savebox.dataset.doc,
-          };
-          fetch(endpoint, {
+    const saveboxes = document.querySelectorAll('button.save');
+    saveboxes.forEach(savebox => {
+      savebox.addEventListener('click', (e) => {
+        const endpoint = `/viewRecipe/save`;
+        const data = {
+          userId: savebox.dataset.user,
+          postId: savebox.dataset.doc,
+        };
+        fetch(endpoint, {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',
             },
             body: JSON.stringify(data),
           })
-            .then(response => response.json())
-            .then(data => window.location.href = data.redirect)
-            .catch(err => console.log(err));
-        });
+          .then(response => response.json())
+          .then(data => window.location.href = data.redirect)
+          .catch(err => console.log(err));
       });
+    });
 
-      const unsaveboxes = document.querySelectorAll('button.unsave');
-      unsaveboxes.forEach(unsavebox => {
-        unsavebox.addEventListener('click', (e) => {
-          const endpoint = `/viewRecipe/unsave`;
-          const data = {
-            userId: unsavebox.dataset.user,
-            postId: unsavebox.dataset.doc,
-          };
-          fetch(endpoint, {
+    const unsaveboxes = document.querySelectorAll('button.unsave');
+    unsaveboxes.forEach(unsavebox => {
+      unsavebox.addEventListener('click', (e) => {
+        const endpoint = `/viewRecipe/unsave`;
+        const data = {
+          userId: unsavebox.dataset.user,
+          postId: unsavebox.dataset.doc,
+        };
+        fetch(endpoint, {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',
             },
             body: JSON.stringify(data),
           })
-            .then(response => response.json())
-            .then(data => window.location.href = data.redirect)
-            .catch(err => console.log(err));
-        });
+          .then(response => response.json())
+          .then(data => window.location.href = data.redirect)
+          .catch(err => console.log(err));
       });
+    });
 
-      const shareboxes = document.querySelectorAll('button.share');
-      shareboxes.forEach(sharebox => {
-        sharebox.addEventListener('click', (e) => {
-          const endpoint = `/viewRecipe/share`;
-          const data = {
-            userId: sharebox.dataset.user,
-            postId: sharebox.dataset.doc,
-          };
-          fetch(endpoint, {
+    const shareboxes = document.querySelectorAll('button.share');
+    shareboxes.forEach(sharebox => {
+      sharebox.addEventListener('click', (e) => {
+        const endpoint = `/viewRecipe/share`;
+        const data = {
+          userId: sharebox.dataset.user,
+          postId: sharebox.dataset.doc,
+        };
+        fetch(endpoint, {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',
             },
             body: JSON.stringify(data),
           })
-            .then(response => response.json())
-            .then(data => window.location.href = data.redirect)
-            .catch(err => console.log(err));
-        });
+          .then(response => response.json())
+          .then(data => window.location.href = data.redirect)
+          .catch(err => console.log(err));
       });
+    });
 
 
+    const ingbuttons = document.getElementsByName("ingButton");
+    ingbuttons.forEach(button => {
+      const doc = button.dataset.doc;
+      const element1 = document.getElementById('ing-' + doc);
+      if (element1) {
+        element1.style.display = 'none';
+      }
+      const element2 = document.getElementById('ins-' + doc);
+      if (element2) {
+        element2.style.display = 'none';
+      }
+    });
+
+    document.addEventListener('DOMContentLoaded', () => {
       const ingbuttons = document.getElementsByName("ingButton");
+      const insbuttons = document.getElementsByName("insButton");
+      const commentbuttons = document.getElementsByName("comment-button");
+
       ingbuttons.forEach(button => {
-        const doc = button.dataset.doc;
-        const element1 = document.getElementById('ing-' + doc);
-        if (element1) {
-          element1.style.display = 'none';
-        }
-        const element2 = document.getElementById('ins-' + doc);
-        if (element2) {
-          element2.style.display = 'none';
-        }
+        button.addEventListener('click', handleClick);
       });
-
-      document.addEventListener('DOMContentLoaded', () => {
-        const ingbuttons = document.getElementsByName("ingButton");
-        const insbuttons = document.getElementsByName("insButton");
-        ingbuttons.forEach(button => {
-          button.addEventListener('click', handleClick);
-        });
-        insbuttons.forEach(button => {
-          button.addEventListener('click', shandleClick);
-        });
+      commentbuttons.forEach(button => {
+        button.addEventListener('click', chngeText);
       });
+      insbuttons.forEach(button => {
+        button.addEventListener('click', shandleClick);
+      });
+    });
 
-      function handleClick(event) {
-        const button = event.target;
-        const doc = button.dataset.doc;
-        console.log('Button clicked:', button, 'Data-doc:', doc);
-        const element = document.getElementById('ing-' + doc);
-        console.log('ing' + doc);
-        if (element) {
-          if (element.style.display === 'none') {
-            element.style.display = 'block';
-          } else {
-            element.style.display = 'none';
-          }
-          // console.log("found it");
-          // element.style.display = 'none';
+    function handleClick(event) {
+      const button = event.target;
+      const doc = button.dataset.doc;
+      console.log('Button clicked:', button, 'Data-doc:', doc);
+      const element = document.getElementById('ing-' + doc);
+      console.log('ing' + doc);
+      if (element) {
+        if (element.style.display === 'none') {
+          element.style.display = 'block';
+        } else {
+          element.style.display = 'none';
         }
-        // Perform further actions with the doc value
+        // console.log("found it");
+        // element.style.display = 'none';
       }
+      // Perform further actions with the doc value
+    }
 
-      function shandleClick(event) {
-        const button = event.target;
-        const doc = button.dataset.doc;
-        console.log('Button clicked:', button, 'Data-doc:', doc);
-        const element = document.getElementById('ins-' + doc);
-        console.log('ing' + doc);
-        if (element) {
-          if (element.style.display === 'none') {
-            element.style.display = 'block';
-          } else {
-            element.style.display = 'none';
-          }
-          // console.log("found it");
-          // element.style.display = 'none';
+    function shandleClick(event) {
+      const button = event.target;
+      const doc = button.dataset.doc;
+      console.log('Button clicked:', button, 'Data-doc:', doc);
+      const element = document.getElementById('ins-' + doc);
+      console.log('ing' + doc);
+      if (element) {
+        if (element.style.display === 'none') {
+          element.style.display = 'block';
+        } else {
+          element.style.display = 'none';
         }
-        // Perform further actions with the doc value
+        // console.log("found it");
+        // element.style.display = 'none';
       }
+      // Perform further actions with the doc value
+    }
+
+    const commentToggles = document.querySelectorAll('button.comment-toggle');
+    commentToggles.forEach(commentToggle => {
+      commentToggle.addEventListener('click', (e) => {
+        const commentBox = document.querySelector(`#comment-box-${commentToggle.dataset.doc}`);
+        commentBox.classList.toggle('show');
+      });
+    });
+    function chngeText(event) {
+      const button = event.target;
+      const doc = button.dataset.doc;
+      // console.log('Button clicked:', button, 'Data-doc:', doc);
+      // const element = document.getElementById('ing-' + doc);
+      // console.log('ing' + doc);
+      var commentTextbox = event.target.parentNode.querySelector('.comment-textbox'+ doc);
+        var commentText = commentTextbox.value;
+
+        // Set the value of the corresponding comment text input
+        var commentTextInput = event.target.parentNode.querySelector('.comment-text'+ doc);
+        commentTextInput.value = commentText;
+
+        // Submit the form
+        event.target.parentNode.submit();
+    }
+
+    // const commentTextboxes = document.querySelectorAll('.comment-button')
+    // commentTextboxes.forEach(commentTextbox => {
+    //   commentTextbox.addEventListener('click', function() {
+    //     var commentTextbox = document.getElementById('comment-textbox');
+    //     var commentText = commentTextbox.value;
+    //     document.getElementById('comment-text').value = commentText;
+    //   });
+    // });
+
+  function updateHiddenInputValue(postId) {
+    var textbox = document.getElementById('comment-textbox' + postId);
+    var hiddenInput = document.getElementById('comment-textid' + postId);
+    hiddenInput.value = textbox.value;
+  }
+  
+  const deleteComment = (commentId) => {
+    fetch(`/deleteComment?commentId=${commentId}`, {
+      method: 'DELETE'
+    })
+      .then(response => {
+        if (response.ok) {
+          // Deletion successful
+          console.log('Comment deleted successfully');
+          // Perform any necessary UI updates
+          location.reload(); // Refresh the page
+        } else {
+          // Handle deletion error
+          console.error('Failed to delete comment');
+          // Perform any necessary error handling or UI updates
+        }
+      })
+      .catch(error => {
+        // Handle network errors
+        console.error(error);
+      });
+  };
+
+  const deleteButtons = document.querySelectorAll('.delete-comment-button');
+  deleteButtons.forEach(button => {
+    button.addEventListener('click', (event) => {
+      event.preventDefault();
+      const commentId = button.dataset.doc;
+      deleteComment(commentId);
+    });
+  });
     </script>
 
 </body>

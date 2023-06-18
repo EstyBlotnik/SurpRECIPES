@@ -584,6 +584,7 @@ router.post('/comment', async (req, res) => {
   console.log(poster);
 
   // Check if an image was uploaded
+  const redirectUrl = req.headers.referer || '/';
 
   // Create the recipe
   const comment = new Comment({ uploader: uploader, text: text, post: postId, read: false });
@@ -599,7 +600,7 @@ router.post('/comment', async (req, res) => {
         Recipe.find()
           .sort({ likes: -1 }) // Sort in descending order based on the `updatedAt` field
           .then(result => {
-            res.redirect('/explore'); // Redirect to the explore route after successful comment addition
+            res.redirect(redirectUrl); // Redirect to the explore route after successful comment addition
           });
       } else {
         res.redirect('/login');
