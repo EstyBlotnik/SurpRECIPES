@@ -357,11 +357,13 @@ router.get('/notification', userController.renderUserNotes);
 //Define the route to handle the delete request
 router.delete('/deleteAccount', function (req, res) {
   const userId = req.user._id;
-
-  User.findByIdAndRemove(userId)
+  const userEmail = req.user.email;
+  Recipe.deleteMany({ uploader: userEmail })
+  
     .then(() => {
       // Deletion successful, now delete the user's recipes
-      Recipe.deleteMany({ uploader: userId })
+      User.findByIdAndRemove(userId)
+     
         .then(() => {
           // Recipes deleted successfully
           res.sendStatus(200);
