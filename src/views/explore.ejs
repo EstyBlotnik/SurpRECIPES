@@ -325,7 +325,6 @@
           <% comments.forEach(function(comment) {  %>
             <% if (post.comments.includes(comment._id)) { %>
               <div class="comment">
-                <p class="comment-uploader">Uploader: <%= currentUser.email %></p>
                 <p class="comment-text"><%= comment.text %></p>
                 <% if (comment.uploader == currentUser._id) { %>
                   <form method="post" class="delete-comment-form">
