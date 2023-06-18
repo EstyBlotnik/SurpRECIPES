@@ -128,3 +128,110 @@ function shandleClick(event) {
   }
   // Perform further actions with the doc value
 }
+
+function updateHiddenInputValue(postId) {
+    var textbox = document.getElementById('comment-textbox' + postId);
+    var hiddenInput = document.getElementById('comment-textid' + postId);
+    hiddenInput.value = textbox.value;
+  }
+
+  const commentToggles = document.querySelectorAll('button.comment-toggle');
+  commentToggles.forEach(commentToggle => {
+	commentToggle.addEventListener('click', (e) => {
+	  const commentBox = document.querySelector(`#comment-box-${commentToggle.dataset.doc}`);
+	  commentBox.classList.toggle('show');
+	});
+  });
+  function chngeText(event) {
+	const button = event.target;
+	const doc = button.dataset.doc;
+	// console.log('Button clicked:', button, 'Data-doc:', doc);
+	// const element = document.getElementById('ing-' + doc);
+	// console.log('ing' + doc);
+	var commentTextbox = event.target.parentNode.querySelector('.comment-textbox'+ doc);
+	  var commentText = commentTextbox.value;
+
+	  // Set the value of the corresponding comment text input
+	  var commentTextInput = event.target.parentNode.querySelector('.comment-text'+ doc);
+	  commentTextInput.value = commentText;
+
+	  // Submit the form
+	  event.target.parentNode.submit();
+  }
+
+  // const commentTextboxes = document.querySelectorAll('.comment-button')
+  // commentTextboxes.forEach(commentTextbox => {
+  //   commentTextbox.addEventListener('click', function() {
+  //     var commentTextbox = document.getElementById('comment-textbox');
+  //     var commentText = commentTextbox.value;
+  //     document.getElementById('comment-text').value = commentText;
+  //   });
+  // });
+
+function updateHiddenInputValue(postId) {
+  var textbox = document.getElementById('comment-textbox' + postId);
+  var hiddenInput = document.getElementById('comment-textid' + postId);
+  hiddenInput.value = textbox.value;
+}
+
+const deleteComment = (commentId) => {
+  fetch(`/deleteComment?commentId=${commentId}`, {
+	method: 'DELETE'
+  })
+	.then(response => {
+	  if (response.ok) {
+		// Deletion successful
+		console.log('Comment deleted successfully');
+		// Perform any necessary UI updates
+		location.reload(); // Refresh the page
+	  } else {
+		// Handle deletion error
+		console.error('Failed to delete comment');
+		// Perform any necessary error handling or UI updates
+	  }
+	})
+	.catch(error => {
+	  // Handle network errors
+	  console.error(error);
+	});
+};
+
+const deleteButtons = document.querySelectorAll('.delete-comment-button');
+deleteButtons.forEach(button => {
+  button.addEventListener('click', (event) => {
+	event.preventDefault();
+	const commentId = button.dataset.doc;
+	deleteComment(commentId);
+  });
+});
+
+
+function submitComment(event, postId) {
+    event.preventDefault();
+    const textarea = document.getElementById(`comment-textbox${postId}`);
+    const commentError = document.getElementById("comment-error-message");
+
+    const text = textarea.value.trim();
+    if (text.length === 0) {
+      return;
+    }
+
+    if (text.length > 300) {
+      commentError.textContent = "Comment length should not exceed 300 characters";
+      commentError.style.display = "block";
+      return;
+    }
+
+    // Proceed with form submission
+    document.getElementById(`comment-textid${postId}`).value = text;
+    event.target.submit();
+  }
+
+  function confirmDelete(event) {
+    const shouldDelete = confirm("Are you sure you want to delete this comment?");
+    if (!shouldDelete) {
+      event.preventDefault();
+    }
+  }
+
+  

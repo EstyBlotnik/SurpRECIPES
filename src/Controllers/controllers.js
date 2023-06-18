@@ -55,7 +55,8 @@ exports.renderUserProfile =  async (req, res) => {
       const followers = await User.find({ _id: { $in: followersIds } });
       const followings = await User.find({ _id: { $in: followingsIds } });
       const posts=await Recipe.find({ _id: { $in:postIds } });
-      res.render('user_profile', { followers: followers, followings: followings, mongo_user: req.user , current_user: req.user ,posts:posts});
+      const comments = await Comment.find();
+      res.render('user_profile', { followers: followers, followings: followings, mongo_user: req.user , current_user: req.user ,posts:posts, comments:comments});
     } catch (error) {
       // Handle the error appropriately
       console.error(error);
