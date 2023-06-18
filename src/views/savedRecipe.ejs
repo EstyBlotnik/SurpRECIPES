@@ -163,7 +163,7 @@
         <div id="card-3" class="bg-gray-100 shadow-lg rounded overflow-hidden flex flex-wrap flex-col">
           <div class="container">
             <header class="p-3 flex items-center">
-              <img src="nomima.jpg" alt="<%=post.uploader%>" class="rounded-full mr-2" width="80" style="border-radius: 50%;" />
+              <img src="defaltuserprofile.png" alt="<%=post.uploader%>" class="rounded-full mr-2" width="80" style="border-radius: 50%; ">
               <div>
                 <form action="/viewOtherProfile" method="post">
                   <button class="inline-block list-none text-sm font-semibold uploader" data-doc="<%= post.uploader %>" data-user="<%= currentUser._id %>">
@@ -198,7 +198,6 @@
               <% } else { %>
               <img src="download.png" alt="Recipe Image" id="recipe-image" style="float: right; margin-right: 50px;margin-top: -70px; height: 200px; border: 1px solid #333; border-radius: 5px;">
               <% } %>
-              style="float: right; margin-right: 50px;margin-top: -70px; height: 200px; border: 1px solid #333; border-radius: 5px;">
               <!-- <button class="block w-full p-2 hover:bg-gray-200 text-gray-700 hover:text-blue-500 focus:outline-none focus:bg-blue-100 focus:text-blue-500"> -->
               <!-- <ul class="toggle-content"> -->
               <button class="IngredientsList toggle-button" name="ingButton" data-doc="<%= post._id %>">Ingredients</button>
