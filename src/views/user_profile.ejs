@@ -142,7 +142,7 @@
             <div id="card-3" class="bg-gray-100 shadow-lg rounded overflow-hidden flex flex-wrap flex-col">
               <div class="container">
                 <header class="p-3 flex items-center">
-                  <img src="nomima.jpg" alt="<%=post.uploader%>" class="rounded-full mr-2" width="80" style="border-radius: 50%;" />
+                  <img src="defaltuserprofile.png" alt="<%=post.uploader%>" class="rounded-full mr-2" width="80" style="border-radius: 50%; " />
                   <div>
                     <form action="/viewOtherProfile" method="post">
                       <button class="inline-block list-none text-sm font-semibold uploader" data-doc="<%= post.uploader %>" data-user="<%= mongo_user._id %>">
@@ -176,7 +176,7 @@
                   <% if (post.image && post.image.data) { %>
                   <img src="data:<%= post.image.contentType %>;base64,<%= post.image.data.toString('base64') %>" alt="Recipe Image" style="float: right; margin-right: 50px;margin-top: -70px; height: 200px; border: 1px solid #333; border-radius: 5px;">
                   <% } else { %>
-                  <img src="download.png" alt="Recipe Image" id="recipe-image" style="float: right; margin-right: 50px;margin-top: -70px; height: 200px; border: 1px solid #333; border-radius: 5px;">
+                  <img src="background.jpg" alt="Recipe Image" id="recipe-image" style="float: right; margin-right: 50px;margin-top: -70px; height: 200px; border: 1px solid #333; border-radius: 5px;">
                   <% } %>
                   <!-- <button class="block w-full p-2 hover:bg-gray-200 text-gray-700 hover:text-blue-500 focus:outline-none focus:bg-blue-100 focus:text-blue-500"> -->
                   <!-- <ul class="toggle-content"> -->
@@ -284,22 +284,42 @@
                       </li>
                       <%}%>
 
-																								<li
-																									class="inline-block w-1/3">
-																									<button
-																										class="block w-full p-2 hover:bg-gray-200 text-gray-700 hover:text-indigo-600 focus:outline-none focus:bg-indigo-100 focus:text-indigo-600">
-																										<span
-																											class="lni-comment-reply"></span>
-																										<span
-																											class="hidden md:inline">Comment</span>
-																									</button>
-																								</li>
+                      <li class="inline-block w-1/3">
+                        <button class="block w-full p-2 hover:bg-gray-200 text-gray-700 hover:text-indigo-600 focus:outline-none focus:bg-indigo-100 focus:text-indigo-600 comment-toggle" data-doc="<%= post._id %>">
+                      <span class="lni-comment-reply"></span>
+                      <span class="hidden md:inline">Comment</span>
+                      </button>
+                      </li>
 
 														</ul>
 													</footer>
 												</div>
 											</div>
 										</div>
+                    <div id="comment-box-<%= post._id %>" class="toggle-content">
+                      <% comments.forEach(function(comment) {  %>
+                        <% if (post.comments.includes(comment._id)) { %>
+                          <div class="comment">
+                            <p class="comment-text"><%= comment.text %></p>
+                            <% if (comment.uploader == current_user._id) { %>
+                              <form method="post" class="delete-comment-form">
+                                <input type="hidden" name="commentId" value="<%= comment._id %>">
+                                <button class="delete-comment-button" data-doc="<%= comment._id %>" onclick="confirmDelete(event)">Delete</button>
+                              </form>
+                            <% } %>
+                          </div>
+                        <% } %>
+                      <% }) %>
+                      <form action="/commentFromProfile" method="post" onsubmit="submitComment(event, '<%= post._id %>')">
+                        <textarea id="comment-textbox<%=post._id%>" class="comment-textbox" rows="4" cols="50" placeholder="Enter your comment" data-doc="<%= post._id %>"></textarea>
+                        <p class="error-message" id="comment-error-message" style="display: none; color: red;"></p>
+                        <button class="comment-button elegant-button" data-doc="<%= post._id %>">Submit</button>
+                        <input type="hidden" name="postId" value="<%= post._id %>">
+                        <input type="hidden" name="text" id="comment-textid<%=post._id%>" value="">
+                        <input type="hidden" name="uploader" value="<%= current_user._id %>">
+                        <input type="hidden" name="poster"  value="<%=post.uploader%>">
+                      </form>
+                    </div>
 									</div>
 									<% }) %>
         </main>

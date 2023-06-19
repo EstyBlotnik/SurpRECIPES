@@ -142,6 +142,8 @@ router.post('/viewOtherProfile', async (req, res) => {
   const { email } = req.body;
   console.log(email);
   const user = await User.findOne({ email });
+  const comments = await Comment.find(); 
+
   try {
     // Retrieve the saved recipe object IDs
     const followersIds = user.followers;
@@ -151,7 +153,7 @@ router.post('/viewOtherProfile', async (req, res) => {
     const followers = await User.find({ _id: { $in: followersIds } });
     const followings = await User.find({ _id: { $in: followingsIds } });
     const posts = await Recipe.find({ _id: { $in: postIds } });
-    res.render('user_profile', { followers: followers, followings: followings, mongo_user: user, current_user: req.user, posts: posts });
+    res.render('user_profile', { followers: followers, followings: followings, mongo_user: user, current_user: req.user, posts: posts, comments:comments });
   } catch (error) {
     // Handle the error appropriately
     console.error(error);
@@ -357,11 +359,13 @@ router.get('/notification', userController.renderUserNotes);
 //Define the route to handle the delete request
 router.delete('/deleteAccount', function (req, res) {
   const userId = req.user._id;
-
-  User.findByIdAndRemove(userId)
+  const userEmail = req.user.email;
+  Recipe.deleteMany({ uploader: userEmail })
+  
     .then(() => {
       // Deletion successful, now delete the user's recipes
-      Recipe.deleteMany({ uploader: userId })
+      User.findByIdAndRemove(userId)
+     
         .then(() => {
           // Recipes deleted successfully
           res.sendStatus(200);
@@ -500,7 +504,8 @@ router.post('/follow', async (req, res) => {
     const followers = await User.find({ _id: { $in: followersIds } });
     const followings = await User.find({ _id: { $in: followingsIds } });
     const posts = await Recipe.find({ _id: { $in: postIds } });
-    return res.render('user_profile', { followers: followers, followings: followings, mongo_user: user, current_user: current, posts: posts });
+    const comments = await Comment.find();
+    return res.render('user_profile', { followers: followers, followings: followings, mongo_user: user, current_user: current, posts: posts , comments:comments});
   } catch (error) {
     // Handle the error appropriately
     console.error(error);
@@ -514,6 +519,7 @@ router.post('/unfollow', async (req, res) => {
   const current = await User.findById(current_user);
   current.followedUsers.pull(uploader);
   await current.save();
+  const comments = await Comment.find();
   const user = await User.findById(uploader)
   user.followers.pull(current_user);
   // Retrieve the saved recipe object IDs
@@ -529,7 +535,7 @@ router.post('/unfollow', async (req, res) => {
     const followers = await User.find({ _id: { $in: followersIds } });
     const followings = await User.find({ _id: { $in: followingsIds } });
     const posts = await Recipe.find({ _id: { $in: postIds } });
-    return res.render('user_profile', { followers: followers, followings: followings, mongo_user: user, current_user: current, posts: posts });
+    return res.render('user_profile', { followers: followers, followings: followings, mongo_user: user, current_user: current, posts: posts, comments:comments });
   } catch (error) {
     // Handle the error appropriately
     console.error(error);
@@ -576,12 +582,13 @@ router.put('/editRecipe', async (req, res) => {
 
 router.post('/comment', async (req, res) => {
   const { postId, text, uploader, poster } = req.body;
-  console.log(text);
-  console.log(uploader);
-  console.log(postId);
-  console.log(poster);
-
   // Check if an image was uploaded
+
+  // if (text.length > 300) {
+  //   return res.status(400).json({ error: 'Comment length should not exceed 300 characters' });
+  // }
+
+  const redirectUrl = req.headers.referer || '/';
 
   // Create the recipe
   const comment = new Comment({ uploader: uploader, text: text, post: postId, read: false });
@@ -597,7 +604,7 @@ router.post('/comment', async (req, res) => {
         Recipe.find()
           .sort({ likes: -1 }) // Sort in descending order based on the `updatedAt` field
           .then(result => {
-            res.redirect('/explore'); // Redirect to the explore route after successful comment addition
+            res.redirect(redirectUrl); // Redirect to the explore route after successful comment addition
           });
       } else {
         res.redirect('/login');
@@ -625,6 +632,33 @@ router.post('/comment', async (req, res) => {
     });
 });
 
+router.post('/commentFromProfile', async (req, res) => {
+  const { postId, text, uploader, poster } = req.body;
+  // Check if an image was uploaded
+
+  const comment = new Comment({
+    uploader: uploader,
+    text: text,
+    post: postId,
+    read: false
+  });
+  await comment.save();
+
+  const current = await User.findById(uploader);
+  const post = await Recipe.findById(postId);
+  post.comments.push(comment._id);
+  await post.save();
+
+  const user = await User.findOne({ email: post.uploader });
+  user.commentsOnPost.push(comment);
+  await user.save();
+
+  // Redirect to the user_profile route after saving the comment
+  return res.redirect('/user_profile');
+});
+
+
+
 router.post('/read_comment', async (req, res) => {
   const { commentId } = req.body;
 
@@ -641,6 +675,7 @@ router.post('/read_comment', async (req, res) => {
     });
 
 });
+
 
 router.delete('/delete_comment', async (req, res) => {
   const { commentId } = req.query;
@@ -678,6 +713,8 @@ router.post('/unlikeFromProfile', async (req, res) => {
     const current = await User.findById(userId);
     const post = await Recipe.findById(postId)
     const user = await User.findOne({ email: post.uploader })
+    const comments = await Comment.find();
+
     console.log(current);
     console.log(post);
     console.log(user);
@@ -704,7 +741,7 @@ router.post('/unlikeFromProfile', async (req, res) => {
     const followers = await User.find({ _id: { $in: followersIds } });
     const followings = await User.find({ _id: { $in: followingsIds } });
     const posts = await Recipe.find({ _id: { $in: postIds } });
-    return res.render('user_profile', { followers: followers, followings: followings, mongo_user: user, current_user: current, posts: posts });
+    return res.render('user_profile', { followers: followers, followings: followings, mongo_user: user, current_user: current, posts: posts , comments:comments});
   } catch (error) {
     // Handle the error appropriately
     console.error(error);
@@ -719,6 +756,8 @@ router.post('/likeFromProfile', async (req, res) => {
     const current = await User.findById(userId);
     const post = await Recipe.findById(postId)
     const user = await User.findOne({ email: post.uploader })
+    const comments = await Comment.find();
+
     console.log(current);
     console.log(post);
     console.log(user);
@@ -745,7 +784,7 @@ router.post('/likeFromProfile', async (req, res) => {
     const followers = await User.find({ _id: { $in: followersIds } });
     const followings = await User.find({ _id: { $in: followingsIds } });
     const posts = await Recipe.find({ _id: { $in: postIds } });
-    return res.render('user_profile', { followers: followers, followings: followings, mongo_user: user, current_user: current, posts: posts });
+    return res.render('user_profile', { followers: followers, followings: followings, mongo_user: user, current_user: current, posts: posts , comments:comments});
   } catch (error) {
     // Handle the error appropriately
     console.error(error);
@@ -760,6 +799,7 @@ router.post('/saveFromProfile', async (req, res) => {
     const current = await User.findById(userId);
     const post = await Recipe.findById(postId)
     const user = await User.findOne({ email: post.uploader })
+    const comments = await Comment.find();
     current.savedRecipes.push(postId);
     console.log(current);
     console.log(post);
@@ -771,7 +811,7 @@ router.post('/saveFromProfile', async (req, res) => {
     const followers = await User.find({ _id: { $in: followersIds } });
     const followings = await User.find({ _id: { $in: followingsIds } });
     const posts = await Recipe.find({ _id: { $in: postIds } });
-    return res.render('user_profile', { followers: followers, followings: followings, mongo_user: user, current_user: current, posts: posts });
+    return res.render('user_profile', { followers: followers, followings: followings, mongo_user: user, current_user: current, posts: posts , comments:comments});
   } catch (error) {
     // Handle the error appropriately
     console.error(error);
@@ -785,6 +825,8 @@ router.post('/unsaveFromProfile', async (req, res) => {
     const current = await User.findById(userId);
     const post = await Recipe.findById(postId)
     const user = await User.findOne({ email: post.uploader })
+    const comments = await Comment.find();
+
     current.savedRecipes.pull(postId);
     console.log(current);
     console.log(post);
@@ -796,7 +838,7 @@ router.post('/unsaveFromProfile', async (req, res) => {
     const followers = await User.find({ _id: { $in: followersIds } });
     const followings = await User.find({ _id: { $in: followingsIds } });
     const posts = await Recipe.find({ _id: { $in: postIds } });
-    return res.render('user_profile', { followers: followers, followings: followings, mongo_user: user, current_user: current, posts: posts });
+    return res.render('user_profile', { followers: followers, followings: followings, mongo_user: user, current_user: current, posts: posts, comments:comments });
   } catch (error) {
     // Handle the error appropriately
     console.error(error);
@@ -809,6 +851,7 @@ router.post('/shareFromProfile', async(req, res) => {
     const current = await User.findById(userId);
     const post = await Recipe.findById(postId)
     const user = await User.findOne({ email: post.uploader })
+    const comments = await Comment.find();
     current.sharedRecipes.push(postId);
     const followersIds = user.followers;
     const followingsIds = user.followedUsers;
@@ -817,7 +860,7 @@ router.post('/shareFromProfile', async(req, res) => {
     const followers = await User.find({ _id: { $in: followersIds } });
     const followings = await User.find({ _id: { $in: followingsIds } });
     const posts = await Recipe.find({ _id: { $in: postIds } });
-    return res.render('user_profile', { followers: followers, followings: followings, mongo_user: user, current_user: current, posts: posts });
+    return res.render('user_profile', { followers: followers, followings: followings, mongo_user: user, current_user: current, posts: posts , comments:comments});
   } catch (error) {
     // Handle the error appropriately
     console.error(error);
