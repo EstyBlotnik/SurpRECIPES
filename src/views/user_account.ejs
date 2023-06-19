@@ -301,7 +301,6 @@
 								  var numberOfLikes = <%= mongo_user.numberOfLikes %>;
 								  var numUploadedRecipes = <%= mongo_user.uploadedRecipes.length %>;
 								  var result = numberOfLikes / numUploadedRecipes;
-								  console.log(mongo_user.numberOfLikes , mongo_user.uploadedRecipes.length )
 							  
 								  resultContainer.innerHTML = "<p>Average likes per uploaded recipe : " + result + "</p>";
 								});
