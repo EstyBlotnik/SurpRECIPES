@@ -37,7 +37,7 @@
     <div class="left-side">
       <div class="profile-side">
         <h1 class="user-name" style="font-family: Open Sans, Helvetica, Arial, sans-serif; font-size:35px ;  ">
-          <%= mongo_user.username %><br></br>
+          <%= mongo_user.username ? mongo_user.username : 'Unknown' %><br></br>
         </h1>
         <div class="my-level" style="font-family: Open Sans, Helvetica, Arial, sans-serif; font-size:25px ;  ">
           <h3>My Level: <p class="level" style="font-family: Open Sans, Helvetica, Arial, sans-serif; font-size:13px ;">
