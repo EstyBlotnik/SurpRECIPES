@@ -33,7 +33,7 @@ This is a web application project that includes various features built using Jav
 
 ### Installation
 
-1. Clone the repository: `https://github.com/EstyBlotnik/Project_management.git`
+1. Clone the repository: `https://github.com/EstyBlotnik/SurpRECIPES.git`
 2. Install dependencies: `npm install`
 3. Run the application: `npm start`
 
