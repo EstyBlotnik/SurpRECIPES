@@ -1,5 +1,5 @@
 
-# Project Management
+# SurpRECIPES
 
 This is a web application project that includes various features built using JavaScript and Express.js library.
 
